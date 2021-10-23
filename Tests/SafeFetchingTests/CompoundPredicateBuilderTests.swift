@@ -31,7 +31,6 @@ final class CompoundPredicateTests: XCTestCase {
     func testCompoundBrackets() {
         testNSFormat(predicate: \.score > 10 && (\.name * .hasPrefix("To") || \.name * .hasSuffix("ta")), expecting: #"score > 10 AND (name BEGINSWITH "To" OR name ENDSWITH "ta")"#)
     }
-
 }
 
 // MARK: - Helpers
