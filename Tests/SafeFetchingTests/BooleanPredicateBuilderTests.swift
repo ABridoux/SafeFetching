@@ -45,8 +45,7 @@ final class BooleanPredicateTests: XCTestCase {
 extension BooleanPredicateTests {
 
     func testNSFormat<Value, TestValue>(
-        predicate: Builders.BooleanPredicate<StubEntity,
-        Value, TestValue>,
+        predicate: Builders.BooleanPredicate<StubEntity, Value, TestValue>,
         expecting format: String
     ) {
         XCTAssertEqual(predicate.nsValue.predicateFormat, format)

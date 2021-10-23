@@ -106,3 +106,14 @@ public extension Builders.BooleanPredicateRightValue where Value == String? {
     }
 }
 
+
+// MARK: - BooleanPredicate operator
+
+public func * <Entity: NSManagedObject, Value, TestValue> (
+    lhs: KeyPath<Entity, Value>,
+    rhs: Builders.BooleanPredicateRightValue<Entity, Value, TestValue>
+) -> Builders.BooleanPredicate<Entity, Value, TestValue> {
+
+    let nsValue = rhs.predicate(lhs).nsValue
+    return Builders.BooleanPredicate<Entity, Value, TestValue>(predicate: nsValue)
+}
