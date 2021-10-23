@@ -24,6 +24,7 @@ This library offers a DSL (Domain Specific Language) to build predicates and req
 - ``SafeFetching/*(_:_:)``
 
 ### Build requests
+- <doc:build-requests>
 - ``Builders/Request``
 - ``SortDescriptor``
 - ``RequestBuilderStep``

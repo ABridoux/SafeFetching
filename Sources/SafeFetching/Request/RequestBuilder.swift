@@ -18,13 +18,16 @@ extension Builders {
 
         let request: FetchRequest
 
+        /// The built `NSFetchRequest<Entity>`
         public var nsValue: FetchRequest { request }
     }
 }
 
 extension Builders.Request where Output.Fetched == Entity {
 
-    /// Execute the fetch request in the context, using `Fetchable.context` if no context is provided
+    /// Execute the fetch request in the provided context.
+    ///
+    /// - returns: Depending the target (all, first), the output is either an optional or an array of `Entity`
     public func fetch(in context: NSManagedObjectContext) throws -> Output {
         Output(results: try context.fetch(request))
     }
