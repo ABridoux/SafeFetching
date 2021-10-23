@@ -34,3 +34,7 @@ This library offers a DSL (Domain Specific Language) to build predicates and req
 - ``TargetStep``
 - ``Fetchable``
 - ``FetchResult``
+
+### Fetch update
+- ``Fetchable/updatePublisher(for:)``
+- ``Fetchable/updatePublisher(sortingBy:_:for:in:)``
