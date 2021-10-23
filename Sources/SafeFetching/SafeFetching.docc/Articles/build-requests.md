@@ -29,6 +29,8 @@ There are four steps (some are optional) to build a request:
 - specify sorts (optional)
 - get either the build request `NSFetchRequest` with ``Builders/Request/nsValue`` or execute it directly with ``Builders/Request/fetch(in:)``
 
+Additionally, the "setting" can be performed.
+
 ### Target
 
 ##### All
@@ -120,7 +122,7 @@ StubEntity.request()
 ```
 
 ## Steps order
-Whereas some steps cannot be performed in a random order, others like the "additional setting" can be used any time after the target is specified. That said, it's advised to keep the order used to expose the steps:
+Whereas some steps cannot be performed in a random order, others like the "setting" can be used any time after the target is specified. That said, it's advised to keep the order used to expose the steps:
 
 - target
 - predicate

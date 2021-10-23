@@ -10,15 +10,15 @@ This library offers a DSL (Domain Specific Language) to build predicates and req
 
 ### Build predicates
 - <doc:build-predicates>
-- ``Builders/BooleanPredicate``
-- ``Builders/BooleanPredicateRightValue``
+- ``Builders/Predicate``
+- ``Builders/PredicateRightValue``
 - ``Builders/CompoundPredicate``
 - ``SafeFetching/==(_:_:)``
 - ``SafeFetching/!=(_:_:)``
-- ``SafeFetching/_(_:_:)-1gmvw``
-- ``SafeFetching/_=(_:_:)-5yani``
-- ``SafeFetching/_(_:_:)-9p2zu``
-- ``SafeFetching/_=(_:_:)-7hq68``
+- ``SafeFetching/_(_:_:)-1aleq``
+- ``SafeFetching/_(_:_:)-77yf7``
+- ``SafeFetching/_=(_:_:)-7rogb``
+- ``SafeFetching/_=(_:_:)-7wms3``
 - ``SafeFetching/&&(_:_:)``
 - ``SafeFetching/__(_:_:)``
 - ``SafeFetching/*(_:_:)``

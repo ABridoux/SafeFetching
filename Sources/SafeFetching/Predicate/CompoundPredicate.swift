@@ -11,9 +11,9 @@ extension Builders {
         case and, or
     }
 
-    public final class CompoundPredicate<Entity>: BooleanPredicate<Entity> where Entity: NSManagedObject {
+    public final class CompoundPredicate<Entity>: Predicate<Entity> where Entity: NSManagedObject {
 
-        init(joinOperator: JoinOperator, leftPredicate: BooleanPredicate<Entity>, rightPredicate: BooleanPredicate<Entity>) {
+        init(joinOperator: JoinOperator, leftPredicate: Predicate<Entity>, rightPredicate: Predicate<Entity>) {
             let nsValue: NSPredicate
 
             switch joinOperator {
@@ -29,8 +29,8 @@ extension Builders {
 }
 
 public func && <E: NSManagedObject>(
-    lhs: Builders.BooleanPredicate<E>,
-    rhs: Builders.BooleanPredicate<E>
+    lhs: Builders.Predicate<E>,
+    rhs: Builders.Predicate<E>
 ) -> Builders.CompoundPredicate<E> {
     Builders.CompoundPredicate(
         joinOperator: .and,
@@ -40,8 +40,8 @@ public func && <E: NSManagedObject>(
 }
 
 public func || <E: NSManagedObject>(
-    lhs: Builders.BooleanPredicate<E>,
-    rhs: Builders.BooleanPredicate<E>
+    lhs: Builders.Predicate<E>,
+    rhs: Builders.Predicate<E>
 ) -> Builders.CompoundPredicate<E> {
     Builders.CompoundPredicate(
         joinOperator: .or,

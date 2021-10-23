@@ -7,7 +7,7 @@ import CoreData
 
 extension Builders {
 
-    public class BooleanPredicate<Entity: NSManagedObject> {
+    public class Predicate<Entity: NSManagedObject> {
 
         public typealias Formatter = (String) -> String
         public typealias ArgumentsOrder = (Any) -> [Any]

@@ -8,8 +8,8 @@ import CoreData
 extension Builders {
 
     /// An operator and its right operand for a predicate, with no key path.
-    public struct BooleanPredicateRightValue<Entity: NSManagedObject, Value, TestValue> {
-        public typealias PredicateExpression = (KeyPath<Entity, Value>) -> BooleanPredicate<Entity>
+    public struct PredicateRightValue<Entity: NSManagedObject, Value, TestValue> {
+        public typealias PredicateExpression = (KeyPath<Entity, Value>) -> Predicate<Entity>
 
         public let predicate: PredicateExpression
 
@@ -21,47 +21,47 @@ extension Builders {
 
 // MARK: - Values set
 
-public extension Builders.BooleanPredicateRightValue where Value: Equatable {
+public extension Builders.PredicateRightValue where Value: Equatable {
 
     // MARK: Values set
 
-    static func isIn(_ values: Value...) -> Builders.BooleanPredicateRightValue<Entity, Value, [Value]> {
+    static func isIn(_ values: Value...) -> Builders.PredicateRightValue<Entity, Value, [Value]> {
         .init { .init(keyPath: $0, operatorString: "IN", value: values) }
     }
 
-    static func isNotIn(_ values: Value...) -> Builders.BooleanPredicateRightValue<Entity, Value, [Value]> {
+    static func isNotIn(_ values: Value...) -> Builders.PredicateRightValue<Entity, Value, [Value]> {
         .init { .init(keyPath: $0, operatorString: "IN", value: values, isInverted: true) }
     }
 
-    static func isIn(_ values: [Value]) -> Builders.BooleanPredicateRightValue<Entity, Value, [Value]> {
+    static func isIn(_ values: [Value]) -> Builders.PredicateRightValue<Entity, Value, [Value]> {
         .init { .init(keyPath: $0, operatorString: "IN", value: values) }
     }
 
-    static func isNotIn(_ values: [Value]) -> Builders.BooleanPredicateRightValue<Entity, Value, [Value]> {
+    static func isNotIn(_ values: [Value]) -> Builders.PredicateRightValue<Entity, Value, [Value]> {
         .init { .init(keyPath: $0, operatorString: "IN", value: values, isInverted: true) }
     }
 }
 
 // MARK: - Range
 
-public extension Builders.BooleanPredicateRightValue where Value: Numeric & Comparable {
+public extension Builders.PredicateRightValue where Value: Numeric & Comparable {
 
-    static func isIn(_ range: ClosedRange<Value>) -> Builders.BooleanPredicateRightValue<Entity, Value, [Value]> {
+    static func isIn(_ range: ClosedRange<Value>) -> Builders.PredicateRightValue<Entity, Value, [Value]> {
         .init { .init(keyPath: $0, operatorString: "BETWEEN", value: [range.lowerBound, range.upperBound]) }
     }
 
-    static func isNotIn(_ range: ClosedRange<Value>) -> Builders.BooleanPredicateRightValue<Entity, Value, [Value]> {
+    static func isNotIn(_ range: ClosedRange<Value>) -> Builders.PredicateRightValue<Entity, Value, [Value]> {
         .init { .init(keyPath: $0, operatorString: "BETWEEN", value: [range.lowerBound, range.upperBound], isInverted: true) }
     }
 
-    static func isIn(_ range: Range<Value>) -> Builders.BooleanPredicateRightValue<Entity, Value, [Value]> {
+    static func isIn(_ range: Range<Value>) -> Builders.PredicateRightValue<Entity, Value, [Value]> {
         .init {
             .init(keyPath: $0, value: [range.lowerBound, range.upperBound]) { "%@ <= \($0) AND \($0) < %@" }
                 argumentsOrder: { [range.lowerBound, $0, $0, range.upperBound] }
         }
     }
 
-    static func isNotIn(_ range: Range<Value>) -> Builders.BooleanPredicateRightValue<Entity, Value, [Value]> {
+    static func isNotIn(_ range: Range<Value>) -> Builders.PredicateRightValue<Entity, Value, [Value]> {
         .init {
             .init(keyPath: $0, value: [range.lowerBound, range.upperBound]) { "%@ > \($0) OR \($0) >= %@" }
                 argumentsOrder: { [range.lowerBound, $0, $0, range.upperBound] }
@@ -71,37 +71,37 @@ public extension Builders.BooleanPredicateRightValue where Value: Numeric & Comp
 
 // MARK: - String
 
-public extension Builders.BooleanPredicateRightValue where Value == String? {
+public extension Builders.PredicateRightValue where Value == String? {
 
-    static func hasPrefix(_ prefix: String) -> Builders.BooleanPredicateRightValue<Entity, Value, String> {
+    static func hasPrefix(_ prefix: String) -> Builders.PredicateRightValue<Entity, Value, String> {
         .init { .init(keyPath: $0, operatorString: "BEGINSWITH", value: prefix) }
     }
 
-    static func hasNoPrefix(_ prefix: String) -> Builders.BooleanPredicateRightValue<Entity, Value, String> {
+    static func hasNoPrefix(_ prefix: String) -> Builders.PredicateRightValue<Entity, Value, String> {
         .init { .init(keyPath: $0, operatorString: "BEGINSWITH", value: prefix, isInverted: true) }
     }
 
-    static func hasSuffix(_ suffix: String) -> Builders.BooleanPredicateRightValue<Entity, Value, String> {
+    static func hasSuffix(_ suffix: String) -> Builders.PredicateRightValue<Entity, Value, String> {
         .init { .init(keyPath: $0, operatorString: "ENDSWITH", value: suffix) }
     }
 
-    static func hasNoSuffix(_ suffix: String) -> Builders.BooleanPredicateRightValue<Entity, Value, String> {
+    static func hasNoSuffix(_ suffix: String) -> Builders.PredicateRightValue<Entity, Value, String> {
         .init { .init(keyPath: $0, operatorString: "ENDSWITH", value: suffix, isInverted: true) }
     }
 
-    static func contains(_ other: String) -> Builders.BooleanPredicateRightValue<Entity, Value, String> {
+    static func contains(_ other: String) -> Builders.PredicateRightValue<Entity, Value, String> {
         .init { .init(keyPath: $0, operatorString: "CONTAINS", value: other) }
     }
 
-    static func doesNotContain(_ other: String) -> Builders.BooleanPredicateRightValue<Entity, Value, String> {
+    static func doesNotContain(_ other: String) -> Builders.PredicateRightValue<Entity, Value, String> {
         .init { .init(keyPath: $0, operatorString: "CONTAINS", value: other, isInverted: true) }
     }
 
-    static func matches(_ pattern: Builders.RegularExpressionPattern) -> Builders.BooleanPredicateRightValue<Entity, Value, String> {
+    static func matches(_ pattern: Builders.RegularExpressionPattern) -> Builders.PredicateRightValue<Entity, Value, String> {
         .init { .init(keyPath: $0, operatorString: "MATCHES", value: pattern.stringValue) }
     }
 
-    static func doesNotMatch(_ pattern: Builders.RegularExpressionPattern) -> Builders.BooleanPredicateRightValue<Entity, Value, String> {
+    static func doesNotMatch(_ pattern: Builders.RegularExpressionPattern) -> Builders.PredicateRightValue<Entity, Value, String> {
         .init { .init(keyPath: $0, operatorString: "MATCHES", value: pattern.stringValue, isInverted: true) }
     }
 }
@@ -111,9 +111,9 @@ public extension Builders.BooleanPredicateRightValue where Value == String? {
 
 public func * <Entity: NSManagedObject, Value, TestValue> (
     lhs: KeyPath<Entity, Value>,
-    rhs: Builders.BooleanPredicateRightValue<Entity, Value, TestValue>
-) -> Builders.BooleanPredicate<Entity> {
+    rhs: Builders.PredicateRightValue<Entity, Value, TestValue>
+) -> Builders.Predicate<Entity> {
 
     let nsValue = rhs.predicate(lhs).nsValue
-    return Builders.BooleanPredicate<Entity>(predicate: nsValue)
+    return Builders.Predicate<Entity>(predicate: nsValue)
 }

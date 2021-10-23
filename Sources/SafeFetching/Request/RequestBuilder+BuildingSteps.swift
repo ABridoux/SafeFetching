@@ -59,7 +59,7 @@ public extension Builders.Request where Step == TargetStep {
     /// ### Examples
     ///  - `.where(\.name == "Endo")`
     ///  - `.where(\.age >= 20 && \.score * .isIn(10...20))`
-    func `where`(_ predicate: Builders.BooleanPredicate<Entity>)
+    func `where`(_ predicate: Builders.Predicate<Entity>)
     -> Builders.Request<Entity, PredicateStep, Output> {
         request.predicate = predicate.nsValue
         return .init(request: request)

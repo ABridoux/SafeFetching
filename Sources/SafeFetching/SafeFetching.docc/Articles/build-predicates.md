@@ -15,7 +15,7 @@ final class StubEntity: NSManagedObject {
 When building a request, the ``Builders/Request/where(_:)`` operation allows to specify a predicate. For a demonstration purpose in this article, predicates are specified after their implicit declaration.
 
 ```swift
-let predicate: Builders.BooleanPredicate<StubEntity>
+let predicate: Builders.Predicate<StubEntity>
 predicate = \.name == "Toto"
 ```
 
@@ -82,7 +82,7 @@ predicate = \.score * .isIn(10...20)
 predicate = \.name * .matches("[A-Za-z]{3}")
 ```
 
-The advanced operators can be found with ``Builders/BooleanPredicateRightValue``
+The advanced operators can be found with ``Builders/PredicateRightValue``
 
 ## Compound
 It's possible to use the and `&&` and or `||` operators.
