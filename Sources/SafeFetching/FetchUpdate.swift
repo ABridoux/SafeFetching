@@ -70,23 +70,18 @@ extension Publishers {
 extension Fetchable {
 
     /// Publishes an array of the current `Entity` retrieved with the `NSFetchedResultsController` created
-    /// from the parameters.
+    /// from the provided request..
     /// - Parameters:
-    ///   - sort: First required sort to use for the fetch request
-    ///   - additionalSorts: Additional sorts to be used to sort the models
     ///   - request: A custom request to use
     ///   - context: The context where to perform the request.
     ///
     /// - note: Emits a first value upon subscription
     public static func updatePublisher(
-        sortingBy sort: SortDescriptor<Self>,
-        _ additionalSorts: SortDescriptor<Self>...,
         for request: NSFetchRequest<Self>? = nil,
         in context: NSManagedObjectContext)
     -> AnyPublisher<[Self], Never> {
 
         let controller = updateResultController(
-            sortingBy: [sort] + additionalSorts,
             for: request ?? newFetchRequest(),
             in: context)
 
@@ -100,13 +95,11 @@ extension Fetchable {
     }
 
     private static func updateResultController(
-        sortingBy sorts: [SortDescriptor<Self>],
         for request: NSFetchRequest<Self>?,
         in context: NSManagedObjectContext)
     -> NSFetchedResultsController<Self> {
 
         let request = request ?? newFetchRequest()
-        request.sortDescriptors = sorts.map(\.descriptor)
         return NSFetchedResultsController(fetchRequest: request, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
     }
 }
