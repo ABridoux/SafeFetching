@@ -5,6 +5,4 @@
 
 import Foundation
 
-public struct RequestBuilder {
-
-}
+public enum Builders {}
