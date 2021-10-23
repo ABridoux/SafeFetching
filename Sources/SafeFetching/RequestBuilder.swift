@@ -5,6 +5,9 @@
 
 import Foundation
 
-public struct RequestBuilder {
+extension Builders {
 
+    struct Request {
+        
+    }
 }
