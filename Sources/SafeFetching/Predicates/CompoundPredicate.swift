@@ -11,32 +11,40 @@ extension Builders {
         case and, or
     }
 
-    public struct CompoundPredicate<Entity, LeftValue, LeftTestValue, RightValue, RightTestValue>
-    where Entity: NSManagedObject {
+    public final class CompoundPredicate<Entity>: BooleanPredicate<Entity> where Entity: NSManagedObject {
 
-        let joinOperator: JoinOperator
-        let leftPredicate: BooleanPredicate<Entity, LeftValue, LeftTestValue>
-        let rightPredicate: BooleanPredicate<Entity, RightValue, RightTestValue>
+        init(joinOperator: JoinOperator, leftPredicate: BooleanPredicate<Entity>, rightPredicate: BooleanPredicate<Entity>) {
+            let nsValue: NSPredicate
 
-        private var subNSValues: [NSPredicate] {
-            [leftPredicate.nsValue, rightPredicate.nsValue]
-        }
-
-        public var nsValue: NSCompoundPredicate {
             switch joinOperator {
-            case .and: return NSCompoundPredicate(andPredicateWithSubpredicates: subNSValues)
-            case .or: return NSCompoundPredicate(orPredicateWithSubpredicates: subNSValues)
+            case .and:
+                nsValue = NSCompoundPredicate(andPredicateWithSubpredicates: [leftPredicate, rightPredicate].map(\.nsValue))
+            case .or:
+                nsValue = NSCompoundPredicate(orPredicateWithSubpredicates: [leftPredicate, rightPredicate].map(\.nsValue))
             }
+
+            super.init(predicate: nsValue)
         }
     }
 }
 
-public func && <E: NSManagedObject, LeftValue, LeftTestValue, RightValue, RightTestValue>(
-    lhs: Builders.BooleanPredicate<E, LeftValue, LeftTestValue>,
-    rhs: Builders.BooleanPredicate<E, RightValue, RightTestValue>
-) -> Builders.CompoundPredicate<E, LeftValue, LeftTestValue, RightValue, RightTestValue> {
+public func && <E: NSManagedObject>(
+    lhs: Builders.BooleanPredicate<E>,
+    rhs: Builders.BooleanPredicate<E>
+) -> Builders.CompoundPredicate<E> {
     Builders.CompoundPredicate(
         joinOperator: .and,
+        leftPredicate: lhs,
+        rightPredicate: rhs
+    )
+}
+
+public func || <E: NSManagedObject>(
+    lhs: Builders.BooleanPredicate<E>,
+    rhs: Builders.BooleanPredicate<E>
+) -> Builders.CompoundPredicate<E> {
+    Builders.CompoundPredicate(
+        joinOperator: .or,
         leftPredicate: lhs,
         rightPredicate: rhs
     )

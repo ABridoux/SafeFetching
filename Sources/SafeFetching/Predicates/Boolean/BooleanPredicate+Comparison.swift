@@ -8,27 +8,27 @@ import CoreData
 
 // MARK: Basic predicate comparison
 
-public func == <E: NSManagedObject, V: Equatable>(lhs: KeyPath<E, V>, rhs: V) -> Builders.BooleanPredicate<E, V, V> {
+public func == <E: NSManagedObject, V: Equatable>(lhs: KeyPath<E, V>, rhs: V) -> Builders.BooleanPredicate<E> {
     .init(keyPath: lhs, operatorString: "==", value: rhs)
 }
 
-public func != <E: NSManagedObject, V: Equatable>(lhs: KeyPath<E, V>, rhs: V) -> Builders.BooleanPredicate<E, V, V> {
+public func != <E: NSManagedObject, V: Equatable>(lhs: KeyPath<E, V>, rhs: V) -> Builders.BooleanPredicate<E> {
     .init(keyPath: lhs, operatorString: "!=", value: rhs)
 }
 
-public func > <E: NSManagedObject, V: Comparable>(lhs: KeyPath<E, V>, rhs: V) -> Builders.BooleanPredicate<E, V, V> {
+public func > <E: NSManagedObject, V: Comparable>(lhs: KeyPath<E, V>, rhs: V) -> Builders.BooleanPredicate<E> {
     .init(keyPath: lhs, operatorString: ">", value: rhs)
 }
 
-public func >= <E: NSManagedObject, V: Comparable>(lhs: KeyPath<E, V>, rhs: V) -> Builders.BooleanPredicate<E, V, V> {
+public func >= <E: NSManagedObject, V: Comparable>(lhs: KeyPath<E, V>, rhs: V) -> Builders.BooleanPredicate<E> {
     .init(keyPath: lhs, operatorString: ">=", value: rhs)
 }
 
-public func < <E: NSManagedObject, V: Comparable>(lhs: KeyPath<E, V>, rhs: V) -> Builders.BooleanPredicate<E, V, V> {
+public func < <E: NSManagedObject, V: Comparable>(lhs: KeyPath<E, V>, rhs: V) -> Builders.BooleanPredicate<E> {
     .init(keyPath: lhs, operatorString: "<", value: rhs)
 }
 
-public func <= <E: NSManagedObject, V: Comparable>(lhs: KeyPath<E, V>, rhs: V) -> Builders.BooleanPredicate<E, V, V> {
+public func <= <E: NSManagedObject, V: Comparable>(lhs: KeyPath<E, V>, rhs: V) -> Builders.BooleanPredicate<E> {
     .init(keyPath: lhs, operatorString: "<=", value: rhs)
 }
 

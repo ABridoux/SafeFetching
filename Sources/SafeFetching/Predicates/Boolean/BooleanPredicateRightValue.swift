@@ -9,7 +9,7 @@ extension Builders {
 
     /// An operator and its right operand for a predicate, with no key path.
     public struct BooleanPredicateRightValue<Entity: NSManagedObject, Value, TestValue> {
-        public typealias PredicateExpression = (KeyPath<Entity, Value>) -> BooleanPredicate<Entity, Value, TestValue>
+        public typealias PredicateExpression = (KeyPath<Entity, Value>) -> BooleanPredicate<Entity>
 
         public let predicate: PredicateExpression
 
@@ -112,8 +112,8 @@ public extension Builders.BooleanPredicateRightValue where Value == String? {
 public func * <Entity: NSManagedObject, Value, TestValue> (
     lhs: KeyPath<Entity, Value>,
     rhs: Builders.BooleanPredicateRightValue<Entity, Value, TestValue>
-) -> Builders.BooleanPredicate<Entity, Value, TestValue> {
+) -> Builders.BooleanPredicate<Entity> {
 
     let nsValue = rhs.predicate(lhs).nsValue
-    return Builders.BooleanPredicate<Entity, Value, TestValue>(predicate: nsValue)
+    return Builders.BooleanPredicate<Entity>(predicate: nsValue)
 }

@@ -12,8 +12,24 @@ final class CompoundPredicateTests: XCTestCase {
         testNSFormat(predicate: \.score == 10 && \.name == "Toto", expecting: #"score == 10 AND name == "Toto""#)
     }
 
+    func testOr() {
+        testNSFormat(predicate: \.score == 10 || \.name == "Toto", expecting: #"score == 10 OR name == "Toto""#)
+    }
+
     func testAndPredicateRightValue() {
         testNSFormat(predicate: \.score > 10 && \.name * .hasPrefix("Toto"), expecting: #"score > 10 AND name BEGINSWITH "Toto""#)
+    }
+
+    func testAndCompound() {
+        testNSFormat(predicate: \.score > 10 && \.name * .hasPrefix("To") && \.name * .hasSuffix("ta"), expecting: #"(score > 10 AND name BEGINSWITH "To") AND name ENDSWITH "ta""#)
+    }
+
+    func testCompoundPrecedence() {
+        testNSFormat(predicate: \.score > 10 && \.name * .hasPrefix("To") || \.name * .hasSuffix("ta"), expecting: #"(score > 10 AND name BEGINSWITH "To") OR name ENDSWITH "ta""#)
+    }
+
+    func testCompoundBrackets() {
+        testNSFormat(predicate: \.score > 10 && (\.name * .hasPrefix("To") || \.name * .hasSuffix("ta")), expecting: #"score > 10 AND (name BEGINSWITH "To" OR name ENDSWITH "ta")"#)
     }
 
 }
@@ -22,8 +38,8 @@ final class CompoundPredicateTests: XCTestCase {
 
 extension CompoundPredicateTests {
 
-    func testNSFormat<LeftValue, LeftTestValue, RightValue, RightTestValue>(
-        predicate: Builders.CompoundPredicate<StubEntity, LeftValue, LeftTestValue,RightValue, RightTestValue>,
+    func testNSFormat(
+        predicate: Builders.CompoundPredicate<StubEntity>,
         expecting format: String
     ) {
         XCTAssertEqual(predicate.nsValue.predicateFormat, format)
