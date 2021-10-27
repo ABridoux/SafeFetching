@@ -5,10 +5,7 @@
 
 import CoreData
 
-public protocol Fetchable: NSManagedObject {
-
-    static func newFetchRequest() -> NSFetchRequest<Self>
-}
+public protocol Fetchable: NSManagedObject {}
 
 extension Fetchable {
 
