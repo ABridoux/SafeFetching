@@ -4,6 +4,7 @@
 // MIT license, see LICENSE file for details
 
 import SafeFetching
+import CoreData
 import XCTest
 
 final class CompoundPredicateTests: XCTestCase {
