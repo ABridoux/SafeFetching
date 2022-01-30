@@ -13,6 +13,10 @@ extension Builders {
     /// preventing those extensions to be on `String`
     public struct RegularExpressionPattern {
         public let stringValue: String
+
+        public init(pattern: String) {
+            stringValue = pattern
+        }
     }
 }
 
