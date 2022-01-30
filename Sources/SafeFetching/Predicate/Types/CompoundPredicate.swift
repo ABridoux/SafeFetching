@@ -7,10 +7,6 @@ import CoreData
 
 extension Builders {
 
-    enum JoinOperator {
-        case and, or
-    }
-
     public final class CompoundPredicate<Entity>: Predicate<Entity> where Entity: NSManagedObject {
 
         init(joinOperator: JoinOperator, leftPredicate: Predicate<Entity>, rightPredicate: Predicate<Entity>) {
@@ -23,8 +19,15 @@ extension Builders {
                 nsValue = NSCompoundPredicate(orPredicateWithSubpredicates: [leftPredicate, rightPredicate].map(\.nsValue))
             }
 
-            super.init(predicate: nsValue)
+            super.init(nsValue: nsValue)
         }
+    }
+}
+
+extension Builders {
+
+    enum JoinOperator {
+        case and, or
     }
 }
 
