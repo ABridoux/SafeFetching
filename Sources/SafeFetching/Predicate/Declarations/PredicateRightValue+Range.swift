@@ -3,7 +3,7 @@
 // Copyright © 2021-present Alexis Bridoux.
 // MIT license, see LICENSE file for details
 
-public extension Builders.PredicateRightValue where Value: Numeric & Comparable {
+public extension Builders.PredicateRightValue where Value: Numeric & Comparable & DatabaseValue {
 
     static func isIn(_ range: ClosedRange<Value>) -> Builders.PredicateRightValue<Entity, Value, [Value]> {
         .init { .init(keyPath: $0, operatorString: "BETWEEN", value: [range.lowerBound, range.upperBound]) }
