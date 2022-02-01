@@ -10,27 +10,45 @@ import XCTest
 final class CompoundPredicateTests: XCTestCase {
 
     func testAnd() {
-        testNSFormat(predicate: \.score == 10 && \.name == "Toto", expecting: #"score == 10 AND name == "Toto""#)
+        testNSFormat(
+            predicate: \.score == 10 && \.name == "Toto",
+            expecting: #"score == 10 AND name == "Toto""#
+        )
     }
 
     func testOr() {
-        testNSFormat(predicate: \.score == 10 || \.name == "Toto", expecting: #"score == 10 OR name == "Toto""#)
+        testNSFormat(
+            predicate: \.score == 10 || \.name == "Toto",
+            expecting: #"score == 10 OR name == "Toto""#
+        )
     }
 
     func testAndPredicateRightValue() {
-        testNSFormat(predicate: \.score > 10 && \.name * .hasPrefix("Toto"), expecting: #"score > 10 AND name BEGINSWITH "Toto""#)
+        testNSFormat(
+            predicate: \.score > 10 && \.name * .hasPrefix("Toto"),
+            expecting: #"score > 10 AND name BEGINSWITH "Toto""#
+        )
     }
 
     func testAndCompound() {
-        testNSFormat(predicate: \.score > 10 && \.name * .hasPrefix("To") && \.name * .hasSuffix("ta"), expecting: #"(score > 10 AND name BEGINSWITH "To") AND name ENDSWITH "ta""#)
+        testNSFormat(
+            predicate: \.score > 10 && \.name * .hasPrefix("To") && \.name * .hasSuffix("ta"),
+            expecting: #"(score > 10 AND name BEGINSWITH "To") AND name ENDSWITH "ta""#
+        )
     }
 
     func testCompoundPrecedence() {
-        testNSFormat(predicate: \.score > 10 && \.name * .hasPrefix("To") || \.name * .hasSuffix("ta"), expecting: #"(score > 10 AND name BEGINSWITH "To") OR name ENDSWITH "ta""#)
+        testNSFormat(
+            predicate: \.score > 10 && \.name * .hasPrefix("To") || \.name * .hasSuffix("ta"),
+            expecting: #"(score > 10 AND name BEGINSWITH "To") OR name ENDSWITH "ta""#
+        )
     }
 
     func testCompoundBrackets() {
-        testNSFormat(predicate: \.score > 10 && (\.name * .hasPrefix("To") || \.name * .hasSuffix("ta")), expecting: #"score > 10 AND (name BEGINSWITH "To" OR name ENDSWITH "ta")"#)
+        testNSFormat(
+            predicate: \.score > 10 && (\.name * .hasPrefix("To") || \.name * .hasSuffix("ta")),
+            expecting: #"score > 10 AND (name BEGINSWITH "To" OR name ENDSWITH "ta")"#
+        )
     }
 }
 

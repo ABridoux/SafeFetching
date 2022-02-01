@@ -5,7 +5,7 @@
 
 import Foundation
 
-/// Stub type with internal init to ensure no conformance can be added outside of the package
+/// Stub type with internal init to ensure no conformance to ``DatabaseValue`` can be added outside of the package
 public struct DatabaseValueIdentification<T> {
     init() {}
 }

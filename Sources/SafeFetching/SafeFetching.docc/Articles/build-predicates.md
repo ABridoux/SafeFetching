@@ -82,7 +82,7 @@ predicate = \.score * .isIn(10...20)
 predicate = \.name * .matches("[A-Za-z]{3}")
 ```
 
-The advanced operators can be found with ``Builders/PredicateRightValue``
+The advanced operators can be found with ``Builders/KeyPathPredicateRightValue``
 
 ## Compound
 It's possible to use the and `&&` and or `||` operators.
@@ -118,3 +118,78 @@ Since `&&` precedes `||` in boolean expressions, it's possible to enclose a pred
 predicate = \.score * .isIn(20..<40)
     && (\.name * .hasPrefix("Do") || \.name * .hasSuffix("remi"))
 ```
+
+## RawRepresentable
+When a stored value is the `rawValue` of a `RawRepresentable` type, it's possible to define a ``StringKeyPath`` to be used in a predicate.
+
+For instance with the enum `Color` and a `color: Color?` property and a static `StringKeyPath.color` value.
+
+```swift
+enum Color: String {
+    case red, blue, green
+}
+```
+
+### Comparison predicates
+
+The same comparison predicates are available:
+
+```swift
+predicate = .color == .red
+```
+
+```swift
+predicate = .color != .red
+```
+
+### Advanced predicates
+The `isIn` operator is also available
+
+```swift
+predicate = .color * .isIn(.red, .blue)
+```
+
+```swift
+predicate = .color * .isNotIn([.red, .blue])
+```
+
+### OptionSet
+
+With an option set, it's advised to rather use the `intersects` predicates.
+With the colors now as an option set:
+
+```swift
+enum Colors: OptionSet {
+    let rawValue: Int
+
+    static let red = StubOptionSet(rawValue: 1 << 0)
+    static let blue = StubOptionSet(rawValue: 1 << 1)
+    static let green = StubOptionSet(rawValue: 1 << 2)
+}
+```
+
+The predicate is specified as follow:
+
+```swift
+predicate = .color * .intersects([.red, .blue])
+```
+
+```swift
+predicate = .color * .doesNoIntersect([.red, .blue])
+```
+
+### Comparing option set values
+
+Note that
+```swift
+predicate = .color * .intersects(.blue)
+```
+
+is the same as
+
+```swift
+predicate = .color == .blue
+```
+*only when the stored `color` is a single option*. 
+
+Thus **always prefer using the `intersects` operator.**

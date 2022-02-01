@@ -9,21 +9,44 @@ This library offers a DSL (Domain Specific Language) to build predicates and req
 ## Topics
 
 ### Build predicates
+
 - <doc:build-predicates>
 - ``Builders/Predicate``
-- ``Builders/PredicateRightValue``
 - ``Builders/CompoundPredicate``
-- ``SafeFetching/==(_:_:)``
-- ``SafeFetching/!=(_:_:)``
-- ``SafeFetching/_(_:_:)-1aleq``
-- ``SafeFetching/_(_:_:)-77yf7``
-- ``SafeFetching/_=(_:_:)-7rogb``
-- ``SafeFetching/_=(_:_:)-7wms3``
-- ``SafeFetching/&&(_:_:)``
-- ``SafeFetching/__(_:_:)``
-- ``SafeFetching/*(_:_:)``
+- ``Builders/KeyPathPredicateRightValue``
+- ``Builders/StringKeyPathPredicateRightValue``
+- ``DatabaseValue``
+- ``DatabaseValueIdentification``
+
+### Key path predicates
+
+- <doc:build-predicates>
+- ``&&(_:_:)``
+- ``__(_:_:)``
+
+### Key path advanced predicates
+
+- <doc:build-predicates>
+- ``*(_:_:)-9ve4y``
+
+### String key path comparison
+
+- <doc:build-predicates>
+- ``StringKeyPath``
+- ``==(_:_:)-3tl1a``
+- ``!=(_:_:)-53mz``
+- ``_(_:_:)-2t2xr``
+- ``_=(_:_:)-8camq``
+- ``_(_:_:)-87xrg``
+- ``_=(_:_:)-46p18``
+
+### String key paths advanced predicates
+
+- <doc:build-predicates>
+- ``*(_:_:)-2b678``
 
 ### Build requests
+
 - <doc:build-requests>
 - ``Builders/Request``
 - ``SortDescriptor``

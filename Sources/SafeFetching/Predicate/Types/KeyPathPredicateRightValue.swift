@@ -8,12 +8,12 @@ import CoreData
 extension Builders {
 
     /// An operator and its right operand for a predicate, with no key path.
-    public struct PredicateRightValue<Entity: NSManagedObject, Value, TestValue> {
-        public typealias PredicateExpression = (KeyPath<Entity, Value>) -> Predicate<Entity>
+    public struct KeyPathPredicateRightValue<Entity: NSManagedObject, Value, TestValue> {
+        public typealias KeyPathPredicateExpression = (KeyPath<Entity, Value>) -> Predicate<Entity>
 
-        public let predicate: PredicateExpression
+        public let predicate: KeyPathPredicateExpression
 
-        public init(predicate: @escaping PredicateExpression) {
+        public init(predicate: @escaping KeyPathPredicateExpression) {
             self.predicate = predicate
         }
     }
@@ -23,9 +23,9 @@ extension Builders {
 
 public func * <Entity: NSManagedObject, Value, TestValue> (
     lhs: KeyPath<Entity, Value>,
-    rhs: Builders.PredicateRightValue<Entity, Value, TestValue>
+    rhs: Builders.KeyPathPredicateRightValue<Entity, Value, TestValue>
 ) -> Builders.Predicate<Entity> {
 
     let nsValue = rhs.predicate(lhs).nsValue
-    return Builders.Predicate<Entity>(predicate: nsValue)
+    return Builders.Predicate<Entity>(nsValue: nsValue)
 }
