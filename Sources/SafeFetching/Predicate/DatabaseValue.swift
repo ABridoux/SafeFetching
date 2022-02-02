@@ -4,9 +4,10 @@
 // MIT license, see LICENSE file for details
 
 import Foundation
+import CoreData
 
 /// Stub type with internal init to ensure no conformance to ``DatabaseValue`` can be added outside of the package
-public struct DatabaseValueIdentification<T> {
+public struct DatabaseValueIdentification {
     init() {}
 }
 
@@ -15,59 +16,79 @@ public struct DatabaseValueIdentification<T> {
 /// Used to constraint some fetch functions to use only a valid storable type
 public protocol DatabaseValue {
 
-    static var identification: DatabaseValueIdentification<Self> { get }
+    static var identification: DatabaseValueIdentification { get }
 }
 
+// MARK: Field
+
 extension String: DatabaseValue {
-    public static var identification = DatabaseValueIdentification<String>()
+    public static let identification = DatabaseValueIdentification()
 }
 
 extension Int: DatabaseValue {
-    public static var identification = DatabaseValueIdentification<Int>()
+    public static let identification = DatabaseValueIdentification()
 }
 
 extension Int16: DatabaseValue {
-    public static var identification = DatabaseValueIdentification<Int16>()
+    public static let identification = DatabaseValueIdentification()
 }
 
 extension Int32: DatabaseValue {
-    public static var identification = DatabaseValueIdentification<Int32>()
+    public static let identification = DatabaseValueIdentification()
 }
 
 extension Int64: DatabaseValue {
-    public static var identification = DatabaseValueIdentification<Int64>()
+    public static let identification = DatabaseValueIdentification()
 }
 
 extension Float: DatabaseValue {
-    public static var identification = DatabaseValueIdentification<Float>()
+    public static let identification = DatabaseValueIdentification()
 }
 
 extension Double: DatabaseValue {
-    public static var identification = DatabaseValueIdentification<Double>()
+    public static let identification = DatabaseValueIdentification()
 }
 
 extension Bool: DatabaseValue {
-    public static var identification = DatabaseValueIdentification<Bool>()
+    public static let identification = DatabaseValueIdentification()
 }
 
 extension Date: DatabaseValue {
-    public static var identification = DatabaseValueIdentification<Date>()
+    public static let identification = DatabaseValueIdentification()
 }
 
 extension Data: DatabaseValue {
-    public static var identification = DatabaseValueIdentification<Data>()
+    public static let identification = DatabaseValueIdentification()
 }
 
 extension UUID: DatabaseValue {
-    public static var identification = DatabaseValueIdentification<UUID>()
+    public static let identification = DatabaseValueIdentification()
 }
 
 extension URL: DatabaseValue {
-    public static var identification = DatabaseValueIdentification<URL>()
+    public static let identification = DatabaseValueIdentification()
 }
 
+// MARK:  Relationship
+
+extension Set: DatabaseValue where Element: NSManagedObject {
+    public static var identification: DatabaseValueIdentification {
+        DatabaseValueIdentification()
+    }
+}
+
+extension NSSet: DatabaseValue {
+    public static let identification = DatabaseValueIdentification()
+}
+
+extension NSOrderedSet: DatabaseValue {
+    public static let identification = DatabaseValueIdentification()
+}
+
+// MARK: Optional
+
 extension Optional: DatabaseValue where Wrapped: DatabaseValue {
-    public static var identification: DatabaseValueIdentification<Wrapped?> {
-        DatabaseValueIdentification<Wrapped?>()
+    public static var identification: DatabaseValueIdentification {
+        DatabaseValueIdentification()
     }
 }

@@ -27,15 +27,14 @@ extension Builders {
 
 extension Builders.Predicate {
 
-    public convenience init<Value, TestValue>(
+    public convenience init<Value, TestValue: DatabaseTestValue>(
         keyPath: KeyPath<Entity, Value>,
         operatorString: String,
         value: TestValue,
         isInverted: Bool = false
     ) {
-        let value = value
         let formatter: Formatter = { "\(isInverted ? "NOT" : "") \($0) \(operatorString) \(Self.attributeSymbol)" }
-        let argumentsOrder: ArgumentsOrder = { [$0, value] }
+        let argumentsOrder: ArgumentsOrder = { [$0, value.testValue] }
 
         let arguments = argumentsOrder(keyPath.label)
         let format = formatter(Self.keyPathSymbol)
@@ -43,15 +42,14 @@ extension Builders.Predicate {
         self.init(nsValue: NSPredicate(format: format, argumentArray: arguments))
     }
 
-    public convenience init<Value, TestValue>(
+    public convenience init<Value, TestValue: DatabaseTestValue>(
         keyPath: KeyPath<Entity, Value>,
         value: TestValue, isInverted: Bool = false,
         formatter: @escaping Formatter,
         argumentsOrder: ArgumentsOrder? = nil
     ) {
-        let value = value
         let formatter = formatter
-        let argumentsOrder = argumentsOrder ?? { [$0, value] }
+        let argumentsOrder = argumentsOrder ?? { [$0, value.testValue] }
 
         let arguments = argumentsOrder(keyPath.label)
         let format = formatter(Self.keyPathSymbol)
@@ -64,15 +62,14 @@ extension Builders.Predicate {
 
 extension Builders.Predicate {
 
-    public convenience init<TestValue>(
+    public convenience init<TestValue: DatabaseTestValue>(
         keyPathString: String,
         operatorString: String,
         value: TestValue,
         isInverted: Bool = false
     ) {
-        let value = value
         let formatter: Formatter = { "\(isInverted ? "NOT" : "") \($0) \(operatorString) \(Self.attributeSymbol)" }
-        let argumentsOrder: ArgumentsOrder = { [$0, value] }
+        let argumentsOrder: ArgumentsOrder = { [$0, value.testValue] }
 
         let arguments = argumentsOrder(keyPathString)
         let format = formatter(Self.keyPathSymbol)
@@ -80,15 +77,14 @@ extension Builders.Predicate {
         self.init(nsValue: NSPredicate(format: format, argumentArray: arguments))
     }
 
-    public convenience init<TestValue>(
+    public convenience init<TestValue: DatabaseTestValue>(
         keyPathString: String,
         value: TestValue, isInverted: Bool = false,
         formatter: @escaping Formatter,
         argumentsOrder: ArgumentsOrder? = nil
     ) {
-        let value = value
         let formatter = formatter
-        let argumentsOrder = argumentsOrder ?? { [$0, value] }
+        let argumentsOrder = argumentsOrder ?? { [$0, value.testValue] }
 
         let arguments = argumentsOrder(keyPathString)
         let format = formatter(Self.keyPathSymbol)

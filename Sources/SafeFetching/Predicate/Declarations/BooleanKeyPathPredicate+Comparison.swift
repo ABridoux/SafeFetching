@@ -5,27 +5,26 @@
 
 import CoreData
 
-public func == <E: NSManagedObject, V: Equatable & DatabaseValue>(lhs: KeyPath<E, V>, rhs: V) -> Builders.Predicate<E> {
+public func == <E: NSManagedObject, V: Equatable & DatabaseValue & DatabaseTestValue>(lhs: KeyPath<E, V>, rhs: V) -> Builders.Predicate<E> {
     .init(keyPath: lhs, operatorString: "==", value: rhs)
 }
 
-public func != <E: NSManagedObject, V: Equatable & DatabaseValue>(lhs: KeyPath<E, V>, rhs: V) -> Builders.Predicate<E> {
+public func != <E: NSManagedObject, V: Equatable & DatabaseValue & DatabaseTestValue>(lhs: KeyPath<E, V>, rhs: V) -> Builders.Predicate<E> {
     .init(keyPath: lhs, operatorString: "!=", value: rhs)
 }
 
-public func > <E: NSManagedObject, V: Comparable & DatabaseValue>(lhs: KeyPath<E, V>, rhs: V) -> Builders.Predicate<E> {
+public func > <E: NSManagedObject, V: Comparable & DatabaseValue & DatabaseTestValue>(lhs: KeyPath<E, V>, rhs: V) -> Builders.Predicate<E> {
     .init(keyPath: lhs, operatorString: ">", value: rhs)
 }
 
-public func >= <E: NSManagedObject, V: Comparable & DatabaseValue>(lhs: KeyPath<E, V>, rhs: V) -> Builders.Predicate<E> {
+public func >= <E: NSManagedObject, V: Comparable & DatabaseValue & DatabaseTestValue>(lhs: KeyPath<E, V>, rhs: V) -> Builders.Predicate<E> {
     .init(keyPath: lhs, operatorString: ">=", value: rhs)
 }
 
-public func < <E: NSManagedObject, V: Comparable & DatabaseValue>(lhs: KeyPath<E, V>, rhs: V) -> Builders.Predicate<E> {
+public func < <E: NSManagedObject, V: Comparable & DatabaseValue & DatabaseTestValue>(lhs: KeyPath<E, V>, rhs: V) -> Builders.Predicate<E> {
     .init(keyPath: lhs, operatorString: "<", value: rhs)
 }
 
-public func <= <E: NSManagedObject, V: Comparable & DatabaseValue>(lhs: KeyPath<E, V>, rhs: V) -> Builders.Predicate<E> {
+public func <= <E: NSManagedObject, V: Comparable & DatabaseValue & DatabaseTestValue>(lhs: KeyPath<E, V>, rhs: V) -> Builders.Predicate<E> {
     .init(keyPath: lhs, operatorString: "<=", value: rhs)
 }
-

@@ -97,15 +97,6 @@ final class RequestBuilderTests: XCTestCase {
 
         XCTAssertTrue(request.returnsDistinctResults)
     }
-
-    func testStringKeyPath_databaseValue() {
-        let request = StubEntity.request()
-            .all()
-            .where(.stubDatabaseValue == 10)
-            .nsValue
-
-        XCTAssertTrue(request.returnsDistinctResults)
-    }
 }
 
 // MARK: - Models
