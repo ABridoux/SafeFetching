@@ -3,8 +3,10 @@
 // Copyright © 2021-present Alexis Bridoux.
 // MIT license, see LICENSE file for details
 
+/// A type that can be used in a predicate as a test value
 public protocol DatabaseTestValue {
 
+    /// Formatted string value that can be used in the format of a `NSPredicate`
     var testValue: String { get }
 }
 

@@ -11,7 +11,7 @@ public struct DatabaseValueIdentification {
     init() {}
 }
 
-/// A value that can be used in a predicate when fetching a CoreData store
+/// A type that can be used for an attribute in a predicate when fetching a CoreData store
 ///
 /// Used to constraint some fetch functions to use only a valid storable type
 public protocol DatabaseValue {
