@@ -69,7 +69,7 @@ final class BooleanPredicateTests: XCTestCase {
         testNSFormat(\.score, .isIn(1...10), expecting: #"score BETWEEN {1, 10}"#)
         testNSFormat(\.score, .isNotIn(1...10), expecting: #"NOT score BETWEEN {1, 10}"#)
         testNSFormat(\.score, .isIn(1..<10.5), expecting: #"1 <= score AND score < 10.5"#)
-        testNSFormat(\.score, .isNotIn(1..<10.5), expecting: #"1 > score OR score >= 10.5"#)
+        testNSFormat(\.score, .isNotIn(1..<10.5), expecting: #"score < 1 OR score >= 10.5"#)
     }
 }
 

@@ -9,7 +9,7 @@ extension Builders {
 
     /// An operator and its right operand for a predicate, with no key path.
     public struct KeyPathPredicateRightValue<Entity: NSManagedObject, Value, TestValue> {
-        public typealias KeyPathPredicateExpression = (KeyPath<Entity, Value>) -> Predicate<Entity>
+        public typealias KeyPathPredicateExpression = (_ keyPath: KeyPath<Entity, Value>) -> Predicate<Entity>
 
         public let predicate: KeyPathPredicateExpression
 

@@ -9,11 +9,7 @@ extension Builders {
 
     public class Predicate<Entity: NSManagedObject> {
 
-        public typealias Formatter = (String) -> String
-        public typealias ArgumentsOrder = (Any) -> [Any]
-
-        static var keyPathSymbol: String { "%K" }
-        static var attributeSymbol: String { "%@" }
+        public typealias Formatter = (_ keyPath: String) -> String
 
         public let nsValue: NSPredicate
 
@@ -33,28 +29,18 @@ extension Builders.Predicate {
         value: TestValue,
         isInverted: Bool = false
     ) {
-        let formatter: Formatter = { "\(isInverted ? "NOT" : "") \($0) \(operatorString) \(Self.attributeSymbol)" }
-        let argumentsOrder: ArgumentsOrder = { [$0, value.testValue] }
-
-        let arguments = argumentsOrder(keyPath.label)
-        let format = formatter(Self.keyPathSymbol)
-
-        self.init(nsValue: NSPredicate(format: format, argumentArray: arguments))
+        let format = "\(isInverted ? "NOT" : "") \(keyPath.label) \(operatorString) \(value.testValue)"
+        self.init(nsValue: NSPredicate(format: format))
     }
 
-    public convenience init<Value, TestValue: DatabaseTestValue>(
+    public convenience init<Value>(
         keyPath: KeyPath<Entity, Value>,
-        value: TestValue, isInverted: Bool = false,
-        formatter: @escaping Formatter,
-        argumentsOrder: ArgumentsOrder? = nil
+        isInverted: Bool = false,
+        formatter: @escaping Formatter
     ) {
-        let formatter = formatter
-        let argumentsOrder = argumentsOrder ?? { [$0, value.testValue] }
 
-        let arguments = argumentsOrder(keyPath.label)
-        let format = formatter(Self.keyPathSymbol)
-
-        self.init(nsValue: NSPredicate(format: format, argumentArray: arguments))
+        let format = formatter(keyPath.label)
+        self.init(nsValue: NSPredicate(format: format))
     }
 }
 
@@ -68,27 +54,17 @@ extension Builders.Predicate {
         value: TestValue,
         isInverted: Bool = false
     ) {
-        let formatter: Formatter = { "\(isInverted ? "NOT" : "") \($0) \(operatorString) \(Self.attributeSymbol)" }
-        let argumentsOrder: ArgumentsOrder = { [$0, value.testValue] }
-
-        let arguments = argumentsOrder(keyPathString)
-        let format = formatter(Self.keyPathSymbol)
-
-        self.init(nsValue: NSPredicate(format: format, argumentArray: arguments))
+        let format = "\(isInverted ? "NOT" : "") \(keyPathString) \(operatorString) \(value.testValue)"
+        self.init(nsValue: NSPredicate(format: format))
     }
 
-    public convenience init<TestValue: DatabaseTestValue>(
+    public convenience init(
         keyPathString: String,
-        value: TestValue, isInverted: Bool = false,
-        formatter: @escaping Formatter,
-        argumentsOrder: ArgumentsOrder? = nil
+        isInverted: Bool = false,
+        formatter: @escaping Formatter
     ) {
-        let formatter = formatter
-        let argumentsOrder = argumentsOrder ?? { [$0, value.testValue] }
 
-        let arguments = argumentsOrder(keyPathString)
-        let format = formatter(Self.keyPathSymbol)
-
-        self.init(nsValue: NSPredicate(format: format, argumentArray: arguments))
+        let format = formatter(keyPathString)
+        self.init(nsValue: NSPredicate(format: format))
     }
 }

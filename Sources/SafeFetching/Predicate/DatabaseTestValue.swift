@@ -10,7 +10,7 @@ public protocol DatabaseTestValue {
 
 extension String: DatabaseTestValue {
 
-    public var testValue: String { self }
+    public var testValue: String { #""\#(self)""# }
 }
 
 extension Int: DatabaseTestValue {
@@ -64,4 +64,11 @@ extension Array: DatabaseTestValue where Element: DatabaseTestValue {
 extension DatabaseTestValue where Self: RawRepresentable, RawValue: DatabaseValue {
 
     public var testValue: String { String(describing: rawValue) }
+}
+
+extension ClosedRange: DatabaseTestValue where Bound: Numeric {
+
+    public var testValue: String {
+        "{\(lowerBound), \(upperBound)}"
+    }
 }
