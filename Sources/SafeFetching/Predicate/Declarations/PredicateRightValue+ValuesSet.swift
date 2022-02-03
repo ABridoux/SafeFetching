@@ -3,7 +3,7 @@
 // Copyright © 2021-present Alexis Bridoux.
 // MIT license, see LICENSE file for details
 
-public extension Builders.KeyPathPredicateRightValue where Value: Equatable & DatabaseValue {
+public extension Builders.KeyPathPredicateRightValue where Value: Equatable & DatabaseValue & DatabaseTestValue {
 
     // MARK: Values set
 

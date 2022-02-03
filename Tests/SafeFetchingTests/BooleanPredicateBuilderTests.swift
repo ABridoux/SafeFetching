@@ -15,6 +15,7 @@ final class BooleanPredicateTests: XCTestCase {
         testNSFormat(predicate: \.score >= 10, expecting: "score >= 10")
         testNSFormat(predicate: \.score < 10, expecting: "score < 10")
         testNSFormat(predicate: \.score <= 10, expecting: "score <= 10")
+        testNSFormat(predicate: \.property == nil, expecting: "property == nil")
     }
 
     func testString() {
@@ -68,7 +69,7 @@ final class BooleanPredicateTests: XCTestCase {
         testNSFormat(\.score, .isIn(1...10), expecting: #"score BETWEEN {1, 10}"#)
         testNSFormat(\.score, .isNotIn(1...10), expecting: #"NOT score BETWEEN {1, 10}"#)
         testNSFormat(\.score, .isIn(1..<10.5), expecting: #"1 <= score AND score < 10.5"#)
-        testNSFormat(\.score, .isNotIn(1..<10.5), expecting: #"1 > score OR score >= 10.5"#)
+        testNSFormat(\.score, .isNotIn(1..<10.5), expecting: #"score < 1 OR score >= 10.5"#)
     }
 }
 
@@ -125,7 +126,7 @@ extension BooleanPredicateTests {
 
 extension BooleanPredicateTests {
 
-    enum StubEnum: Int, Comparable {
+    enum StubEnum: Int, Comparable, DatabaseTestValue {
         case foo = 1
         case bar = 2
 
@@ -153,7 +154,7 @@ extension StringKeyPath where Entity == BooleanPredicateTests.StubEntity, Value 
 
 extension BooleanPredicateTests {
 
-    struct StubOptionSet: OptionSet {
+    struct StubOptionSet: OptionSet, DatabaseTestValue {
         let rawValue: Int
 
         static let foo = StubOptionSet(rawValue: 1 << 0)

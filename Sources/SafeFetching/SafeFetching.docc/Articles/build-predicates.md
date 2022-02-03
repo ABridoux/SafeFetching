@@ -159,7 +159,7 @@ With an option set, it's advised to rather use the `intersects` predicates.
 With the colors now as an option set:
 
 ```swift
-enum Colors: OptionSet {
+struct Colors: OptionSet {
     let rawValue: Int
 
     static let red = StubOptionSet(rawValue: 1 << 0)
@@ -185,11 +185,9 @@ Note that
 predicate = .color * .intersects(.blue)
 ```
 
-is the same as
+is only the same as
 
 ```swift
 predicate = .color == .blue
 ```
-*only when the stored `color` is a single option*. 
-
-Thus **always prefer using the `intersects` operator.**
+*when the stored `color` is a single option*. 

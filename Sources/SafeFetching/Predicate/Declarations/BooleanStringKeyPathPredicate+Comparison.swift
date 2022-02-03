@@ -7,88 +7,44 @@ import CoreData
 
 // MARK: - DatabaseValue
 
-public func == <E: NSManagedObject, V: DatabaseValue & Equatable>(
+public func == <E: NSManagedObject, V: Equatable & DatabaseTestValue>(
     lhs: StringKeyPath<E, V>,
     rhs: V
 ) -> Builders.Predicate<E> {
     .init(keyPathString: lhs.key, operatorString: "==", value: rhs)
 }
 
-public func != <E: NSManagedObject, V: DatabaseValue & Equatable>(
+public func != <E: NSManagedObject, V: Equatable & DatabaseTestValue>(
     lhs: StringKeyPath<E, V>,
     rhs: V
 ) -> Builders.Predicate<E> {
     .init(keyPathString: lhs.key, operatorString: "!=", value: rhs)
 }
 
-public func > <E: NSManagedObject, V: DatabaseValue & Comparable>(
+public func > <E: NSManagedObject, V: Comparable & DatabaseTestValue>(
     lhs: StringKeyPath<E, V>,
     rhs: V
 ) -> Builders.Predicate<E> {
     .init(keyPathString: lhs.key, operatorString: ">", value: rhs)
 }
 
-public func >= <E: NSManagedObject, V: DatabaseValue & Comparable>(
+public func >= <E: NSManagedObject, V: Comparable & DatabaseTestValue>(
     lhs: StringKeyPath<E, V>,
     rhs: V
 ) -> Builders.Predicate<E> {
     .init(keyPathString: lhs.key, operatorString: ">=", value: rhs)
 }
 
-public func < <E: NSManagedObject, V: DatabaseValue & Comparable>(
+public func < <E: NSManagedObject, V: Comparable & DatabaseTestValue>(
     lhs: StringKeyPath<E, V>,
     rhs: V
 ) -> Builders.Predicate<E>{
     .init(keyPathString: lhs.key, operatorString: "<", value: rhs)
 }
 
-public func <= <E: NSManagedObject, V: DatabaseValue & Comparable>(
+public func <= <E: NSManagedObject, V: Comparable & DatabaseTestValue>(
     lhs: StringKeyPath<E, V>,
     rhs: V
 ) -> Builders.Predicate<E> {
     .init(keyPathString: lhs.key, operatorString: "<=", value: rhs)
-}
-
-// MARK: - RawRepresentable
-
-public func == <E: NSManagedObject, V: RawRepresentable & Equatable>(
-    lhs: StringKeyPath<E, V>,
-    rhs: V
-) -> Builders.Predicate<E> {
-    .init(keyPathString: lhs.key, operatorString: "==", value: rhs.rawValue)
-}
-
-public func != <E: NSManagedObject, V: RawRepresentable & Equatable>(
-    lhs: StringKeyPath<E, V>,
-    rhs: V
-) -> Builders.Predicate<E> {
-    .init(keyPathString: lhs.key, operatorString: "!=", value: rhs.rawValue)
-}
-
-public func > <E: NSManagedObject, V: RawRepresentable & Comparable>(
-    lhs: StringKeyPath<E, V>,
-    rhs: V
-) -> Builders.Predicate<E> {
-    .init(keyPathString: lhs.key, operatorString: ">", value: rhs.rawValue)
-}
-
-public func >= <E: NSManagedObject, V: RawRepresentable & Comparable>(
-    lhs: StringKeyPath<E, V>,
-    rhs: V
-) -> Builders.Predicate<E> {
-    .init(keyPathString: lhs.key, operatorString: ">=", value: rhs.rawValue)
-}
-
-public func < <E: NSManagedObject, V: RawRepresentable & Comparable>(
-    lhs: StringKeyPath<E, V>,
-    rhs: V
-) -> Builders.Predicate<E>{
-    .init(keyPathString: lhs.key, operatorString: "<", value: rhs.rawValue)
-}
-
-public func <= <E: NSManagedObject, V: RawRepresentable & Comparable>(
-    lhs: StringKeyPath<E, V>,
-    rhs: V
-) -> Builders.Predicate<E> {
-    .init(keyPathString: lhs.key, operatorString: "<=", value: rhs.rawValue)
 }
