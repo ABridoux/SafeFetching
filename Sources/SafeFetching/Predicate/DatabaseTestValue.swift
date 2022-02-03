@@ -3,12 +3,19 @@
 // Copyright © 2021-present Alexis Bridoux.
 // MIT license, see LICENSE file for details
 
+import CoreData
+
 /// A type that can be used in a predicate as a test value
+///
+/// - Default implementations are provided to ensure formatting.
+/// - Implementation for `NSManagedObject`  is provided (for the relationships) and will use the [`objectID`](https://developer.apple.com/documentation/coredata/nsmanagedobject/1506848-objectid) property
 public protocol DatabaseTestValue {
 
     /// Formatted string value that can be used in the format of a `NSPredicate`
     var testValue: String { get }
 }
+
+// MARK: - Scalar
 
 extension String: DatabaseTestValue {
 
@@ -45,16 +52,29 @@ extension Float: DatabaseTestValue {
     public var testValue: String { String(describing: self) }
 }
 
+extension Bool: DatabaseTestValue {
+    public var testValue: String { String(describing: self) }
+}
+
+// MARK: - Optional
+
 extension Optional: DatabaseTestValue where Wrapped: DatabaseTestValue {
 
     public var testValue: String {
         switch self {
         case .none: return "nil"
-        case .some(let wrapped):
+        case let .some(wrapped):
             return wrapped.testValue
         }
     }
 }
+
+extension NSManagedObject: DatabaseTestValue {
+
+    public var testValue: String { String(describing: objectID) }
+}
+
+// MARK: - Array
 
 extension Array: DatabaseTestValue where Element: DatabaseTestValue {
 
@@ -63,10 +83,14 @@ extension Array: DatabaseTestValue where Element: DatabaseTestValue {
     }
 }
 
+// MARK: - RawRepresentable
+
 extension DatabaseTestValue where Self: RawRepresentable, RawValue: DatabaseValue {
 
     public var testValue: String { String(describing: rawValue) }
 }
+
+// MARK: - Range
 
 extension ClosedRange: DatabaseTestValue where Bound: Numeric {
 

@@ -71,6 +71,10 @@ extension URL: DatabaseValue {
 
 // MARK:  Relationship
 
+extension NSManagedObject: DatabaseValue {
+    public static let identification = DatabaseValueIdentification()
+}
+
 extension Set: DatabaseValue where Element: NSManagedObject {
     public static var identification: DatabaseValueIdentification {
         DatabaseValueIdentification()

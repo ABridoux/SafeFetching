@@ -15,7 +15,10 @@ final class BooleanPredicateTests: XCTestCase {
         testNSFormat(predicate: \.score >= 10, expecting: "score >= 10")
         testNSFormat(predicate: \.score < 10, expecting: "score < 10")
         testNSFormat(predicate: \.score <= 10, expecting: "score <= 10")
+        testNSFormat(predicate: \.isAdmin == true, expecting: "isAdmin == 1")
+        testNSFormat(predicate: \.isAdmin == false, expecting: "isAdmin == 0")
         testNSFormat(predicate: \.property == nil, expecting: "property == nil")
+        testNSFormat(predicate: \.stubRelationship == nil, expecting: "stubRelationship == nil")
     }
 
     func testString() {
@@ -109,10 +112,13 @@ extension BooleanPredicateTests {
 
     final class StubEntity: NSManagedObject {
 
+        @objc var isAdmin = false
         @objc var score = 0.0
         @objc var property: String? = ""
         @objc var stubRawValue: Int = 0
         @objc var stubRawOption: Int = 0
+
+        @objc var stubRelationship: StubEntity?
 
         var stubRaw: StubEnum? { StubEnum(rawValue: stubRawValue) }
         var stubForcedRaw: StubEnum { StubEnum(rawValue: stubRawValue)! }
