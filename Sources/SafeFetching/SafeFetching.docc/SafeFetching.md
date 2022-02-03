@@ -27,6 +27,7 @@ Key paths predicate work with key paths that target a property exposed to Object
 - ``_=(_:_:)-3bumn``
 - ``_(_:_:)-2o0zw``
 - ``_=(_:_:)-7tt3x``
+- ``!(_:)-k9g0``
 
 ### Key path advanced predicates
 
@@ -46,6 +47,7 @@ Advanced predicates like string comparison ``Builders/KeyPathPredicateRightValue
 - ``_=(_:_:)-7schv``
 - ``_(_:_:)-756zh``
 - ``_=(_:_:)-627jw``
+- ``!(_:)-84xed``
 
 
 ### String key paths advanced predicates
@@ -56,9 +58,19 @@ Advanced predicates like membership ``Builders/StringKeyPathPredicateRightValue/
 
 ### Compound predicate
 
+Use and `&&` and or `||` operators between predicates or with a single boolean key path or string key path..
+
 - ``Builders/CompoundPredicate``
-- ``&&(_:_:)``
-- ``__(_:_:)``
+- ``&&(_:_:)-9k2h3``
+- ``__(_:_:)-7vb5w``
+- ``&&(_:_:)-5awsl``
+- ``__(_:_:)-2bklc``
+- ``&&(_:_:)-1r2e1``
+- ``__(_:_:)-91dq6``
+- ``&&(_:_:)-26dgm``
+- ``__(_:_:)-k20``
+- ``&&(_:_:)-1vytf``
+- ``__(_:_:)-6zf3v``
 
 ### Build requests
 

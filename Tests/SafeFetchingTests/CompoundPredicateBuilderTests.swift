@@ -50,6 +50,34 @@ final class CompoundPredicateTests: XCTestCase {
             expecting: #"score > 10 AND (name BEGINSWITH "To" OR name ENDSWITH "ta")"#
         )
     }
+
+    func testAnd_SingleBoolean_Left() {
+        testNSFormat(
+            predicate: \.isDownloaded && \.name == "Toto",
+            expecting: #"isDownloaded == 1 AND name == "Toto""#
+        )
+    }
+
+    func testOr_SingleBoolean_Left() {
+        testNSFormat(
+            predicate: \.isDownloaded || \.name == "Toto",
+            expecting: #"isDownloaded == 1 OR name == "Toto""#
+        )
+    }
+
+    func testAnd_SingleBoolean_Right() {
+        testNSFormat(
+            predicate: \.name == "Toto" && !\.isDownloaded,
+            expecting: #"name == "Toto" AND isDownloaded == 0"#
+        )
+    }
+
+    func testOr_SingleBoolean_Right() {
+        testNSFormat(
+            predicate: \.name == "Toto" || \.isDownloaded,
+            expecting: #"name == "Toto" OR isDownloaded == 1"#
+        )
+    }
 }
 
 // MARK: - Helpers
@@ -72,6 +100,7 @@ extension CompoundPredicateTests {
 
         @objc var score = 0.0
         @objc var name: String? = ""
+        @objc var isDownloaded = false
     }
 }
 

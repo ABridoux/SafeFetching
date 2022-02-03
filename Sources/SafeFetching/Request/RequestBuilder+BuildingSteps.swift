@@ -59,9 +59,28 @@ public extension Builders.Request where Step == TargetStep {
     /// ### Examples
     ///  - `.where(\.name == "Endo")`
     ///  - `.where(\.age >= 20 && \.score * .isIn(10...20))`
-    func `where`(_ predicate: Builders.Predicate<Entity>)
-    -> Builders.Request<Entity, PredicateStep, Output> {
+    func `where`(_ predicate: Builders.Predicate<Entity>) -> Builders.Request<Entity, PredicateStep, Output> {
         request.predicate = predicate.nsValue
+        return .init(request: request)
+    }
+
+    /// Pass a boolean key path
+    ///
+    /// ### Examples
+    ///  - `.where(\.isDownloaded)`
+    ///  - `.where(!\.isDownloaded)`
+    func `where`(_ keyPath: KeyPath<Entity, Bool>) -> Builders.Request<Entity, PredicateStep, Output> {
+        request.predicate = Builders.Predicate<Entity>(keyPath: keyPath).nsValue
+        return .init(request: request)
+    }
+
+    /// Pass a boolean string key path
+    ///
+    /// ### Examples
+    ///  - `.where(.isDownloaded)`
+    ///  - `.where(!.isDownloaded)`
+    func `where`(_ keyPath: StringKeyPath<Entity, Bool>) -> Builders.Request<Entity, PredicateStep, Output> {
+        request.predicate = Builders.Predicate<Entity>(keyPathString: keyPath.key).nsValue
         return .init(request: request)
     }
 }

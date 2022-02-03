@@ -17,7 +17,9 @@ final class BooleanPredicateTests: XCTestCase {
         testNSFormat(predicate: \.score <= 10, expecting: "score <= 10")
         testNSFormat(predicate: \.isAdmin == true, expecting: "isAdmin == 1")
         testNSFormat(predicate: \.isAdmin == false, expecting: "isAdmin == 0")
+        testNSFormat(predicate: !\.isAdmin, expecting: "isAdmin == 0")
         testNSFormat(predicate: \.property == nil, expecting: "property == nil")
+
         testNSFormat(predicate: \.stubRelationship == nil, expecting: "stubRelationship == nil")
     }
 

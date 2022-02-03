@@ -38,8 +38,16 @@ extension Builders.Predicate {
         isInverted: Bool = false,
         formatter: @escaping Formatter
     ) {
-
         let format = formatter(keyPath.label)
+        self.init(nsValue: NSPredicate(format: format))
+    }
+
+    public convenience init(
+        keyPath: KeyPath<Entity, Bool>,
+        isInverted: Bool = false
+    ) {
+        let testValue = isInverted ? "0" : "1"
+        let format = "\(keyPath.label) == \(testValue)"
         self.init(nsValue: NSPredicate(format: format))
     }
 }
@@ -65,6 +73,15 @@ extension Builders.Predicate {
     ) {
 
         let format = formatter(keyPathString)
+        self.init(nsValue: NSPredicate(format: format))
+    }
+
+    public convenience init(
+        keyPathString: String,
+        isInverted: Bool = false
+    ) {
+        let testValue = isInverted ? "0" : "1"
+        let format = "\(keyPathString) == \(testValue)"
         self.init(nsValue: NSPredicate(format: format))
     }
 }

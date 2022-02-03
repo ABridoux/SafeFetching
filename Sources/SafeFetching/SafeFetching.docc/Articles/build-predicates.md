@@ -12,7 +12,7 @@ final class StubEntity: NSManagedObject {
 }
 ```
 
-When building a request, the ``Builders/Request/where(_:)`` operation allows to specify a predicate. For a demonstration purpose in this article, predicates are specified after their implicit declaration.
+When building a request, the ``Builders/Request/where(_:)-6r3wg`` operation allows to specify a predicate. For a demonstration purpose in this article, predicates are specified after their implicit declaration.
 
 ```swift
 let predicate: Builders.Predicate<StubEntity>
@@ -51,6 +51,22 @@ predicate = \.score < 20
 
 ```swift
 predicate = \.score <= 20
+```
+
+##### Boolean
+
+```swift
+predicate = \.isAdmin == true
+```
+
+```swift
+predicate = !\.isAdmin
+```
+
+The `where(_:)` function has convenient variations to take a single boolean like ``Builders/Request/where(_:)-5ar9o``.
+
+```swift
+.where(\.isAdmin)
 ```
 
 ## Advanced operations
@@ -101,9 +117,21 @@ predicate = \.name == "Bruce"
     || \.score * .isIn(20..<40)
 ```
 
-Composing predicates with compound predicates is done naturally
+##### Single booleans
+
+Compound predicates work with single booleans.
+
+```swift
+predicate = \.isAdmin && \.score * .isIn(20..<40)
+```
+
+```swift
+predicate = !\.isAdmin || \.score * .isIn(20..<40)
+```
 
 ### And - And
+
+Composing predicates with compound predicates is done naturally
 
 ```swift
 predicate = \.score * .isIn(20..<40)
