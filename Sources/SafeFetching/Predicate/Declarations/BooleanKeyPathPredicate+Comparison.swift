@@ -28,3 +28,7 @@ public func < <E: NSManagedObject, V: Comparable & DatabaseValue & DatabaseTestV
 public func <= <E: NSManagedObject, V: Comparable & DatabaseValue & DatabaseTestValue>(lhs: KeyPath<E, V>, rhs: V) -> Builders.Predicate<E> {
     .init(keyPath: lhs, operatorString: "<=", value: rhs)
 }
+
+public prefix func ! <E: NSManagedObject>(rhs: KeyPath<E, Bool>) -> Builders.Predicate<E> {
+    .init(keyPath: rhs, isInverted: true)
+}

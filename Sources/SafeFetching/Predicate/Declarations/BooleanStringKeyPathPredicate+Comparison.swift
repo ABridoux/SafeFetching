@@ -48,3 +48,9 @@ public func <= <E: NSManagedObject, V: Comparable & DatabaseTestValue>(
 ) -> Builders.Predicate<E> {
     .init(keyPathString: lhs.key, operatorString: "<=", value: rhs)
 }
+
+public prefix func ! <E: NSManagedObject>(
+    rhs: StringKeyPath<E, Bool>
+) -> Builders.Predicate<E> {
+    .init(keyPathString: rhs.key, isInverted: true)
+}

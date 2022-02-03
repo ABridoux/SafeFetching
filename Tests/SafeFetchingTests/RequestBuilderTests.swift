@@ -60,6 +60,12 @@ final class RequestBuilderTests: XCTestCase {
         XCTAssertNotNil(request.predicate)
     }
 
+    func testMakeRequestPredicate_SingleBool() {
+        let request = StubEntity.request().all().where(\.isDownloaded).nsValue
+
+        XCTAssertNotNil(request.predicate)
+    }
+
     func testMakeRequestSort() {
         let request = StubEntity.request()
             .all()
@@ -107,6 +113,7 @@ extension RequestBuilderTests {
 
         @objc var score = 0.0
         @objc var name: String? = ""
+        @objc var isDownloaded = false
     }
 }
 
