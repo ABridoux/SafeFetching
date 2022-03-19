@@ -2,10 +2,7 @@
 
 This library offers a DSL (Domain Specific Language) to safely build predicates and requests to fetch a CoreData store. Also a wrapper around `NSFetchedResultsController` is offered to publish arrays of `NSManagedObject` to be used with a `NSDiffableDataSource`.
 
-The documentation is built with docC. To read it, run *Product* → *Build Documentation* or hit **⇧⌃⌘D**. Also, the documentation archive is provided in the [release's assets](https://github.com/ABridoux/SafeFetching/releases). In a few days, the doc should be available online.
-
-**Note**
-This repository is a split of [CoreDataCandy](https://github.com/ABridoux/core-data-candy) to offer the fetching features alone
+The documentation is built with docC. You can [read it online](https://abridoux.github.io/SafeFetching/documentation/safefetching/) or locally by running *Product* → *Build Documentation* or hitting **⇧⌃⌘D**.
 
 ## Convenient and safe fetching
 

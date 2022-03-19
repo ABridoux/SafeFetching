@@ -79,7 +79,7 @@ StubEntity.request()
 
 ### Predicate
 
-Specify a predicate with the ``Builders/Request/where(_:)`` function after the target.
+Specify a predicate with the ``Builders/Request/where(_:)-6r3wg`` function after the target.
 
 ```swift
 StubEntity.request()
