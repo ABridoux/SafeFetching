@@ -5,6 +5,7 @@
 
 import SafeFetching
 import XCTest
+import CoreData
 
 final class RequestBuilderTests: XCTestCase {
 
