@@ -29,7 +29,7 @@ public extension Builders.PreRequest where Step == CreationStep {
     /// Stops after a first element is fetched
     func first() -> Builders.Request<Entity, TargetStep, Fetched?> {
         request.fetchLimit = 1
-        Builders.Request<Entity, TargetStep, Fetched?>(request: request)
+        return Builders.Request<Entity, TargetStep, Fetched?>(request: request)
     }
 
     /// Stops after the first nth elements are fetched

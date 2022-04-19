@@ -5,28 +5,28 @@
 
 public extension Builders.KeyPathPredicateRightValue where Value == String? {
 
-    static func hasPrefix(_ prefix: String) -> Builders.KeyPathPredicateRightValue<Entity, Value, String> {
-        .init { .init(keyPath: $0, operatorString: "BEGINSWITH", value: prefix) }
+    static func hasPrefix(_ prefix: String, options: Builders.StringComparisonOptions? = nil) -> Builders.KeyPathPredicateRightValue<Entity, Value, String> {
+        .init { .init(keyPath: $0, operatorString: options.transformOperator("BEGINSWITH"), value: prefix) }
     }
 
-    static func hasNoPrefix(_ prefix: String) -> Builders.KeyPathPredicateRightValue<Entity, Value, String> {
-        .init { .init(keyPath: $0, operatorString: "BEGINSWITH", value: prefix, isInverted: true) }
+    static func hasNoPrefix(_ prefix: String, options: Builders.StringComparisonOptions? = nil) -> Builders.KeyPathPredicateRightValue<Entity, Value, String> {
+        .init { .init(keyPath: $0, operatorString: options.transformOperator("BEGINSWITH"), value: prefix, isInverted: true) }
     }
 
-    static func hasSuffix(_ suffix: String) -> Builders.KeyPathPredicateRightValue<Entity, Value, String> {
-        .init { .init(keyPath: $0, operatorString: "ENDSWITH", value: suffix) }
+    static func hasSuffix(_ suffix: String, options: Builders.StringComparisonOptions? = nil) -> Builders.KeyPathPredicateRightValue<Entity, Value, String> {
+        .init { .init(keyPath: $0, operatorString: options.transformOperator("ENDSWITH"), value: suffix) }
     }
 
-    static func hasNoSuffix(_ suffix: String) -> Builders.KeyPathPredicateRightValue<Entity, Value, String> {
-        .init { .init(keyPath: $0, operatorString: "ENDSWITH", value: suffix, isInverted: true) }
+    static func hasNoSuffix(_ suffix: String, options: Builders.StringComparisonOptions? = nil) -> Builders.KeyPathPredicateRightValue<Entity, Value, String> {
+        .init { .init(keyPath: $0, operatorString: options.transformOperator("ENDSWITH"), value: suffix, isInverted: true) }
     }
 
-    static func contains(_ other: String) -> Builders.KeyPathPredicateRightValue<Entity, Value, String> {
-        .init { .init(keyPath: $0, operatorString: "CONTAINS", value: other) }
+    static func contains(_ other: String, options: Builders.StringComparisonOptions? = nil) -> Builders.KeyPathPredicateRightValue<Entity, Value, String> {
+        .init { .init(keyPath: $0, operatorString: options.transformOperator("CONTAINS"), value: other) }
     }
 
-    static func doesNotContain(_ other: String) -> Builders.KeyPathPredicateRightValue<Entity, Value, String> {
-        .init { .init(keyPath: $0, operatorString: "CONTAINS", value: other, isInverted: true) }
+    static func doesNotContain(_ other: String, options: Builders.StringComparisonOptions? = nil) -> Builders.KeyPathPredicateRightValue<Entity, Value, String> {
+        .init { .init(keyPath: $0, operatorString: options.transformOperator("CONTAINS"), value: other, isInverted: true) }
     }
 
     static func matches(_ pattern: Builders.RegularExpressionPattern) -> Builders.KeyPathPredicateRightValue<Entity, Value, String> {
@@ -40,28 +40,28 @@ public extension Builders.KeyPathPredicateRightValue where Value == String? {
 
 public extension Builders.KeyPathPredicateRightValue where Value == String {
 
-    static func hasPrefix(_ prefix: String) -> Builders.KeyPathPredicateRightValue<Entity, Value, String> {
-        .init { .init(keyPath: $0, operatorString: "BEGINSWITH", value: prefix) }
+    static func hasPrefix(_ prefix: String, options: Builders.StringComparisonOptions? = nil) -> Builders.KeyPathPredicateRightValue<Entity, Value, String> {
+        .init { .init(keyPath: $0, operatorString: options.transformOperator("BEGINSWITH"), value: prefix) }
     }
 
-    static func hasNoPrefix(_ prefix: String) -> Builders.KeyPathPredicateRightValue<Entity, Value, String> {
-        .init { .init(keyPath: $0, operatorString: "BEGINSWITH", value: prefix, isInverted: true) }
+    static func hasNoPrefix(_ prefix: String, options: Builders.StringComparisonOptions? = nil) -> Builders.KeyPathPredicateRightValue<Entity, Value, String> {
+        .init { .init(keyPath: $0, operatorString: options.transformOperator("BEGINSWITH"), value: prefix, isInverted: true) }
     }
 
-    static func hasSuffix(_ suffix: String) -> Builders.KeyPathPredicateRightValue<Entity, Value, String> {
-        .init { .init(keyPath: $0, operatorString: "ENDSWITH", value: suffix) }
+    static func hasSuffix(_ suffix: String, options: Builders.StringComparisonOptions? = nil) -> Builders.KeyPathPredicateRightValue<Entity, Value, String> {
+        .init { .init(keyPath: $0, operatorString: options.transformOperator("ENDSWITH"), value: suffix) }
     }
 
-    static func hasNoSuffix(_ suffix: String) -> Builders.KeyPathPredicateRightValue<Entity, Value, String> {
-        .init { .init(keyPath: $0, operatorString: "ENDSWITH", value: suffix, isInverted: true) }
+    static func hasNoSuffix(_ suffix: String, options: Builders.StringComparisonOptions? = nil) -> Builders.KeyPathPredicateRightValue<Entity, Value, String> {
+        .init { .init(keyPath: $0, operatorString: options.transformOperator("ENDSWITH"), value: suffix, isInverted: true) }
     }
 
-    static func contains(_ other: String) -> Builders.KeyPathPredicateRightValue<Entity, Value, String> {
-        .init { .init(keyPath: $0, operatorString: "CONTAINS", value: other) }
+    static func contains(_ other: String, options: Builders.StringComparisonOptions? = nil) -> Builders.KeyPathPredicateRightValue<Entity, Value, String> {
+        .init { .init(keyPath: $0, operatorString: options.transformOperator("CONTAINS"), value: other) }
     }
 
-    static func doesNotContain(_ other: String) -> Builders.KeyPathPredicateRightValue<Entity, Value, String> {
-        .init { .init(keyPath: $0, operatorString: "CONTAINS", value: other, isInverted: true) }
+    static func doesNotContain(_ other: String, options: Builders.StringComparisonOptions? = nil) -> Builders.KeyPathPredicateRightValue<Entity, Value, String> {
+        .init { .init(keyPath: $0, operatorString: options.transformOperator("CONTAINS"), value: other, isInverted: true) }
     }
 
     static func matches(_ pattern: Builders.RegularExpressionPattern) -> Builders.KeyPathPredicateRightValue<Entity, Value, String> {
