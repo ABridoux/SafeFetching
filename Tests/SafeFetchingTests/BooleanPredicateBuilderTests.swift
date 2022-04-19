@@ -5,6 +5,7 @@
 
 import SafeFetching
 import XCTest
+import CoreData
 
 final class BooleanPredicateTests: XCTestCase {
 
@@ -56,10 +57,10 @@ final class BooleanPredicateTests: XCTestCase {
     }
 
     func testOptionSet() {
-        testNSFormat(predicate: .stubOption * .intersects([.foo, .bar]), expecting: "stubOption & 3 == stubOption")
-        testNSFormat(predicate: .stubOption * .doesNotIntersect([.foo, .bar]), expecting: "stubOption & 3 != stubOption")
-        testNSFormat(predicate: .stubForcedOption * .intersects([.foo, .bar]), expecting: "stubForcedOption & 3 == stubForcedOption")
-        testNSFormat(predicate: .stubForcedOption * .doesNotIntersect([.foo, .bar]), expecting: "stubForcedOption & 3 != stubForcedOption")
+        testNSFormat(predicate: .stubOption * .intersects([.foo, .bar]), expecting: "stubOption & 3 == 3")
+        testNSFormat(predicate: .stubOption * .doesNotIntersect([.foo, .bar]), expecting: "stubOption & 3 != 3")
+        testNSFormat(predicate: .stubForcedOption * .intersects([.foo, .bar]), expecting: "stubForcedOption & 3 == 3")
+        testNSFormat(predicate: .stubForcedOption * .doesNotIntersect([.foo, .bar]), expecting: "stubForcedOption & 3 != 3")
     }
 
     func testStringKeyPath_DatabaseValue() {

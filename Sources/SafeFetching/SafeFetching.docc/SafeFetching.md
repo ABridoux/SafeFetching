@@ -9,6 +9,7 @@ This library offers a DSL (Domain Specific Language) to build predicates and req
 ## Topics
 
 ### Build predicates
+Predicate are used within a `where()` function when building a request. Meanwhile, a convenience function `safe(_:)` is provided to create a `NSPredicate` from a SafeFetching predicate.
 
 - <doc:build-predicates>
 - ``Builders/Predicate``
@@ -31,7 +32,7 @@ Key paths predicate work with key paths that target a property exposed to Object
 
 ### Key path advanced predicates
 
-Advanced predicates like string comparison ``Builders/KeyPathPredicateRightValue/hasPrefix(_:)-3w8p3`` or membership ``Builders/KeyPathPredicateRightValue/isIn(_:)-8lnwn`` can be used with the special operator `*`.
+Advanced predicates like string comparison ``Builders/KeyPathPredicateRightValue/hasPrefix(_:options:)-8tv6z`` or membership ``Builders/KeyPathPredicateRightValue/isIn(_:)-8lnwn`` can be used with the special operator `*`.
 
 - ``*(_:_:)-9ve4y``
 
