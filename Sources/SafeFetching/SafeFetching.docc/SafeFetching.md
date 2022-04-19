@@ -9,6 +9,7 @@ This library offers a DSL (Domain Specific Language) to build predicates and req
 ## Topics
 
 ### Build predicates
+Predicate are used within a `where()` function when building a request. Meanwhile, a convenience function `safe(_:)` is provided to create a `NSPredicate` from a SafeFetching predicate.
 
 - <doc:build-predicates>
 - ``Builders/Predicate``
