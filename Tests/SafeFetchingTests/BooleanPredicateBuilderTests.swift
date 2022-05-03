@@ -42,6 +42,7 @@ final class BooleanPredicateTests: XCTestCase {
         testNSFormat(predicate: .stubForcedRaw > .foo, expecting: #"stubForcedRaw > 1"#)
         testNSFormat(predicate: .stubForcedRaw <= .foo, expecting: #"stubForcedRaw <= 1"#)
         testNSFormat(predicate: .stubForcedRaw < .foo, expecting: #"stubForcedRaw < 1"#)
+        testNSFormat(predicate: .stubStringRawValue == .foo, expecting: #"stubStringRawValue == "foo""#)
     }
 
     func testRawRepresentable() {
@@ -119,6 +120,7 @@ extension BooleanPredicateTests {
         @objc var score = 0.0
         @objc var property: String? = ""
         @objc var stubRawValue: Int = 0
+        @objc var stubStringRawValue = ""
         @objc var stubRawOption: Int = 0
 
         @objc var stubRelationship: StubEntity?
@@ -143,6 +145,11 @@ extension BooleanPredicateTests {
             lhs.rawValue < rhs.rawValue
         }
     }
+
+    enum StubStringEnum: String, DatabaseTestValue {
+        case foo
+        case bar
+    }
 }
 
 extension StringKeyPath where Entity == BooleanPredicateTests.StubEntity, Value == BooleanPredicateTests.StubEnum {
@@ -156,6 +163,13 @@ extension StringKeyPath where Entity == BooleanPredicateTests.StubEntity, Value 
 
     static var stubForcedRaw: Self {
         Self(key: "stubForcedRaw")
+    }
+}
+
+extension StringKeyPath where Entity == BooleanPredicateTests.StubEntity, Value == BooleanPredicateTests.StubStringEnum {
+
+    static var stubStringRawValue: Self {
+        Self(key: "stubStringRawValue")
     }
 }
 
