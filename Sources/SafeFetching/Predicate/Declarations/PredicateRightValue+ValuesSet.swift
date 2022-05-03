@@ -23,4 +23,3 @@ public extension Builders.KeyPathPredicateRightValue where Value: Equatable & Da
         .init { .init(keyPath: $0, operatorString: "IN", value: values, isInverted: true) }
     }
 }
-

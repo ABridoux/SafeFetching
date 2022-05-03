@@ -87,7 +87,13 @@ extension Array: DatabaseTestValue where Element: DatabaseTestValue {
 
 extension DatabaseTestValue where Self: RawRepresentable, RawValue: DatabaseValue {
 
-    public var testValue: String { String(describing: rawValue) }
+    public var testValue: String {
+        if RawValue.self == String.self {
+            return #""\#(rawValue)""#
+        } else {
+            return String(describing: rawValue)
+        }
+    }
 }
 
 // MARK: - Range
