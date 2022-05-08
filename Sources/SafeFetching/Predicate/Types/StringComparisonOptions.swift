@@ -45,7 +45,7 @@ extension Optional where Wrapped == Builders.StringComparisonOptions {
         case .none:
             return operatorString
         case let .some(wrapped):
-            return "\(wrapped)[\(wrapped.stringValue)]"
+            return "\(operatorString)[\(wrapped.stringValue)]"
         }
     }
 }
