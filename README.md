@@ -50,20 +50,3 @@ RandomEntity.request()
 ```
 
 More about that in the documentation.
-
-## Fetch update
-
-When the entity type implements `Fetchable`, it's possible to call the static `updatePublisher` function to create a publisher backed by a `NSFetchedResultsController` that will emit arrays of the entity. This is especially useful when working with a `NSDiffableDataSource`.
-
-```swift
-let request = RandomEntity.request()
-    .all(after: 10)
-    .where(\.score >= 15 || \.name != "Joe")
-    .sorted(by: .ascending(\.score), .descending(\.name))
-    .nsValue
-
-RandomEntity.updatePublisher(
-    for: request
-    in: context
-) // emits [RandomEntity]
-```

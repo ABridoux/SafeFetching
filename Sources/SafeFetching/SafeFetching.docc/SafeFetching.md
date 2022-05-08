@@ -86,9 +86,5 @@ Use and `&&` and or `||` operators between predicates or with a single boolean k
 - ``Fetchable``
 - ``FetchResult``
 
-### Fetch update
-- ``Fetchable/updatePublisher(for:)``
-- ``Fetchable/updatePublisher(for:in:)``
-
 ### Namespace
 - ``Builders``
