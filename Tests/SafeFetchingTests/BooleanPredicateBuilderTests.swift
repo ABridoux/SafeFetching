@@ -35,6 +35,13 @@ final class BooleanPredicateTests: XCTestCase {
         testNSFormat(\.property, .doesNotMatch(".*"), expecting: #"NOT property MATCHES ".*""#)
     }
 
+    func testString_comparisonOptions() {
+        testNSFormat(\.property, .hasPrefix("Desp", options: .caseInsensitive), expecting: #"property BEGINSWITH[c] "Desp""#)
+        testNSFormat(\.property, .hasPrefix("Desp", options: .diacriticInsensitive), expecting: #"property BEGINSWITH[d] "Desp""#)
+        testNSFormat(\.property, .hasPrefix("Desp", options: .diacriticAndCaseInsensitive), expecting: #"property BEGINSWITH[cd] "Desp""#)
+        testNSFormat(\.property, .hasPrefix("Desp", options: .normalized), expecting: #"property BEGINSWITH[n] "Desp""#)
+    }
+
     func testComparisonFormats_RawRepresentable() {
         testNSFormat(predicate: .stubRaw == .foo, expecting: #"stubRaw == 1"#)
         testNSFormat(predicate: .stubRaw != .bar, expecting: #"stubRaw != 2"#)
