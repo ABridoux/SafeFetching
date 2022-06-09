@@ -56,6 +56,12 @@ extension Bool: DatabaseTestValue {
     public var testValue: String { String(describing: self) }
 }
 
+extension Date: DatabaseTestValue {
+    public var testValue: String {
+        #"CAST(\#(timeIntervalSinceReferenceDate), "NSDate")"#
+    }
+}
+
 // MARK: - Optional
 
 extension Optional: DatabaseTestValue where Wrapped: DatabaseTestValue {

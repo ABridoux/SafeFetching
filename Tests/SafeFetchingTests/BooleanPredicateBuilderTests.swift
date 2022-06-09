@@ -21,6 +21,9 @@ final class BooleanPredicateTests: XCTestCase {
         testNSFormat(predicate: !\.isAdmin, expecting: "isAdmin == 0")
         testNSFormat(predicate: \.property == nil, expecting: "property == nil")
 
+        let date = Date()
+        testNSFormat(predicate: \.stubDate == date, expecting: #"stubDate == CAST(\#(date.timeIntervalSinceReferenceDate), "NSDate")"#)
+
         testNSFormat(predicate: \.stubRelationship == nil, expecting: "stubRelationship == nil")
     }
 
@@ -129,6 +132,7 @@ extension BooleanPredicateTests {
         @objc var stubRawValue: Int = 0
         @objc var stubStringRawValue = ""
         @objc var stubRawOption: Int = 0
+        @objc var stubDate = Date()
 
         @objc var stubRelationship: StubEntity?
 
