@@ -18,8 +18,10 @@ public protocol DatabaseTestValue {
 // MARK: - Scalar
 
 extension String: DatabaseTestValue {
-
-    public var testValue: String { #""\#(self)""# }
+    public var testValue: String {
+        let escapingQuoteString = replacingOccurrences(of: #"""#, with: #"\""#)
+        return #""\#(escapingQuoteString)""#
+    }
 }
 
 extension Int: DatabaseTestValue {
