@@ -38,6 +38,10 @@ final class BooleanPredicateTests: XCTestCase {
         testNSFormat(\.property, .doesNotMatch(".*"), expecting: #"NOT property MATCHES ".*""#)
     }
 
+    func testStringWithQuotes() {
+        testNSFormat(predicate: \.property == #"Quote ""#, expecting: #"property == "Quote \"""#)
+    }
+
     func testString_comparisonOptions() {
         testNSFormat(\.property, .hasPrefix("Desp", options: .caseInsensitive), expecting: #"property BEGINSWITH[c] "Desp""#)
         testNSFormat(\.property, .hasPrefix("Desp", options: .diacriticInsensitive), expecting: #"property BEGINSWITH[d] "Desp""#)
