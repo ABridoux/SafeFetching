@@ -19,8 +19,17 @@ public protocol DatabaseTestValue {
 
 extension String: DatabaseTestValue {
     public var testValue: String {
-        let escapingQuoteString = replacingOccurrences(of: #"""#, with: #"\""#)
-        return #""\#(escapingQuoteString)""#
+        var escapedCopy = ""
+        for indice in indices {
+            let character = self[indice]
+            switch character {
+            case #"\"#, #"""#: // escaping: \ and "
+                escapedCopy.append(contentsOf: #"\\#(character)"#)
+            default:
+                escapedCopy.append(character)
+            }
+        }
+        return #""\#(escapedCopy)""#
     }
 }
 
