@@ -74,16 +74,6 @@ public extension Builders.Request where Step == TargetStep {
         request.predicate = Builders.Predicate<Entity>(keyPath: keyPath).nsValue
         return .init(request: request)
     }
-
-    /// Pass a boolean string key path
-    ///
-    /// ### Examples
-    ///  - `.where(.isDownloaded)`
-    ///  - `.where(!.isDownloaded)`
-    func `where`(_ keyPath: StringKeyPath<Entity, Bool>) -> Builders.Request<Entity, PredicateStep, Output> {
-        request.predicate = Builders.Predicate<Entity>(keyPathString: keyPath.key).nsValue
-        return .init(request: request)
-    }
 }
 
 

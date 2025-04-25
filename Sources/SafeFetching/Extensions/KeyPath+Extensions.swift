@@ -7,9 +7,10 @@ import Foundation
 
 extension KeyPath where Root: NSObject {
 
-    /// Name of the property pointed at
-    ///
-    /// - important: Will exit the program if the property is a computed one. The language allows
-    /// to use a `KeyPath` with a computed property, but the  'Foundation' key paths will fail in that case.
-    var label: String { NSExpression(forKeyPath: self).keyPath }
+    /// Name of the property pointed at.
+    var label: Substring {
+        let description = String(describing: self)
+        let prefixToDrop = "\\\(Root.self)."
+        return description.dropFirst(prefixToDrop.count)
+    }
 }

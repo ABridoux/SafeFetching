@@ -7,6 +7,8 @@ import SafeFetching
 import XCTest
 import CoreData
 
+// MARK: - RequestBuilderTests
+
 final class RequestBuilderTests: XCTestCase {
 
     func testMakeRequestAll() {
@@ -116,9 +118,4 @@ extension RequestBuilderTests {
         @objc var name: String? = ""
         @objc var isDownloaded = false
     }
-}
-
-extension StringKeyPath where Entity == RequestBuilderTests.StubEntity, Value == Int32 {
-
-    static var stubDatabaseValue: Self { Self(key: "stubDatabaseValue") }
 }

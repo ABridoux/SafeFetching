@@ -7,6 +7,8 @@ import SafeFetching
 import CoreData
 import XCTest
 
+// MARK: - CompoundPredicateTests
+
 final class CompoundPredicateTests: XCTestCase {
 
     func testAnd() {

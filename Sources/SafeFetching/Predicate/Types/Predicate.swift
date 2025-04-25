@@ -9,7 +9,7 @@ extension Builders {
 
     public class Predicate<Entity: NSManagedObject> {
 
-        public typealias Formatter = (_ keyPath: String) -> String
+        public typealias Formatter = (_ keyPath: Substring) -> String
 
         public let nsValue: NSPredicate
 
@@ -57,7 +57,7 @@ extension Builders.Predicate {
 extension Builders.Predicate {
 
     public convenience init<TestValue: DatabaseTestValue>(
-        keyPathString: String,
+        keyPathString: Substring,
         operatorString: String,
         value: TestValue,
         isInverted: Bool = false
@@ -67,7 +67,7 @@ extension Builders.Predicate {
     }
 
     public convenience init(
-        keyPathString: String,
+        keyPathString: Substring,
         isInverted: Bool = false,
         formatter: @escaping Formatter
     ) {
@@ -77,7 +77,7 @@ extension Builders.Predicate {
     }
 
     public convenience init(
-        keyPathString: String,
+        keyPathString: Substring,
         isInverted: Bool = false
     ) {
         let testValue = isInverted ? "0" : "1"

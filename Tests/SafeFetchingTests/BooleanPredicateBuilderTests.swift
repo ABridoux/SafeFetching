@@ -7,6 +7,8 @@ import SafeFetching
 import XCTest
 import CoreData
 
+// MARK: - BooleanPredicateTests
+
 final class BooleanPredicateTests: XCTestCase {
 
     func testComparisonFormats() {
@@ -52,36 +54,31 @@ final class BooleanPredicateTests: XCTestCase {
     }
 
     func testComparisonFormats_RawRepresentable() {
-        testNSFormat(predicate: .stubRaw == .foo, expecting: #"stubRaw == 1"#)
-        testNSFormat(predicate: .stubRaw != .bar, expecting: #"stubRaw != 2"#)
-        testNSFormat(predicate: .stubForcedRaw >= .foo, expecting: #"stubForcedRaw >= 1"#)
-        testNSFormat(predicate: .stubForcedRaw > .foo, expecting: #"stubForcedRaw > 1"#)
-        testNSFormat(predicate: .stubForcedRaw <= .foo, expecting: #"stubForcedRaw <= 1"#)
-        testNSFormat(predicate: .stubForcedRaw < .foo, expecting: #"stubForcedRaw < 1"#)
-        testNSFormat(predicate: .stubStringRawValue == .foo, expecting: #"stubStringRawValue == "foo""#)
+        testNSFormat(predicate: \.stubRaw == .foo, expecting: #"stubRaw == 1"#)
+        testNSFormat(predicate: \.stubRaw != .bar, expecting: #"stubRaw != 2"#)
+        testNSFormat(predicate: \.stubForcedRaw >= .foo, expecting: #"stubForcedRaw >= 1"#)
+        testNSFormat(predicate: \.stubForcedRaw > .foo, expecting: #"stubForcedRaw > 1"#)
+        testNSFormat(predicate: \.stubForcedRaw <= .foo, expecting: #"stubForcedRaw <= 1"#)
+        testNSFormat(predicate: \.stubForcedRaw < .foo, expecting: #"stubForcedRaw < 1"#)
     }
 
     func testRawRepresentable() {
-        testNSFormat(.stubRaw, .isIn([.foo, .bar]), expecting: "stubRaw IN {1, 2}")
-        testNSFormat(.stubRaw, .isIn(.foo, .bar), expecting: "stubRaw IN {1, 2}")
-        testNSFormat(.stubRaw, .isNotIn([.foo, .bar]), expecting: "NOT stubRaw IN {1, 2}")
-        testNSFormat(.stubRaw, .isNotIn(.foo, .bar), expecting: "NOT stubRaw IN {1, 2}")
+        testNSFormat(\.stubRaw, .isIn([.foo, .bar]), expecting: "stubRaw IN {1, 2}")
+        testNSFormat(\.stubRaw, .isIn(.foo, .bar), expecting: "stubRaw IN {1, 2}")
+        testNSFormat(\.stubRaw, .isNotIn([.foo, .bar]), expecting: "NOT stubRaw IN {1, 2}")
+        testNSFormat(\.stubRaw, .isNotIn(.foo, .bar), expecting: "NOT stubRaw IN {1, 2}")
 
-        testNSFormat(.stubForcedRaw, .isIn([.foo, .bar]), expecting: "stubForcedRaw IN {1, 2}")
-        testNSFormat(.stubForcedRaw, .isIn(.foo, .bar), expecting: "stubForcedRaw IN {1, 2}")
-        testNSFormat(.stubForcedRaw, .isNotIn([.foo, .bar]), expecting: "NOT stubForcedRaw IN {1, 2}")
-        testNSFormat(.stubForcedRaw, .isNotIn(.foo, .bar), expecting: "NOT stubForcedRaw IN {1, 2}")
+        testNSFormat(\.stubForcedRaw, .isIn([.foo, .bar]), expecting: "stubForcedRaw IN {1, 2}")
+        testNSFormat(\.stubForcedRaw, .isIn(.foo, .bar), expecting: "stubForcedRaw IN {1, 2}")
+        testNSFormat(\.stubForcedRaw, .isNotIn([.foo, .bar]), expecting: "NOT stubForcedRaw IN {1, 2}")
+        testNSFormat(\.stubForcedRaw, .isNotIn(.foo, .bar), expecting: "NOT stubForcedRaw IN {1, 2}")
     }
 
     func testOptionSet() {
-        testNSFormat(predicate: .stubOption * .intersects([.foo, .bar]), expecting: "stubOption & 3 == 3")
-        testNSFormat(predicate: .stubOption * .doesNotIntersect([.foo, .bar]), expecting: "stubOption & 3 != 3")
-        testNSFormat(predicate: .stubForcedOption * .intersects([.foo, .bar]), expecting: "stubForcedOption & 3 == 3")
-        testNSFormat(predicate: .stubForcedOption * .doesNotIntersect([.foo, .bar]), expecting: "stubForcedOption & 3 != 3")
-    }
-
-    func testStringKeyPath_DatabaseValue() {
-        testNSFormat(predicate: .stubDatabaseValue == 10, expecting: "stubDatabaseValue == 10")
+        testNSFormat(predicate: \.stubOption * .intersects([.bar, .foo]), expecting: "stubOption & 3 == 3")
+        testNSFormat(predicate: \.stubOption * .doesNotIntersect([.foo, .bar]), expecting: "stubOption & 3 != 3")
+        testNSFormat(predicate: \.stubForcedOption * .intersects([.foo, .bar]), expecting: "stubForcedOption & 3 == 3")
+        testNSFormat(predicate: \.stubForcedOption * .doesNotIntersect([.foo, .bar]), expecting: "stubForcedOption & 3 != 3")
     }
 
     func testAdvancedFormats() {
@@ -115,15 +112,6 @@ extension BooleanPredicateTests {
         let predicateFormat = predicateRightValue.predicate(keyPath).nsValue.predicateFormat
         XCTAssertEqual(predicateFormat, format)
     }
-
-    func testNSFormat<Value, TestValue>(
-        _ key: StringKeyPath<StubEntity, Value>,
-        _ predicateRightValue: Builders.StringKeyPathPredicateRightValue<StubEntity, Value, TestValue>,
-        expecting format: String
-    ) {
-        let predicateFormat = predicateRightValue.predicate(key).nsValue.predicateFormat
-        XCTAssertEqual(predicateFormat, format)
-    }
 }
 
 // MARK: - Models
@@ -154,7 +142,7 @@ extension BooleanPredicateTests {
 
 extension BooleanPredicateTests {
 
-    enum StubEnum: Int, Comparable, DatabaseTestValue {
+    enum StubEnum: Int, Comparable, DatabaseValue, DatabaseTestValue {
         case foo = 1
         case bar = 2
 
@@ -169,56 +157,14 @@ extension BooleanPredicateTests {
     }
 }
 
-extension StringKeyPath where Entity == BooleanPredicateTests.StubEntity, Value == BooleanPredicateTests.StubEnum {
-
-    static var stubRaw: Self {
-        Self(key: "stubRaw")
-    }
-}
-
-extension StringKeyPath where Entity == BooleanPredicateTests.StubEntity, Value == BooleanPredicateTests.StubEnum {
-
-    static var stubForcedRaw: Self {
-        Self(key: "stubForcedRaw")
-    }
-}
-
-extension StringKeyPath where Entity == BooleanPredicateTests.StubEntity, Value == BooleanPredicateTests.StubStringEnum {
-
-    static var stubStringRawValue: Self {
-        Self(key: "stubStringRawValue")
-    }
-}
-
 // MARK: - Stub option set
 
 extension BooleanPredicateTests {
 
-    struct StubOptionSet: OptionSet, DatabaseTestValue {
+    struct StubOptionSet: OptionSet, DatabaseValue, DatabaseTestValue {
         let rawValue: Int
 
         static let foo = StubOptionSet(rawValue: 1 << 0)
         static let bar = StubOptionSet(rawValue: 1 << 1)
     }
-}
-
-extension StringKeyPath where Entity == BooleanPredicateTests.StubEntity, Value == BooleanPredicateTests.StubOptionSet? {
-
-    static var stubOption: Self {
-        Self(key: "stubOption")
-    }
-}
-
-extension StringKeyPath where Entity == BooleanPredicateTests.StubEntity, Value == BooleanPredicateTests.StubOptionSet {
-
-    static var stubForcedOption: Self {
-        Self(key: "stubForcedOption")
-    }
-}
-
-// MARK: - Stub database value
-
-extension StringKeyPath where Entity == BooleanPredicateTests.StubEntity, Value == Int32 {
-
-    static var stubDatabaseValue: Self { Self(key: "stubDatabaseValue") }
 }

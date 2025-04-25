@@ -6,10 +6,14 @@
 import Foundation
 import CoreData
 
+// MARK: - DatabaseValueIdentification
+
 /// Stub type with internal init to ensure no conformance to ``DatabaseValue`` can be added outside of the package
 public struct DatabaseValueIdentification {
     init() {}
 }
+
+// MARK: - DatabaseValue
 
 /// A type that can be used for an attribute in a predicate when fetching a CoreData store
 ///
@@ -19,7 +23,7 @@ public protocol DatabaseValue {
     static var identification: DatabaseValueIdentification { get }
 }
 
-// MARK: Field
+// MARK: - Field
 
 extension String: DatabaseValue {
     public static let identification = DatabaseValueIdentification()
@@ -69,7 +73,13 @@ extension URL: DatabaseValue {
     public static let identification = DatabaseValueIdentification()
 }
 
-// MARK:  Relationship
+// MARK: - RawRepresentable
+
+extension RawRepresentable where RawValue: DatabaseValue {
+    public static var identification: DatabaseValueIdentification { DatabaseValueIdentification() }
+}
+
+// MARK: - Relationship
 
 extension NSManagedObject: DatabaseValue {
     public static let identification = DatabaseValueIdentification()
@@ -89,7 +99,7 @@ extension NSOrderedSet: DatabaseValue {
     public static let identification = DatabaseValueIdentification()
 }
 
-// MARK: Optional
+// MARK: - Optional
 
 extension Optional: DatabaseValue where Wrapped: DatabaseValue {
     public static var identification: DatabaseValueIdentification {
