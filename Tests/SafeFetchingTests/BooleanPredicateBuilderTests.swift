@@ -27,6 +27,7 @@ final class BooleanPredicateTests: XCTestCase {
         testNSFormat(predicate: \.stubDate == date, expecting: #"stubDate == CAST(\#(date.timeIntervalSinceReferenceDate), "NSDate")"#)
 
         testNSFormat(predicate: \.stubRelationship == nil, expecting: "stubRelationship == nil")
+        testNSFormat(predicate: \.stubRelationship?.property == "Toto", expecting: #"stubRelationship.property == "Toto""#)
     }
 
     func testString() {

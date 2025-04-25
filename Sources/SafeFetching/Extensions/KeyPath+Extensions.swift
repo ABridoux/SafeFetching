@@ -11,6 +11,8 @@ extension KeyPath where Root: NSObject {
     var label: Substring {
         let description = String(describing: self)
         let prefixToDrop = "\\\(Root.self)."
-        return description.dropFirst(prefixToDrop.count)
+        var value = description.dropFirst(prefixToDrop.count)
+        value.removeAll { $0 == "?" }
+        return value
     }
 }
