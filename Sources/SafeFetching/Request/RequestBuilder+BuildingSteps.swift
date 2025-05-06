@@ -60,8 +60,8 @@ public extension Builders.Request where Step == TargetStep {
     /// ### Examples
     ///  - `.where(\.name == "Endo")`
     ///  - `.where(\.age >= 20 && \.score * .isIn(10...20))`
-    func `where`(_ predicate: Builders.Predicate<Entity>) -> Builders.Request<Entity, PredicateStep, Output> {
-        request.predicate = predicate.nsValue
+    func `where`(_ predicate: (Entity.FetchableMembers) -> Builders.Predicate<Entity>) -> Builders.Request<Entity, PredicateStep, Output> {
+        request.predicate = predicate(Entity.fetchableMembers).nsValue
         return .init(request: request)
     }
 
@@ -70,8 +70,18 @@ public extension Builders.Request where Step == TargetStep {
     /// ### Examples
     ///  - `.where(\.isDownloaded)`
     ///  - `.where(!\.isDownloaded)`
-    func `where`(_ keyPath: KeyPath<Entity, Bool>) -> Builders.Request<Entity, PredicateStep, Output> {
-        request.predicate = Builders.Predicate<Entity>(keyPath: keyPath).nsValue
+    func `where`(_ predicate: (Entity.FetchableMembers) -> FetchableMember<Entity, Bool>) -> Builders.Request<Entity, PredicateStep, Output> {
+        request.predicate = Builders.Predicate<Entity>(identifier: predicate(Entity.fetchableMembers).identifier).nsValue
+        return .init(request: request)
+    }
+
+    /// Pass a boolean key path
+    ///
+    /// ### Examples
+    ///  - `.where(\.isDownloaded)`
+    ///  - `.where(!\.isDownloaded)`
+    func `where`(_ keyPath: KeyPath<Entity.FetchableMembers, FetchableMember<Entity, Bool>>) -> Builders.Request<Entity, PredicateStep, Output> {
+        request.predicate = Builders.Predicate<Entity>(identifier: Entity.fetchableMembers[keyPath: keyPath].identifier).nsValue
         return .init(request: request)
     }
 }

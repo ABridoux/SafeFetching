@@ -104,8 +104,12 @@ extension CompoundPredicateTests {
         @objc var name: String? = ""
         @objc var isDownloaded = false
 
+        static let fetchableMembers = FetchableMembers()
+
         struct FetchableMembers {
-            
+            let score = FetchableMember<StubEntity, Double>(identifier: "score")
+            let name = FetchableMember<StubEntity, String?>(identifier: "name")
+            let isDownloaded = FetchableMember<StubEntity, Bool>(identifier: "isDownloaded")
         }
     }
 }

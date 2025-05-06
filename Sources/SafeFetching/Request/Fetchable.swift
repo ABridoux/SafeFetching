@@ -10,6 +10,8 @@ import CoreData
 public protocol Fetchable: NSManagedObject {
 
     associatedtype FetchableMembers
+
+    static var fetchableMembers: FetchableMembers { get }
 }
 
 // MARK: - Static

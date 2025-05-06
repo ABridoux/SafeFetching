@@ -5,7 +5,8 @@
 
 // MARK: - FetchableMember
 
-public struct FetchableMember<Root, Value> {
+@dynamicMemberLookup
+public struct FetchableMember<Entity, Value> {
 
     // MARK: Properties
 
@@ -15,5 +16,20 @@ public struct FetchableMember<Root, Value> {
 
     public init(identifier: String) {
         self.identifier = identifier
+    }
+}
+
+// MARK: - dynamicMemberLookup
+
+extension FetchableMember {
+
+    public subscript(dynamicMember dynamicMember: KeyPath<Value.FetchableMembers?, FetchableMember<Entity, Value>>) -> FetchableMember<Entity, Value> where Value: Fetchable {
+        let member = Value.fetchableMembers[keyPath: dynamicMember]
+        return FetchableMember<Entity, Value>(identifier: "\(identifier).\(member.identifier)")
+    }
+
+    public subscript<T, V>(dynamicMember dynamicMember: KeyPath<T.FetchableMembers, FetchableMember<Entity, V>>) -> FetchableMember<T, V> where T: Fetchable, Value == T? {
+        let member = T.fetchableMembers[keyPath: dynamicMember]
+        return FetchableMember<T, V>(identifier: "\(identifier).\(member.identifier)" )
     }
 }

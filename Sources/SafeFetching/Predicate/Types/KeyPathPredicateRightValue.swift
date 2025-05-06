@@ -14,7 +14,7 @@ extension Builders {
 
         // MARK: Type alias
 
-        public typealias KeyPathPredicateExpression = (_ keyPath: KeyPath<Entity, Value>) -> Predicate<Entity>
+        public typealias KeyPathPredicateExpression = (_ keyPath: KeyPath<Entity.FetchableMembers.Type, FetchableMember<Entity, Value>>) -> Predicate<Entity>
 
         // MARK: Properties
 
@@ -30,10 +30,10 @@ extension Builders {
 
 // MARK: - BooleanPredicate operator
 
-public func * <Entity: Fetchable, Value, TestValue> (
-    lhs: KeyPath<Entity, Value>,
-    rhs: Builders.KeyPathPredicateRightValue<Entity, Value, TestValue>
-) -> Builders.Predicate<Entity> {
-    let nsValue = rhs.predicate(lhs).nsValue
-    return Builders.Predicate<Entity>(nsValue: nsValue)
-}
+//public func * <Entity: Fetchable, Value, TestValue> (
+//    lhs: KeyPath<Entity.FetchableMembers.Type, FetchableMember<Entity, Value>>,
+//    rhs: Builders.KeyPathPredicateRightValue<Entity, Value, TestValue>
+//) -> Builders.Predicate<Entity> {
+//    let nsValue = rhs.predicate(lhs).nsValue
+//    return Builders.Predicate<Entity>(nsValue: nsValue)
+//}

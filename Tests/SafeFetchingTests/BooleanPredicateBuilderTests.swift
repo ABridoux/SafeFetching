@@ -4,31 +4,35 @@
 // MIT license, see LICENSE file for details
 
 import SafeFetching
-import XCTest
+import Testing
 import CoreData
+
+@Suite("Boolean Predicates")
+struct BooleanPredicates {}
 
 // MARK: - BooleanPredicateTests
 
-final class BooleanPredicateTests: XCTestCase {
+extension BooleanPredicates {
 
-//    func testComparisonFormats() {
-//        testNSFormat(predicate: \.property == "Donald", expecting: #"property == "Donald""#)
-//        testNSFormat(predicate: \.property != "Donald", expecting: #"property != "Donald""#)
-//        testNSFormat(predicate: \.score > 10, expecting: "score > 10")
-//        testNSFormat(predicate: \.score >= 10, expecting: "score >= 10")
-//        testNSFormat(predicate: \.score < 10, expecting: "score < 10")
-//        testNSFormat(predicate: \.score <= 10, expecting: "score <= 10")
-//        testNSFormat(predicate: \.isAdmin == true, expecting: "isAdmin == 1")
-//        testNSFormat(predicate: \.isAdmin == false, expecting: "isAdmin == 0")
-//        testNSFormat(predicate: !\.isAdmin, expecting: "isAdmin == 0")
-//        testNSFormat(predicate: \.property == nil, expecting: "property == nil")
-//
-//        let date = Date()
-//        testNSFormat(predicate: \.stubDate == date, expecting: #"stubDate == CAST(\#(date.timeIntervalSinceReferenceDate), "NSDate")"#)
-//
-//        testNSFormat(predicate: \.stubRelationship == nil, expecting: "stubRelationship == nil")
-//        testNSFormat(predicate: \.stubRelationship?.property == "Toto", expecting: #"stubRelationship.property == "Toto""#)
-//    }
+    @Test("Comparison Formats")
+    func comparisonFormats() {
+        testNSFormat({ $0.property == "Donald" }, expecting: #"property == "Donald""#)
+        testNSFormat({ $0.property != "Donald" }, expecting: #"property != "Donald""#)
+        testNSFormat({ $0.score > 10 }, expecting: "score > 10")
+        testNSFormat({ $0.score >= 10 }, expecting: "score >= 10")
+        testNSFormat({ $0.score < 10 }, expecting: "score < 10")
+        testNSFormat({ $0.score <= 10 }, expecting: "score <= 10")
+        testNSFormat({ $0.isAdmin == true }, expecting: "isAdmin == 1")
+        testNSFormat({ $0.isAdmin == false }, expecting: "isAdmin == 0")
+        testNSFormat({ !$0.isAdmin }, expecting: "isAdmin == 0")
+        testNSFormat({ $0.property == nil }, expecting: "property == nil")
+
+        let date = Date()
+        testNSFormat({ $0.stubDate == date }, expecting: #"stubDate == CAST(\#(date.timeIntervalSinceReferenceDate), "NSDate")"#)
+
+        testNSFormat({ $0.stubRelationship == nil }, expecting: "stubRelationship == nil")
+        testNSFormat({ $0.stubRelationship.property == "Toto" }, expecting: #"stubRelationship.property == "Toto""#)
+    }
 //
 //    func testString() {
 //        testNSFormat(\.property, .hasPrefix("Desp"), expecting: #"property BEGINSWITH "Desp""#)
@@ -96,28 +100,19 @@ final class BooleanPredicateTests: XCTestCase {
 
 // MARK: - Helpers
 
-extension BooleanPredicateTests {
-
+extension BooleanPredicates {
     func testNSFormat(
-        predicate: Builders.Predicate<StubEntity>,
-        expecting format: String
+        _ predicate: (StubEntity.FetchableMembers) -> Builders.Predicate<StubEntity>,
+        expecting format: String,
+        sourceLocation: SourceLocation = #_sourceLocation
     ) {
-        XCTAssertEqual(predicate.nsValue.predicateFormat, format)
-    }
-
-    func testNSFormat<Value, TestValue>(
-        _ keyPath: KeyPath<StubEntity, Value>,
-        _ predicateRightValue: Builders.KeyPathPredicateRightValue<StubEntity, Value, TestValue>,
-        expecting format: String
-    ) {
-        let predicateFormat = predicateRightValue.predicate(keyPath).nsValue.predicateFormat
-        XCTAssertEqual(predicateFormat, format)
+        #expect(predicate(StubEntity.fetchableMembers).nsValue.predicateFormat == format, sourceLocation: sourceLocation)
     }
 }
 
 // MARK: - Models
 
-extension BooleanPredicateTests {
+extension BooleanPredicates {
 
     final class StubEntity: NSManagedObject, Fetchable {
         @objc var isAdmin = false
@@ -136,21 +131,27 @@ extension BooleanPredicateTests {
         var stubOption: StubOptionSet? { StubOptionSet(rawValue: stubRawOption) }
         var stubForcedOption: StubOptionSet { StubOptionSet(rawValue: stubRawOption) }
 
+        static let fetchableMembers = FetchableMembers()
+
         struct FetchableMembers {
             let isAdmin = FetchableMember<StubEntity, Bool>(identifier: "isAdmin")
+            let score = FetchableMember<StubEntity, Double>(identifier: "score")
+            let property = FetchableMember<StubEntity, String?>(identifier: "property")
+            let stubDate = FetchableMember<StubEntity, Date>(identifier: "stubDate")
+            let stubRelationship = FetchableMember<StubEntity, StubEntity?>(identifier: "stubRelationship")
         }
     }
 }
 
 // MARK: - Stub enum
 
-extension BooleanPredicateTests {
+extension BooleanPredicates {
 
     enum StubEnum: Int, Comparable, DatabaseValue, DatabaseTestValue {
         case foo = 1
         case bar = 2
 
-        static func < (lhs: BooleanPredicateTests.StubEnum, rhs: BooleanPredicateTests.StubEnum) -> Bool {
+        static func < (lhs: BooleanPredicates.StubEnum, rhs: BooleanPredicates.StubEnum) -> Bool {
             lhs.rawValue < rhs.rawValue
         }
     }
@@ -163,7 +164,7 @@ extension BooleanPredicateTests {
 
 // MARK: - Stub option set
 
-extension BooleanPredicateTests {
+extension BooleanPredicates {
 
     struct StubOptionSet: OptionSet, DatabaseValue, DatabaseTestValue {
         let rawValue: Int
