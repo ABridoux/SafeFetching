@@ -117,5 +117,11 @@ extension RequestBuilderTests {
         @objc var score = 0.0
         @objc var name: String? = ""
         @objc var isDownloaded = false
+
+        struct FetchableMembers {
+            let score = FetchableMember<StubEntity, Double>(identifier: "score")
+            let name = FetchableMember<StubEntity,String?>(identifier: "name")
+            let isDownloaded = FetchableMember<StubEntity, Bool>(identifier: "isDownloaded")
+        }
     }
 }

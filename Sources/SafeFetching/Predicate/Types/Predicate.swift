@@ -7,7 +7,7 @@ import CoreData
 
 extension Builders {
 
-    public class Predicate<Entity: NSManagedObject> {
+    public class Predicate<Entity: Fetchable> {
 
         public typealias Formatter = (_ keyPath: Substring) -> String
 

@@ -5,7 +5,14 @@
 
 import CoreData
 
-public protocol Fetchable: NSManagedObject {}
+// MARK: - Fetchable
+
+public protocol Fetchable: NSManagedObject {
+
+    associatedtype FetchableMembers
+}
+
+// MARK: - Static
 
 extension Fetchable {
 

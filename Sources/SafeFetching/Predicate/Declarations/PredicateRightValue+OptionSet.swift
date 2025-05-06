@@ -8,7 +8,7 @@ public extension Builders.KeyPathPredicateRightValue where Value: OptionSet, Val
     /// - important: Should be used only with options set types that are converted from/to a primitive value
     static func intersects(_ value: Value) -> Builders.KeyPathPredicateRightValue<Entity, Value, Value> {
         .init { keyPath in
-                .init(keyPathString: keyPath.label) { "\($0) & \(value.testValue) == \(value.testValue)" }
+            Builders.Predicate(keyPathString: keyPath.label) { "\($0) & \(value.testValue) == \(value.testValue)" }
         }
     }
 

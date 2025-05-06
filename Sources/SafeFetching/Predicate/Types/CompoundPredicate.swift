@@ -5,9 +5,11 @@
 
 import CoreData
 
+// MARK: - CompoundPredicate
+
 extension Builders {
 
-    public final class CompoundPredicate<Entity>: Predicate<Entity> where Entity: NSManagedObject {
+    public final class CompoundPredicate<Entity: Fetchable>: Predicate<Entity> where Entity: NSManagedObject {
 
         init(joinOperator: JoinOperator, leftPredicate: Predicate<Entity>, rightPredicate: Predicate<Entity>) {
             let nsValue: NSPredicate
@@ -23,6 +25,8 @@ extension Builders {
         }
     }
 }
+
+// MARK: - JoinOperator
 
 extension Builders {
 

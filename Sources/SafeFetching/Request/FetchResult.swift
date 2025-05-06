@@ -3,12 +3,16 @@
 // Copyright © 2021-present Alexis Bridoux.
 // MIT license, see LICENSE file for details
 
-/// Type that can be used as the result of a fetch request
+// MARK: - FetchResult
+
+/// Type that can be used as the result of a fetch request.
 public protocol FetchResult {
     associatedtype Fetched: Fetchable
 
     init(results: [Fetched])
 }
+
+// MARK: - Array + FetchResult
 
 extension Array: FetchResult where Element: Fetchable {
 
@@ -16,6 +20,8 @@ extension Array: FetchResult where Element: Fetchable {
         self = results
     }
 }
+
+// MARK: - Optional + FetchResult
 
 extension Optional: FetchResult where Wrapped: Fetchable {
 
