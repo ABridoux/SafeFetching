@@ -57,6 +57,12 @@ public extension Builders.PreRequest where Step == CreationStep {
 public extension Builders.Request where Step == TargetStep {
 
     /// Adds a predicate to the request.
+    func `where`(_ predicate: Builders.Predicate<Entity>) -> Builders.Request<Entity, PredicateStep, Output> {
+        request.predicate = predicate.nsValue
+        return .init(request: request)
+    }
+
+    /// Adds a predicate to the request.
     ///
     /// ### Examples
     ///  - `.where { $0.name == "Endo" }`

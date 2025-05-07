@@ -31,7 +31,7 @@ extension Builders {
     }
 }
 
-// MARK: - KeyPath init
+// MARK: - Convenience Inits
 
 extension Builders.Predicate {
 
@@ -43,6 +43,10 @@ extension Builders.Predicate {
     ) {
         let format = "\(isInverted ? Self.inversionKeyword : "") \(identifier) \(operatorString) \(value.testValue)"
         self.init(nsValue: NSPredicate(format: format))
+    }
+
+    public static func predicate(_ predicate: (Entity.FetchableMembers) -> Builders.Predicate<Entity>) -> Builders.Predicate<Entity> {
+        predicate(Entity.fetchableMembers)
     }
 
     public convenience init(

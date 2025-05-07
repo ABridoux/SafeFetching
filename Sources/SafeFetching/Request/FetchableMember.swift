@@ -7,7 +7,7 @@
 
 /// Stores types and identifier of an entity and attribute or relationship that can be used for fetching.
 @dynamicMemberLookup
-public struct FetchableMember<Entity: Fetchable, Value: DatabaseValue & DatabaseTestValue>: Sendable {
+public struct FetchableMember<Entity: Fetchable, Value>: Sendable {
 
     // MARK: Properties
 

@@ -14,7 +14,8 @@ import SwiftCompilerPlugin
 struct SafeFetchingMacrosPlugin: CompilerPlugin {
 
     let providingMacros: [Macro.Type] = [
-        FetchableManagedObjectMacro.self
+        FetchableManagedObjectMacro.self,
+        FetchingIgnoredMacro.self
     ]
 }
 
