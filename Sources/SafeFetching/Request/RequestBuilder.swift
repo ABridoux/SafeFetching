@@ -5,23 +5,41 @@
 
 import CoreData
 
+// MARK: - PreRequest
+
 extension Builders {
 
-    /// `RequestBuilder` with no target
-    public struct PreRequest<Entity: NSManagedObject, Step: RequestBuilderStep, Fetched: Fetchable> {
+    /// `RequestBuilder` with no target.
+    public struct PreRequest<Entity: Fetchable, Step: RequestBuilderStep, Fetched: Fetchable> {
+
+        // MARK: Properties
+
         var request: NSFetchRequest<Entity>
     }
+}
 
-    public struct Request<Entity: NSManagedObject, Step: RequestBuilderStep, Output: FetchResult> {
+// MARK: - Request
+
+extension Builders {
+
+    public struct Request<Entity: Fetchable, Step: RequestBuilderStep, Output: FetchResult> {
+
+        // MARK: Type alias
 
         public typealias FetchRequest = NSFetchRequest<Entity>
 
+        // MARK: Properties
+
         let request: FetchRequest
+
+        // MARK: Computed
 
         /// The built `NSFetchRequest<Entity>`
         public var nsValue: FetchRequest { request }
     }
 }
+
+// MARK: - Fetch
 
 extension Builders.Request where Output.Fetched == Entity {
 

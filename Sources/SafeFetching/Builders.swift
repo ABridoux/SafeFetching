@@ -5,4 +5,7 @@
 
 import Foundation
 
+// MARK: - Builders
+
+/// Namespace to hide most building types used by SafeFetching to make requests.
 public enum Builders {}

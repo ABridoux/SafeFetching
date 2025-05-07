@@ -3,124 +3,140 @@
 // Copyright © 2021-present Alexis Bridoux.
 // MIT license, see LICENSE file for details
 
-import SafeFetching
-import XCTest
+@_spi(SafeFetching) import SafeFetching
+import Testing
 import CoreData
 
-// MARK: - BooleanPredicateTests
+// MARK: - BooleanPredicates
 
-final class BooleanPredicateTests: XCTestCase {
+@Suite("Boolean Predicates")
+struct BooleanPredicates {}
 
-    func testComparisonFormats() {
-        testNSFormat(predicate: \.property == "Donald", expecting: #"property == "Donald""#)
-        testNSFormat(predicate: \.property != "Donald", expecting: #"property != "Donald""#)
-        testNSFormat(predicate: \.score > 10, expecting: "score > 10")
-        testNSFormat(predicate: \.score >= 10, expecting: "score >= 10")
-        testNSFormat(predicate: \.score < 10, expecting: "score < 10")
-        testNSFormat(predicate: \.score <= 10, expecting: "score <= 10")
-        testNSFormat(predicate: \.isAdmin == true, expecting: "isAdmin == 1")
-        testNSFormat(predicate: \.isAdmin == false, expecting: "isAdmin == 0")
-        testNSFormat(predicate: !\.isAdmin, expecting: "isAdmin == 0")
-        testNSFormat(predicate: \.property == nil, expecting: "property == nil")
+// MARK: - Comparison
+
+extension BooleanPredicates {
+
+    @Test("Boolean Formats")
+    func comparison() {
+        testNSFormat({ $0.property == "Donald" }, expecting: #"property == "Donald""#)
+        testNSFormat({ $0.property != "Donald" }, expecting: #"property != "Donald""#)
+        testNSFormat({ $0.score > 10 }, expecting: "score > 10")
+        testNSFormat({ $0.score >= 10 }, expecting: "score >= 10")
+        testNSFormat({ $0.score < 10 }, expecting: "score < 10")
+        testNSFormat({ $0.score <= 10 }, expecting: "score <= 10")
+        testNSFormat({ $0.isAdmin == true }, expecting: "isAdmin == 1")
+        testNSFormat({ $0.isAdmin == false }, expecting: "isAdmin == 0")
+        testNSFormat({ !$0.isAdmin }, expecting: "isAdmin == 0")
+        testNSFormat({ $0.property == nil }, expecting: "property == nil")
 
         let date = Date()
-        testNSFormat(predicate: \.stubDate == date, expecting: #"stubDate == CAST(\#(date.timeIntervalSinceReferenceDate), "NSDate")"#)
+        testNSFormat({ $0.stubDate == date }, expecting: #"stubDate == CAST(\#(date.timeIntervalSinceReferenceDate), "NSDate")"#)
 
-        testNSFormat(predicate: \.stubRelationship == nil, expecting: "stubRelationship == nil")
-        testNSFormat(predicate: \.stubRelationship?.property == "Toto", expecting: #"stubRelationship.property == "Toto""#)
+        testNSFormat({ $0.stubRelationship == nil }, expecting: "stubRelationship == nil")
+        testNSFormat({ $0.stubRelationship.property == "Toto" }, expecting: #"stubRelationship.property == "Toto""#)
     }
 
-    func testString() {
-        testNSFormat(\.property, .hasPrefix("Desp"), expecting: #"property BEGINSWITH "Desp""#)
-        testNSFormat(\.property, .hasNoPrefix("Desp"), expecting: #"NOT property BEGINSWITH "Desp""#)
-        testNSFormat(\.property, .hasSuffix("Desp"), expecting: #"property ENDSWITH "Desp""#)
-        testNSFormat(\.property, .hasNoSuffix("Desp"), expecting: #"NOT property ENDSWITH "Desp""#)
-        testNSFormat(\.property, .contains("Desp"), expecting: #"property CONTAINS "Desp""#)
-        testNSFormat(\.property, .doesNotContain("Desp"), expecting: #"NOT property CONTAINS "Desp""#)
-        testNSFormat(\.property, .matches(".*"), expecting: #"property MATCHES ".*""#)
-        testNSFormat(\.property, .doesNotMatch(".*"), expecting: #"NOT property MATCHES ".*""#)
+    @Test("Inversion")
+    func inversion() {
+        testNSFormat({ !$0.property.hasPrefix("Desp") }, expecting: #"NOT property BEGINSWITH "Desp""#)
+        testNSFormat({ $0.property.hasPrefix("Desp") == false }, expecting: #"NOT property BEGINSWITH "Desp""#)
+        testNSFormat({ !$0.property.hasPrefix("Desp") == false }, expecting: #"property BEGINSWITH "Desp""#)
+        testNSFormat({ ![.foo, .bar].contains($0.stubRaw) }, expecting: "NOT stubRaw IN {1, 2}")
+    }
+}
+
+// MARK: - String
+
+extension BooleanPredicates {
+
+    @Test("String Comparison")
+    func stringOperation() {
+        testNSFormat({ $0.property.hasPrefix("Desp") }, expecting: #"property BEGINSWITH "Desp""#)
+        testNSFormat({ $0.property.hasSuffix("Desp") }, expecting: #"property ENDSWITH "Desp""#)
+        testNSFormat({ $0.property.contains("Desp") }, expecting: #"property CONTAINS "Desp""#)
+        testNSFormat({ $0.property.matches("Desp") }, expecting: #"property MATCHES "Desp""#)
     }
 
-    func testStringWithEscaping() {
-        testNSFormat(predicate: \.property == #"Quote ""#, expecting: #"property == "Quote \"""#)
-        testNSFormat(predicate: \.property == #"Quote \"#, expecting: #"property == "Quote \\""#)
-        testNSFormat(predicate: \.property == #"Quote ("#, expecting: #"property == "Quote (""#)
+    @Test("String Escaping")
+    func stringEscaping() {
+        testNSFormat({ $0.property == #"Quote ""# }, expecting: #"property == "Quote \"""#)
+        testNSFormat({ $0.property == #"Quote \"# }, expecting: #"property == "Quote \\""#)
+        testNSFormat({ $0.property == #"Quote ("# }, expecting: #"property == "Quote (""#)
     }
 
-    func testString_comparisonOptions() {
-        testNSFormat(\.property, .hasPrefix("Desp", options: .caseInsensitive), expecting: #"property BEGINSWITH[c] "Desp""#)
-        testNSFormat(\.property, .hasPrefix("Desp", options: .diacriticInsensitive), expecting: #"property BEGINSWITH[d] "Desp""#)
-        testNSFormat(\.property, .hasPrefix("Desp", options: .diacriticAndCaseInsensitive), expecting: #"property BEGINSWITH[cd] "Desp""#)
-        testNSFormat(\.property, .hasPrefix("Desp", options: .normalized), expecting: #"property BEGINSWITH[n] "Desp""#)
+    @Test("String Comparison Options")
+    func stringComparisonOptions() {
+        testNSFormat({ $0.property.hasPrefix("Desp", options: .caseInsensitive) }, expecting: #"property BEGINSWITH[c] "Desp""#)
+        testNSFormat({ $0.property.hasPrefix("Desp", options: .diacriticInsensitive) }, expecting: #"property BEGINSWITH[d] "Desp""#)
+        testNSFormat({ $0.property.hasPrefix("Desp", options: .diacriticAndCaseInsensitive) }, expecting: #"property BEGINSWITH[cd] "Desp""#)
+        testNSFormat({ $0.property.hasPrefix("Desp", options: .normalized) }, expecting: #"property BEGINSWITH[n] "Desp""#)
+    }
+}
+
+// MARK: - RawRepresentable
+
+extension BooleanPredicates {
+
+    @Test("RawRepresentable")
+    func rawRepresentable() {
+        testNSFormat({ $0.stubRaw == .foo }, expecting: #"stubRaw == 1"#)
+        testNSFormat({ $0.stubRaw != .bar }, expecting: #"stubRaw != 2"#)
+        testNSFormat({ $0.stubForcedRaw >= .foo }, expecting: #"stubForcedRaw >= 1"#)
+        testNSFormat({ $0.stubForcedRaw > .foo }, expecting: #"stubForcedRaw > 1"#)
+        testNSFormat({ $0.stubForcedRaw <= .foo }, expecting: #"stubForcedRaw <= 1"#)
+        testNSFormat({ $0.stubForcedRaw < .foo }, expecting: #"stubForcedRaw < 1"#)
     }
 
-    func testComparisonFormats_RawRepresentable() {
-        testNSFormat(predicate: \.stubRaw == .foo, expecting: #"stubRaw == 1"#)
-        testNSFormat(predicate: \.stubRaw != .bar, expecting: #"stubRaw != 2"#)
-        testNSFormat(predicate: \.stubForcedRaw >= .foo, expecting: #"stubForcedRaw >= 1"#)
-        testNSFormat(predicate: \.stubForcedRaw > .foo, expecting: #"stubForcedRaw > 1"#)
-        testNSFormat(predicate: \.stubForcedRaw <= .foo, expecting: #"stubForcedRaw <= 1"#)
-        testNSFormat(predicate: \.stubForcedRaw < .foo, expecting: #"stubForcedRaw < 1"#)
+    @Test("RawRepresentable in Collection")
+    func rawRepresentable_collection() {
+        testNSFormat({ $0.stubRaw.isIn([.foo, .bar]) }, expecting: "stubRaw IN {1, 2}")
+        testNSFormat({ $0.stubRaw.isIn(.foo, .bar) }, expecting: "stubRaw IN {1, 2}")
+        testNSFormat({ [.foo, .bar].contains($0.stubRaw) }, expecting: "stubRaw IN {1, 2}")
     }
+}
 
-    func testRawRepresentable() {
-        testNSFormat(\.stubRaw, .isIn([.foo, .bar]), expecting: "stubRaw IN {1, 2}")
-        testNSFormat(\.stubRaw, .isIn(.foo, .bar), expecting: "stubRaw IN {1, 2}")
-        testNSFormat(\.stubRaw, .isNotIn([.foo, .bar]), expecting: "NOT stubRaw IN {1, 2}")
-        testNSFormat(\.stubRaw, .isNotIn(.foo, .bar), expecting: "NOT stubRaw IN {1, 2}")
+// MARK: - OptionSet
 
-        testNSFormat(\.stubForcedRaw, .isIn([.foo, .bar]), expecting: "stubForcedRaw IN {1, 2}")
-        testNSFormat(\.stubForcedRaw, .isIn(.foo, .bar), expecting: "stubForcedRaw IN {1, 2}")
-        testNSFormat(\.stubForcedRaw, .isNotIn([.foo, .bar]), expecting: "NOT stubForcedRaw IN {1, 2}")
-        testNSFormat(\.stubForcedRaw, .isNotIn(.foo, .bar), expecting: "NOT stubForcedRaw IN {1, 2}")
+extension BooleanPredicates {
+
+    @Test("OptionSet")
+    func optionSet() {
+        testNSFormat({ $0.stubOption.intersects([.bar, .foo]) }, expecting: "stubOption & 3 == 3")
+        testNSFormat({ $0.stubForcedOption.intersects([.bar, .foo]) }, expecting: "stubForcedOption & 3 == 3")
+        let options: StubOptionSet = [.foo, .bar]
+        testNSFormat({ options.intersects($0.stubForcedOption) }, expecting: "stubForcedOption & 3 == 3")
     }
+}
 
-    func testOptionSet() {
-        testNSFormat(predicate: \.stubOption * .intersects([.bar, .foo]), expecting: "stubOption & 3 == 3")
-        testNSFormat(predicate: \.stubOption * .doesNotIntersect([.foo, .bar]), expecting: "stubOption & 3 != 3")
-        testNSFormat(predicate: \.stubForcedOption * .intersects([.foo, .bar]), expecting: "stubForcedOption & 3 == 3")
-        testNSFormat(predicate: \.stubForcedOption * .doesNotIntersect([.foo, .bar]), expecting: "stubForcedOption & 3 != 3")
-    }
+// MARK: - Range
 
-    func testAdvancedFormats() {
-        testNSFormat(\.property, .isIn(["Riri", "Fifi"]), expecting: #"property IN {"Riri", "Fifi"}"#)
-        testNSFormat(\.property, .isNotIn("Riri", "Fifi"), expecting: #"NOT property IN {"Riri", "Fifi"}"#)
-        testNSFormat(\.property, .isIn(["Riri", "Fifi"]), expecting: #"property IN {"Riri", "Fifi"}"#)
-        testNSFormat(\.property, .isNotIn(["Riri", "Fifi"]), expecting: #"NOT property IN {"Riri", "Fifi"}"#)
-        testNSFormat(\.score, .isIn(1...10), expecting: #"score BETWEEN {1, 10}"#)
-        testNSFormat(\.score, .isNotIn(1...10), expecting: #"NOT score BETWEEN {1, 10}"#)
-        testNSFormat(\.score, .isIn(1..<10.5), expecting: #"1 <= score AND score < 10.5"#)
-        testNSFormat(\.score, .isNotIn(1..<10.5), expecting: #"score < 1 OR score >= 10.5"#)
+extension BooleanPredicates {
+
+    @Test("Range")
+    func range() {
+        testNSFormat({ $0.score.isIn((1..<10.5)) }, expecting: #"1 <= score AND score < 10.5"#)
+        testNSFormat({ $0.score.isIn((1...10)) }, expecting: #"score BETWEEN {1, 10}"#)
     }
 }
 
 // MARK: - Helpers
 
-extension BooleanPredicateTests {
+extension BooleanPredicates {
 
     func testNSFormat(
-        predicate: Builders.Predicate<StubEntity>,
-        expecting format: String
+        _ predicate: (StubEntity.FetchableMembers) -> Builders.Predicate<StubEntity>,
+        expecting format: String,
+        sourceLocation: SourceLocation = #_sourceLocation
     ) {
-        XCTAssertEqual(predicate.nsValue.predicateFormat, format)
-    }
-
-    func testNSFormat<Value, TestValue>(
-        _ keyPath: KeyPath<StubEntity, Value>,
-        _ predicateRightValue: Builders.KeyPathPredicateRightValue<StubEntity, Value, TestValue>,
-        expecting format: String
-    ) {
-        let predicateFormat = predicateRightValue.predicate(keyPath).nsValue.predicateFormat
-        XCTAssertEqual(predicateFormat, format)
+        #expect(predicate(StubEntity.fetchableMembers).nsValue.predicateFormat == format, sourceLocation: sourceLocation)
     }
 }
 
 // MARK: - Models
 
-extension BooleanPredicateTests {
+extension BooleanPredicates {
 
-    final class StubEntity: NSManagedObject {
-
+    final class StubEntity: NSManagedObject, Fetchable {
         @objc var isAdmin = false
         @objc var score = 0.0
         @objc var property: String? = ""
@@ -136,18 +152,32 @@ extension BooleanPredicateTests {
 
         var stubOption: StubOptionSet? { StubOptionSet(rawValue: stubRawOption) }
         var stubForcedOption: StubOptionSet { StubOptionSet(rawValue: stubRawOption) }
+
+        static let fetchableMembers = FetchableMembers()
+
+        struct FetchableMembers {
+            let isAdmin = FetchableMember<StubEntity, Bool>(identifier: "isAdmin")
+            let score = FetchableMember<StubEntity, Double>(identifier: "score")
+            let property = FetchableMember<StubEntity, String?>(identifier: "property")
+            let stubDate = FetchableMember<StubEntity, Date>(identifier: "stubDate")
+            let stubRaw = FetchableMember<StubEntity, StubEnum?>(identifier: "stubRaw")
+            let stubForcedRaw = FetchableMember<StubEntity, StubEnum>(identifier: "stubForcedRaw")
+            let stubOption = FetchableMember<StubEntity, StubOptionSet?>(identifier: "stubOption")
+            let stubForcedOption = FetchableMember<StubEntity, StubOptionSet>(identifier: "stubForcedOption")
+            let stubRelationship = FetchableMember<StubEntity, StubEntity?>(identifier: "stubRelationship")
+        }
     }
 }
 
 // MARK: - Stub enum
 
-extension BooleanPredicateTests {
+extension BooleanPredicates {
 
     enum StubEnum: Int, Comparable, DatabaseValue, DatabaseTestValue {
         case foo = 1
         case bar = 2
 
-        static func < (lhs: BooleanPredicateTests.StubEnum, rhs: BooleanPredicateTests.StubEnum) -> Bool {
+        static func < (lhs: BooleanPredicates.StubEnum, rhs: BooleanPredicates.StubEnum) -> Bool {
             lhs.rawValue < rhs.rawValue
         }
     }
@@ -160,7 +190,7 @@ extension BooleanPredicateTests {
 
 // MARK: - Stub option set
 
-extension BooleanPredicateTests {
+extension BooleanPredicates {
 
     struct StubOptionSet: OptionSet, DatabaseValue, DatabaseTestValue {
         let rawValue: Int

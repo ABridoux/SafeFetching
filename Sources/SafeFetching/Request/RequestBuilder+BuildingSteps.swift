@@ -9,7 +9,7 @@ import CoreData
 
 extension Builders.Request {
 
-    /// Set a property of the request
+    /// Sets a property of the request.
     public func setting<Value>(_ keyPath: ReferenceWritableKeyPath<FetchRequest, Value>, to value: Value) -> Self {
         request[keyPath: keyPath] = value
         return self
@@ -20,34 +20,35 @@ extension Builders.Request {
 
 public extension Builders.PreRequest where Step == CreationStep {
 
-    private func assign<Value>(_ value: Value?, ifNotNilTo keyPath: ReferenceWritableKeyPath<NSFetchRequest<Entity>, Value>) {
-        if let value = value {
-            request[keyPath: keyPath] = value
-        }
-    }
-
-    /// Stops after a first element is fetched
+    /// Stops after a first element is fetched.
     func first() -> Builders.Request<Entity, TargetStep, Fetched?> {
         request.fetchLimit = 1
         return Builders.Request<Entity, TargetStep, Fetched?>(request: request)
     }
 
-    /// Stops after the first nth elements are fetched
+    /// Stops after the first nth elements are fetched.
     /// - Parameters:
-    ///   - limit: How much elements should be fetched
-    ///   - offset: Ignore the first elements found in the offset range
+    ///   - limit: How much elements should be fetched.
+    ///   - offset: Ignore the first elements found in the offset range.
     func first(nth limit: Int, after offset: Int? = nil) -> Builders.Request<Entity, TargetStep, [Fetched]> {
         request.fetchLimit = limit
         assign(offset, ifNotNilTo: \.fetchOffset)
         return Builders.Request<Entity, TargetStep, [Fetched]>(request: request)
     }
 
-    /// Stops after the all the elements are fetched
+    /// Stops after the all the elements are fetched.
     /// - Parameters:
-    ///   - offset: Ignore the first elements found in the offset range
+    ///   - offset: Ignore the first elements found in the offset range.
     func all(after offset: Int? = nil) -> Builders.Request<Entity, TargetStep, [Fetched]> {
         assign(offset, ifNotNilTo: \.fetchOffset)
         return Builders.Request<Entity, TargetStep, [Fetched]>(request: request)
+    }
+
+
+    private func assign<Value>(_ value: Value?, ifNotNilTo keyPath: ReferenceWritableKeyPath<NSFetchRequest<Entity>, Value>) {
+        if let value = value {
+            request[keyPath: keyPath] = value
+        }
     }
 }
 
@@ -55,23 +56,32 @@ public extension Builders.PreRequest where Step == CreationStep {
 
 public extension Builders.Request where Step == TargetStep {
 
-    /// Pass a predicate for the request
+    /// Adds a predicate to the request.
     ///
     /// ### Examples
-    ///  - `.where(\.name == "Endo")`
-    ///  - `.where(\.age >= 20 && \.score * .isIn(10...20))`
-    func `where`(_ predicate: Builders.Predicate<Entity>) -> Builders.Request<Entity, PredicateStep, Output> {
-        request.predicate = predicate.nsValue
+    ///  - `.where { $0.name == "Endo" }`
+    ///  - `.where { $0.age >= 20 && $0.score * .isIn(10...20) }`
+    func `where`(_ predicate: (Entity.FetchableMembers) -> Builders.Predicate<Entity>) -> Builders.Request<Entity, PredicateStep, Output> {
+        request.predicate = predicate(Entity.fetchableMembers).nsValue
         return .init(request: request)
     }
 
-    /// Pass a boolean key path
+    /// Adds a single boolean predicate to the request.
     ///
     /// ### Examples
-    ///  - `.where(\.isDownloaded)`
-    ///  - `.where(!\.isDownloaded)`
-    func `where`(_ keyPath: KeyPath<Entity, Bool>) -> Builders.Request<Entity, PredicateStep, Output> {
-        request.predicate = Builders.Predicate<Entity>(keyPath: keyPath).nsValue
+    ///  - `.where { $0.isDownloaded }`.
+    ///  - `.where { !$0.isDownloaded }`.
+    func `where`(_ predicate: (Entity.FetchableMembers) -> FetchableMember<Entity, Bool>) -> Builders.Request<Entity, PredicateStep, Output> {
+        request.predicate = Builders.Predicate<Entity>(identifier: predicate(Entity.fetchableMembers).identifier).nsValue
+        return .init(request: request)
+    }
+
+    /// Adds a single boolean predicate to the request.
+    ///
+    /// ### Examples
+    ///  - `.where(\.isDownloaded)`.
+    func `where`(_ keyPath: KeyPath<Entity.FetchableMembers, FetchableMember<Entity, Bool>>) -> Builders.Request<Entity, PredicateStep, Output> {
+        request.predicate = Builders.Predicate<Entity>(identifier: Entity.fetchableMembers[keyPath: keyPath].identifier).nsValue
         return .init(request: request)
     }
 }
@@ -81,7 +91,8 @@ public extension Builders.Request where Step == TargetStep {
 
 public extension Builders.Request where Step: SortableStep {
 
-    /// Add a sort descriptor and additional ones to the request
+    /// Adds a sort descriptor and additional ones to the request.
+    ///
     /// ### Examples
     /// - `.sorted(by: .ascending(\.name))`
     /// - `.sorted(by: .ascending(\.name), .descending(\.age))`

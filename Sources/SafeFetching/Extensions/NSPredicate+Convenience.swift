@@ -5,9 +5,11 @@
 
 import CoreData
 
+// MARK: - Safe
+
 extension NSPredicate {
 
-    /// Safely build a predicate for a provided entity type
+    /// Safely builds a predicate for a provided entity type.
     public static func safe<Entity: NSManagedObject>(_ predicate: Builders.Predicate<Entity>) -> NSPredicate {
         predicate.nsValue
     }

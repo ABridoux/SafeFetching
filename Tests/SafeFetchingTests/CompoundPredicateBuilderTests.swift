@@ -5,104 +5,108 @@
 
 import SafeFetching
 import CoreData
-import XCTest
+import Testing
 
-// MARK: - CompoundPredicateTests
+// MARK: - CompoundPredicates
 
-final class CompoundPredicateTests: XCTestCase {
+@Suite("Compound Predicate")
+struct CompoundPredicates {}
 
-    func testAnd() {
-        testNSFormat(
-            predicate: \.score == 10 && \.name == "Toto",
-            expecting: #"score == 10 AND name == "Toto""#
-        )
+// MARK: - Simple
+
+extension CompoundPredicates {
+
+    @Test("And")
+    func and() {
+        testNSFormat({ $0.score == 10 && $0.name == "Toto" }, expecting: #"score == 10 AND name == "Toto""#)
     }
 
-    func testOr() {
-        testNSFormat(
-            predicate: \.score == 10 || \.name == "Toto",
-            expecting: #"score == 10 OR name == "Toto""#
-        )
+    @Test("Or")
+    func or() {
+        testNSFormat({ $0.score == 10 || $0.name == "Toto" }, expecting: #"score == 10 OR name == "Toto""#)
+    }
+}
+
+// MARK: - Mix
+
+extension CompoundPredicates {
+
+    @Test("And Prefix")
+    func andPrefix() {
+        testNSFormat({ $0.score == 10 && $0.name.hasPrefix("Toto") }, expecting: #"score == 10 AND name BEGINSWITH "Toto""#)
     }
 
-    func testAndPredicateRightValue() {
+    @Test("And Compound")
+    func andCompound() {
         testNSFormat(
-            predicate: \.score > 10 && \.name * .hasPrefix("Toto"),
-            expecting: #"score > 10 AND name BEGINSWITH "Toto""#
-        )
-    }
-
-    func testAndCompound() {
-        testNSFormat(
-            predicate: \.score > 10 && \.name * .hasPrefix("To") && \.name * .hasSuffix("ta"),
+            { $0.score > 10 && $0.name.hasPrefix("To") && $0.name.hasSuffix("ta") },
             expecting: #"(score > 10 AND name BEGINSWITH "To") AND name ENDSWITH "ta""#
         )
     }
 
-    func testCompoundPrecedence() {
+    @Test("Compound Precedence")
+    func precedence() {
         testNSFormat(
-            predicate: \.score > 10 && \.name * .hasPrefix("To") || \.name * .hasSuffix("ta"),
+            { $0.score > 10 && $0.name.hasPrefix("To") || $0.name.hasSuffix("ta") },
             expecting: #"(score > 10 AND name BEGINSWITH "To") OR name ENDSWITH "ta""#
         )
     }
 
-    func testCompoundBrackets() {
+    @Test("Compound Precedence")
+    func brackets() {
         testNSFormat(
-            predicate: \.score > 10 && (\.name * .hasPrefix("To") || \.name * .hasSuffix("ta")),
+            { $0.score > 10 && ($0.name.hasPrefix("To") || $0.name.hasSuffix("ta")) },
             expecting: #"score > 10 AND (name BEGINSWITH "To" OR name ENDSWITH "ta")"#
         )
     }
+}
 
-    func testAnd_SingleBoolean_Left() {
-        testNSFormat(
-            predicate: \.isDownloaded && \.name == "Toto",
-            expecting: #"isDownloaded == 1 AND name == "Toto""#
-        )
+// MARK: - Single Boolean
+
+extension CompoundPredicates {
+
+    @Test("And Single Boolean Right")
+    func andSingleBooleanRight() {
+        testNSFormat({ $0.isDownloaded && $0.name == "Toto" }, expecting: #"isDownloaded == 1 AND name == "Toto""#)
     }
 
-    func testOr_SingleBoolean_Left() {
-        testNSFormat(
-            predicate: \.isDownloaded || \.name == "Toto",
-            expecting: #"isDownloaded == 1 OR name == "Toto""#
-        )
-    }
-
-    func testAnd_SingleBoolean_Right() {
-        testNSFormat(
-            predicate: \.name == "Toto" && !\.isDownloaded,
-            expecting: #"name == "Toto" AND isDownloaded == 0"#
-        )
-    }
-
-    func testOr_SingleBoolean_Right() {
-        testNSFormat(
-            predicate: \.name == "Toto" || \.isDownloaded,
-            expecting: #"name == "Toto" OR isDownloaded == 1"#
-        )
+    @Test("Or Single Boolean Left")
+    func orSingleBooleanLeft() {
+        testNSFormat({ $0.name == "Toto" || $0.isDownloaded }, expecting: #"name == "Toto" OR isDownloaded == 1"#)
     }
 }
 
 // MARK: - Helpers
 
-extension CompoundPredicateTests {
+extension CompoundPredicates {
 
     func testNSFormat(
-        predicate: Builders.CompoundPredicate<StubEntity>,
-        expecting format: String
+        _ predicate: (StubEntity.FetchableMembers) -> Builders.Predicate<StubEntity>,
+        expecting format: String,
+        sourceLocation: SourceLocation = #_sourceLocation
     ) {
-        XCTAssertEqual(predicate.nsValue.predicateFormat, format)
+        #expect(predicate(StubEntity.fetchableMembers).nsValue.predicateFormat == format, sourceLocation: sourceLocation)
     }
 }
 
+
 // MARK: - Models
 
-extension CompoundPredicateTests {
+extension CompoundPredicates {
 
-    final class StubEntity: NSManagedObject {
+    final class StubEntity: NSManagedObject, Fetchable {
 
         @objc var score = 0.0
         @objc var name: String? = ""
         @objc var isDownloaded = false
+
+        static let fetchableMembers = FetchableMembers()
+
+        struct FetchableMembers {
+            let score = FetchableMember<StubEntity, Double>(identifier: "score")
+            let name = FetchableMember<StubEntity, String?>(identifier: "name")
+            let isDownloaded = FetchableMember<StubEntity, Bool>(identifier: "isDownloaded")
+        }
     }
 }
 

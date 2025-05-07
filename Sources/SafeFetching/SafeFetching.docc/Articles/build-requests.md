@@ -1,4 +1,4 @@
-# Build requests
+# Build Requests
 
 Learn how to build requests with the SafeFetching DSL.
 

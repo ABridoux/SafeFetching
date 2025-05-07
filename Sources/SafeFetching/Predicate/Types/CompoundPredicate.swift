@@ -5,9 +5,12 @@
 
 import CoreData
 
-extension Builders {
+// MARK: - CompoundPredicate
 
-    public final class CompoundPredicate<Entity>: Predicate<Entity> where Entity: NSManagedObject {
+extension Builders {
+    
+    /// Predicate with `&&` (AND) or `||` (OR) operator to evaluate two predicates.
+    public final class CompoundPredicate<Entity: Fetchable>: Predicate<Entity> where Entity: NSManagedObject {
 
         init(joinOperator: JoinOperator, leftPredicate: Predicate<Entity>, rightPredicate: Predicate<Entity>) {
             let nsValue: NSPredicate
@@ -23,6 +26,8 @@ extension Builders {
         }
     }
 }
+
+// MARK: - JoinOperator
 
 extension Builders {
 
@@ -58,23 +63,23 @@ public func || <E: NSManagedObject>(
 // MARK: - KeyPath <-> Predicate
 
 public func && <E: NSManagedObject>(
-    lhs: KeyPath<E, Bool>,
+    lhs: FetchableMember<E, Bool>,
     rhs: Builders.Predicate<E>
 ) -> Builders.CompoundPredicate<E> {
     Builders.CompoundPredicate(
         joinOperator: .and,
-        leftPredicate: .init(keyPath: lhs),
+        leftPredicate: Builders.Predicate<E>(identifier: lhs.identifier),
         rightPredicate: rhs
     )
 }
 
 public func || <E: NSManagedObject>(
-    lhs: KeyPath<E, Bool>,
+    lhs: FetchableMember<E, Bool>,
     rhs: Builders.Predicate<E>
 ) -> Builders.CompoundPredicate<E> {
     Builders.CompoundPredicate(
         joinOperator: .or,
-        leftPredicate: .init(keyPath: lhs),
+        leftPredicate: Builders.Predicate<E>(identifier: lhs.identifier),
         rightPredicate: rhs
     )
 }
@@ -83,22 +88,22 @@ public func || <E: NSManagedObject>(
 
 public func && <E: NSManagedObject>(
     lhs: Builders.Predicate<E>,
-    rhs: KeyPath<E, Bool>
+    rhs: FetchableMember<E, Bool>
 ) -> Builders.CompoundPredicate<E> {
     Builders.CompoundPredicate(
         joinOperator: .and,
         leftPredicate: lhs,
-        rightPredicate: .init(keyPath: rhs)
+        rightPredicate:  Builders.Predicate<E>(identifier: rhs.identifier)
     )
 }
 
 public func || <E: NSManagedObject>(
     lhs: Builders.Predicate<E>,
-    rhs: KeyPath<E, Bool>
+    rhs: FetchableMember<E, Bool>
 ) -> Builders.CompoundPredicate<E> {
     Builders.CompoundPredicate(
         joinOperator: .or,
         leftPredicate: lhs,
-        rightPredicate: .init(keyPath: rhs)
+        rightPredicate:  Builders.Predicate<E>(identifier: rhs.identifier)
     )
 }

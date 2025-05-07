@@ -7,10 +7,10 @@ import Foundation
 
 // MARK: - Protocol
 
-/// A step in the fetch request building process
+/// A step in the fetch request building process.
 public protocol RequestBuilderStep {}
 
-/// Identify a step where a sort step can be applied
+/// Identifies a step where a sort step can be applied.
 public protocol SortableStep {}
 
 
@@ -18,12 +18,12 @@ public protocol SortableStep {}
 
 // Creation → Target → Predicate → Sort
 
-/// The request has been created
+/// The request has been created.
 public enum CreationStep: RequestBuilderStep {}
 
-/// The request has a target (first, first nth, all)
+/// The request has a target (first, first nth, all).
 public enum TargetStep: RequestBuilderStep, SortableStep {}
 
-/// The request has a predicate
+/// The request has a predicate.
 public enum PredicateStep: RequestBuilderStep, SortableStep {}
 
