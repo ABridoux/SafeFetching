@@ -122,6 +122,7 @@ extension BooleanPredicates {
 // MARK: - Helpers
 
 extension BooleanPredicates {
+
     func testNSFormat(
         _ predicate: (StubEntity.FetchableMembers) -> Builders.Predicate<StubEntity>,
         expecting format: String,
