@@ -5,8 +5,9 @@
 
 // MARK: - FetchableMember
 
+/// Stores types and identifier of an attribute or relationship that can be used for fetching.
 @dynamicMemberLookup
-public struct FetchableMember<Entity, Value> {
+public struct FetchableMember<Entity: Fetchable, Value: DatabaseValue & DatabaseTestValue> {
 
     // MARK: Properties
 

@@ -7,6 +7,7 @@ import CoreData
 
 // MARK: - Fetchable
 
+/// Implemented by a NSManagedObject to offer fetching using SafeFetching API.
 public protocol Fetchable: NSManagedObject {
 
     associatedtype FetchableMembers

@@ -15,6 +15,10 @@ extension Builders {
 
         public typealias Formatter = (_ keyPath: String) -> String
 
+        // MARK: Constants
+
+        private static var inversionKeyword: String { "NOT" }
+
         // MARK: Property
 
         public let nsValue: NSPredicate
@@ -37,7 +41,7 @@ extension Builders.Predicate {
         value: TestValue,
         isInverted: Bool = false
     ) {
-        let format = "\(isInverted ? "NOT" : "") \(identifier) \(operatorString) \(value.testValue)"
+        let format = "\(isInverted ? Self.inversionKeyword : "") \(identifier) \(operatorString) \(value.testValue)"
         self.init(nsValue: NSPredicate(format: format))
     }
 
@@ -60,36 +64,16 @@ extension Builders.Predicate {
     }
 }
 
-// MARK: - KeyPath string init
+// MARK: - Inverse
 
-//extension Builders.Predicate {
-//
-//    public convenience init<TestValue: DatabaseTestValue>(
-//        keyPathString: Substring,
-//        operatorString: String,
-//        value: TestValue,
-//        isInverted: Bool = false
-//    ) {
-//        let format = "\(isInverted ? "NOT" : "") \(keyPathString) \(operatorString) \(value.testValue)"
-//        self.init(nsValue: NSPredicate(format: format))
-//    }
-//
-//    public convenience init(
-//        keyPathString: Substring,
-//        isInverted: Bool = false,
-//        formatter: @escaping Formatter
-//    ) {
-//
-//        let format = formatter(keyPathString)
-//        self.init(nsValue: NSPredicate(format: format))
-//    }
-//
-//    public convenience init(
-//        keyPathString: Substring,
-//        isInverted: Bool = false
-//    ) {
-//        let testValue = isInverted ? "0" : "1"
-//        let format = "\(keyPathString) == \(testValue)"
-//        self.init(nsValue: NSPredicate(format: format))
-//    }
-//}
+extension Builders.Predicate {
+
+    func inverted() -> Builders.Predicate<Entity> {
+        let newFormat = if nsValue.predicateFormat.hasPrefix(Self.inversionKeyword) {
+            String(nsValue.predicateFormat.dropFirst(Self.inversionKeyword.count))
+        } else {
+            "\(Self.inversionKeyword) \(nsValue.predicateFormat)"
+        }
+        return Builders.Predicate<Entity>(nsValue: NSPredicate(format: newFormat))
+    }
+}
