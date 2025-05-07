@@ -57,11 +57,17 @@ public extension Builders.PreRequest where Step == CreationStep {
 public extension Builders.Request where Step == TargetStep {
 
     /// Adds a predicate to the request.
+    func `where`<E: Fetchable>(_ predicate: Builders.Predicate<E>) -> Builders.Request<Entity, PredicateStep, Output> {
+        request.predicate = predicate.nsValue
+        return .init(request: request)
+    }
+
+    /// Adds a predicate to the request.
     ///
     /// ### Examples
     ///  - `.where { $0.name == "Endo" }`
     ///  - `.where { $0.age >= 20 && $0.score * .isIn(10...20) }`
-    func `where`(_ predicate: (Entity.FetchableMembers) -> Builders.Predicate<Entity>) -> Builders.Request<Entity, PredicateStep, Output> {
+    func `where`<E: Fetchable>(_ predicate: (Entity.FetchableMembers) -> Builders.Predicate<E>) -> Builders.Request<Entity, PredicateStep, Output> {
         request.predicate = predicate(Entity.fetchableMembers).nsValue
         return .init(request: request)
     }
@@ -71,7 +77,7 @@ public extension Builders.Request where Step == TargetStep {
     /// ### Examples
     ///  - `.where { $0.isDownloaded }`.
     ///  - `.where { !$0.isDownloaded }`.
-    func `where`(_ predicate: (Entity.FetchableMembers) -> FetchableMember<Entity, Bool>) -> Builders.Request<Entity, PredicateStep, Output> {
+    func `where`<E: Fetchable>(_ predicate: (Entity.FetchableMembers) -> FetchableMember<E, Bool>) -> Builders.Request<Entity, PredicateStep, Output> {
         request.predicate = Builders.Predicate<Entity>(identifier: predicate(Entity.fetchableMembers).identifier).nsValue
         return .init(request: request)
     }

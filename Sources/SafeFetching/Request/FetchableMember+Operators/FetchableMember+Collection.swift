@@ -7,7 +7,7 @@ import CoreData
 
 // MARK: - IsIN
 
-extension FetchableMember {
+extension FetchableMember where Value: DatabaseTestValue {
 
     /// Returns a predicate to check whether the attribute targeted by `self` is contained in the array.
     public func isIn(_ values: [Value]) -> Builders.Predicate<Entity> {

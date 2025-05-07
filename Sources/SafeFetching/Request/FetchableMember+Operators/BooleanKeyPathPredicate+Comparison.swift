@@ -7,7 +7,14 @@ import CoreData
 
 // MARK: - FetchableMember
 
-public func == <E: NSManagedObject, V: Equatable & DatabaseValue & DatabaseTestValue>(
+public func == <E: Fetchable, V: Equatable & DatabaseValue & DatabaseTestValue>(
+    lhs: FetchableMember<E, V>,
+    rhs: V
+) -> Builders.Predicate<E> {
+    Builders.Predicate<E>(identifier: lhs.identifier, operatorString: "==", value: rhs)
+}
+
+public func test<E: Fetchable, V: Equatable & DatabaseValue & DatabaseTestValue>(
     lhs: FetchableMember<E, V>,
     rhs: V
 ) -> Builders.Predicate<E> {
