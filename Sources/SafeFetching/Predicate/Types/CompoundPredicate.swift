@@ -10,16 +10,16 @@ import CoreData
 extension Builders {
     
     /// Predicate with `&&` (AND) or `||` (OR) operator to evaluate two predicates.
-    public final class CompoundPredicate<Entity: Fetchable>: Predicate<Entity> where Entity: NSManagedObject {
+    public final class CompoundPredicate<LeftEntity: Fetchable, RightEntity: Fetchable>: Predicate<LeftEntity> where LeftEntity: NSManagedObject, RightEntity: NSManagedObject {
 
-        init(joinOperator: JoinOperator, leftPredicate: Predicate<Entity>, rightPredicate: Predicate<Entity>) {
+        init(joinOperator: JoinOperator, leftPredicate: Predicate<LeftEntity>, rightPredicate: Predicate<RightEntity>) {
             let nsValue: NSPredicate
 
             switch joinOperator {
             case .and:
-                nsValue = NSCompoundPredicate(andPredicateWithSubpredicates: [leftPredicate, rightPredicate].map(\.nsValue))
+                nsValue = NSCompoundPredicate(andPredicateWithSubpredicates: [leftPredicate.nsValue, rightPredicate.nsValue])
             case .or:
-                nsValue = NSCompoundPredicate(orPredicateWithSubpredicates: [leftPredicate, rightPredicate].map(\.nsValue))
+                nsValue = NSCompoundPredicate(orPredicateWithSubpredicates: [leftPredicate.nsValue, rightPredicate.nsValue])
             }
 
             super.init(nsValue: nsValue)
@@ -38,10 +38,10 @@ extension Builders {
 
 // MARK: - Predicate <-> Predicate
 
-public func && <E: NSManagedObject>(
-    lhs: Builders.Predicate<E>,
-    rhs: Builders.Predicate<E>
-) -> Builders.CompoundPredicate<E> {
+public func && <LE: NSManagedObject, RE: NSManagedObject>(
+    lhs: Builders.Predicate<LE>,
+    rhs: Builders.Predicate<RE>
+) -> Builders.CompoundPredicate<LE, RE> {
     Builders.CompoundPredicate(
         joinOperator: .and,
         leftPredicate: lhs,
@@ -49,10 +49,10 @@ public func && <E: NSManagedObject>(
     )
 }
 
-public func || <E: NSManagedObject>(
-    lhs: Builders.Predicate<E>,
-    rhs: Builders.Predicate<E>
-) -> Builders.CompoundPredicate<E> {
+public func || <LE: NSManagedObject, RE: NSManagedObject>(
+    lhs: Builders.Predicate<LE>,
+    rhs: Builders.Predicate<RE>
+) -> Builders.CompoundPredicate<LE, RE> {
     Builders.CompoundPredicate(
         joinOperator: .or,
         leftPredicate: lhs,
@@ -62,48 +62,48 @@ public func || <E: NSManagedObject>(
 
 // MARK: - KeyPath <-> Predicate
 
-public func && <E: NSManagedObject>(
-    lhs: FetchableMember<E, Bool>,
-    rhs: Builders.Predicate<E>
-) -> Builders.CompoundPredicate<E> {
+public func && <LE: NSManagedObject, RE: NSManagedObject>(
+    lhs: FetchableMember<LE, Bool>,
+    rhs: Builders.Predicate<RE>
+) -> Builders.CompoundPredicate<LE, RE> {
     Builders.CompoundPredicate(
         joinOperator: .and,
-        leftPredicate: Builders.Predicate<E>(identifier: lhs.identifier),
+        leftPredicate: Builders.Predicate<LE>(identifier: lhs.identifier),
         rightPredicate: rhs
     )
 }
 
-public func || <E: NSManagedObject>(
-    lhs: FetchableMember<E, Bool>,
-    rhs: Builders.Predicate<E>
-) -> Builders.CompoundPredicate<E> {
+public func || <LE: NSManagedObject, RE: NSManagedObject>(
+    lhs: FetchableMember<LE, Bool>,
+    rhs: Builders.Predicate<RE>
+) -> Builders.CompoundPredicate<LE, RE> {
     Builders.CompoundPredicate(
         joinOperator: .or,
-        leftPredicate: Builders.Predicate<E>(identifier: lhs.identifier),
+        leftPredicate: Builders.Predicate<LE>(identifier: lhs.identifier),
         rightPredicate: rhs
     )
 }
 
 // MARK: - Predicate <-> KeyPath
 
-public func && <E: NSManagedObject>(
-    lhs: Builders.Predicate<E>,
-    rhs: FetchableMember<E, Bool>
-) -> Builders.CompoundPredicate<E> {
+public func && <LE: NSManagedObject, RE: NSManagedObject>(
+    lhs: Builders.Predicate<LE>,
+    rhs: FetchableMember<RE, Bool>
+) -> Builders.CompoundPredicate<LE, RE> {
     Builders.CompoundPredicate(
         joinOperator: .and,
         leftPredicate: lhs,
-        rightPredicate:  Builders.Predicate<E>(identifier: rhs.identifier)
+        rightPredicate:  Builders.Predicate<RE>(identifier: rhs.identifier)
     )
 }
 
-public func || <E: NSManagedObject>(
-    lhs: Builders.Predicate<E>,
-    rhs: FetchableMember<E, Bool>
-) -> Builders.CompoundPredicate<E> {
+public func || <LE: NSManagedObject, RE: NSManagedObject>(
+    lhs: Builders.Predicate<LE>,
+    rhs: FetchableMember<RE, Bool>
+) -> Builders.CompoundPredicate<LE, RE> {
     Builders.CompoundPredicate(
         joinOperator: .or,
         leftPredicate: lhs,
-        rightPredicate:  Builders.Predicate<E>(identifier: rhs.identifier)
+        rightPredicate:  Builders.Predicate<RE>(identifier: rhs.identifier)
     )
 }

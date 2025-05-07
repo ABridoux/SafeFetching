@@ -32,8 +32,9 @@ extension BooleanPredicates {
         let date = Date()
         testNSFormat({ $0.stubDate == date }, expecting: #"stubDate == CAST(\#(date.timeIntervalSinceReferenceDate), "NSDate")"#)
 
-        testNSFormat({ $0.stubRelationship == nil }, expecting: "stubRelationship == nil")
+        testNSFormat({ $0.stubOptionalRelationship == nil }, expecting: "stubOptionalRelationship == nil")
         testNSFormat({ $0.stubRelationship.property == "Toto" }, expecting: #"stubRelationship.property == "Toto""#)
+        testNSFormat({ $0.stubOptionalRelationship.property == "Toto" }, expecting: #"stubOptionalRelationship.property == "Toto""#)
     }
 
     @Test("Inversion")
@@ -119,12 +120,22 @@ extension BooleanPredicates {
     }
 }
 
+// MARK: - Relationship
+
+extension BooleanPredicates {
+
+    @Test("Relationship and Compound")
+    func relationshipAndCompound() {
+        testNSFormat({ $0.score == 1 && $0.stubRelationship.property == "Toto" }, expecting: #"score == 1 AND stubRelationship.property == "Toto""#)
+    }
+}
+
 // MARK: - Helpers
 
 extension BooleanPredicates {
 
-    func testNSFormat(
-        _ predicate: (StubEntity.FetchableMembers) -> Builders.Predicate<StubEntity>,
+    func testNSFormat<Entity: Fetchable>(
+        _ predicate: (StubEntity.FetchableMembers) -> Builders.Predicate<Entity>,
         expecting format: String,
         sourceLocation: SourceLocation = #_sourceLocation
     ) {
@@ -145,7 +156,8 @@ extension BooleanPredicates {
         @objc var stubRawOption: Int = 0
         @objc var stubDate = Date()
 
-        @objc var stubRelationship: StubEntity?
+        @objc var stubRelationship = StubEntityBis()
+        @objc var stubOptionalRelationship: StubEntityBis?
 
         var stubRaw: StubEnum? { StubEnum(rawValue: stubRawValue) }
         var stubForcedRaw: StubEnum { StubEnum(rawValue: stubRawValue)! }
@@ -164,7 +176,19 @@ extension BooleanPredicates {
             let stubForcedRaw = FetchableMember<StubEntity, StubEnum>(identifier: "stubForcedRaw")
             let stubOption = FetchableMember<StubEntity, StubOptionSet?>(identifier: "stubOption")
             let stubForcedOption = FetchableMember<StubEntity, StubOptionSet>(identifier: "stubForcedOption")
-            let stubRelationship = FetchableMember<StubEntity, StubEntity?>(identifier: "stubRelationship")
+            let stubRelationship = FetchableMember<StubEntity, StubEntityBis>(identifier: "stubRelationship")
+            let stubOptionalRelationship = FetchableMember<StubEntity, StubEntityBis?>(identifier: "stubOptionalRelationship")
+        }
+    }
+
+    final class StubEntityBis: NSManagedObject, Fetchable {
+
+        @objc var property: String? = ""
+
+        static let fetchableMembers = FetchableMembers()
+
+        struct FetchableMembers {
+            let property = FetchableMember<StubEntityBis, String?>(identifier: "property")
         }
     }
 }

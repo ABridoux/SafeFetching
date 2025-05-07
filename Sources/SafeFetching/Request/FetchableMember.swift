@@ -24,12 +24,16 @@ public struct FetchableMember<Entity: Fetchable, Value>: Sendable {
 
 extension FetchableMember {
 
-    public subscript(dynamicMember dynamicMember: KeyPath<Value.FetchableMembers?, FetchableMember<Entity, Value>>) -> FetchableMember<Entity, Value> where Value: Fetchable {
+    public subscript<V>(
+        dynamicMember dynamicMember: KeyPath<Value.FetchableMembers, FetchableMember<Value, V>>
+    ) -> FetchableMember<Value, V> where Value: Fetchable {
         let member = Value.fetchableMembers[keyPath: dynamicMember]
-        return FetchableMember<Entity, Value>(identifier: "\(identifier).\(member.identifier)")
+        return FetchableMember<Value, V>(identifier: "\(identifier).\(member.identifier)")
     }
 
-    public subscript<T, V>(dynamicMember dynamicMember: KeyPath<T.FetchableMembers, FetchableMember<Entity, V>>) -> FetchableMember<T, V> where T: Fetchable, Value == T? {
+    public subscript<T, V>(
+        dynamicMember dynamicMember: KeyPath<T.FetchableMembers, FetchableMember<T, V>>
+    ) -> FetchableMember<T, V> where T: Fetchable, Value == T? {
         let member = T.fetchableMembers[keyPath: dynamicMember]
         return FetchableMember<T, V>(identifier: "\(identifier).\(member.identifier)" )
     }
