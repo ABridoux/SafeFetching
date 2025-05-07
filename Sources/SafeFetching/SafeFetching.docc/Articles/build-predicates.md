@@ -1,4 +1,4 @@
-# Build predicates
+# Build Predicates
 
 Learn how to specify safe predicates safely when building a request.
 
@@ -12,11 +12,11 @@ final class StubEntity: NSManagedObject {
 }
 ```
 
-When building a request, the ``Builders/Request/where(_:)-6r3wg`` operation allows to specify a predicate. For a demonstration purpose in this article, predicates are specified after their implicit declaration.
+When building a request, the ``Builders/Request/where(_:)-((Entity.FetchableMembers)->Builders.Predicate<Entity>)`` operation allows to specify a predicate. For a demonstration purpose in this article, predicates are specified after their implicit declaration.
 
 ```swift
 let predicate: Builders.Predicate<StubEntity>
-predicate = \.name == "Toto"
+$0.name == "Toto"
 ```
 
 ## Comparison
@@ -26,79 +26,76 @@ Comparison operators can be used with key paths to specify a property in the ent
  ###### Equality
 
 ```swift
-predicate = \.name == "Toto"
+$0.name == "Toto"
 ```
 
 ###### Greater
 
 ```swift
-predicate = \.score > 20
+$0.score > 20
 ```
 
 ###### Greater than
 
 ```swift
-predicate = \.score >= 20
+$0.score >= 20
 ```
 
 ###### Less
 
 ```swift
-predicate = \.score < 20
+$0.score < 20
 ```
 
 ###### Less than
 
 ```swift
-predicate = \.score <= 20
+$0.score <= 20
 ```
 
 ##### Boolean
 
 ```swift
-predicate = \.isAdmin == true
+$0.isAdmin == true
 ```
 
 ```swift
-predicate = !\.isAdmin
+!$0.isAdmin
 ```
 
-The `where(_:)` function has convenient variations to take a single boolean like ``Builders/Request/where(_:)-5ar9o``.
+> Tip: The `where(_:)` function has convenient variations to take a single boolean like ``Builders/Request/where(_:)-3pukm``: 
+> 
+> `.where(\.isAdmin)`.
+
+
+## Advanced Operations
+It's possible to use the advanced operators offered by `NSPredicate` safely by specifying calling the dedicated function from the ``FetchableMember``.
+
+###### Has Prefix (String property)
 
 ```swift
-.where(\.isAdmin)
+$0.name.hasPrefix("Do")
 ```
 
-## Advanced operations
-It's possible to use the advanced operators offered by `NSPredicate` safely by specifying a key path followed by the junction operator `*` then the custom operator.
-
-###### Has prefix (string property)
+###### Contains (String property)
 
 ```swift
-predicate = \.name * .hasPrefix("Do")
-```
-
-###### Contains (string property)
-
-```swift
-predicate = \.name * .contains("Do")
+$0.name.contains("Do")
 ```
 
 Other examples on a numeric property
 
-###### Is in (numeric property)
+###### Is In (Numeric property)
 
 ```swift
-predicate = \.score * .isIn(10...20)
+$0.score.isIn(10...20)
 ```
 
-###### Matches a regular expression (string property)
+###### Matches a Regular Expression (string property)
 
 ```swift
-predicate = \.name * .matches("[A-Za-z]{3}")
+$0.name.matches("[A-Za-z]{3}")
 ```
-
-The advanced operators can be found with ``Builders/KeyPathPredicateRightValue``
 
 ## Compound
 It's possible to use the and `&&` and or `||` operators.
@@ -106,15 +103,15 @@ It's possible to use the and `&&` and or `||` operators.
 ##### And
 
 ```swift
-predicate = \.name == "Bruce"
-    && \.score * .isIn(20..<40)
+$0.name == "Bruce"
+    && $0.score.isIn(20..<40)
 ```
 
 ##### Or
 
 ```swift
-predicate = \.name == "Bruce"
-    || \.score * .isIn(20..<40)
+$0.name == "Bruce"
+    || $0.score.isIn(20..<40)
 ```
 
 ##### Single booleans
@@ -122,11 +119,11 @@ predicate = \.name == "Bruce"
 Compound predicates work with single booleans.
 
 ```swift
-predicate = \.isAdmin && \.score * .isIn(20..<40)
+$0.isAdmin && $0.score.isIn(20..<40)
 ```
 
 ```swift
-predicate = !\.isAdmin || \.score * .isIn(20..<40)
+!$0.isAdmin || $0.score.isIn(20..<40)
 ```
 
 ### And - And
@@ -134,28 +131,37 @@ predicate = !\.isAdmin || \.score * .isIn(20..<40)
 Composing predicates with compound predicates is done naturally
 
 ```swift
-predicate = \.score * .isIn(20..<40)
-    && \.name * .hasPrefix("Do")
-    && \.name * .hasSuffix("remi")
+$0.score.isIn(20..<40)
+    && $0.name.hasPrefix("Do")
+    && $0.name.hasSuffix("remi")
 ```
 
 ### And/Or precedence
 Since `&&` precedes `||` in boolean expressions, it's possible to enclose a predicate with brackets to prevent this behavior.
 
 ```swift
-predicate = \.score * .isIn(20..<40)
-    && (\.name * .hasPrefix("Do") || \.name * .hasSuffix("remi"))
+$0.score.isIn(20..<40)
+    && ($0.name.hasPrefix("Do") || $0.name.hasSuffix("remi"))
 ```
 
 ## RawRepresentable
-When a stored value is the `rawValue` of a `RawRepresentable` type, it's possible to define a ``StringKeyPath`` to be used in a predicate.
+`RawRepresentable` types can be used in the predicate when they conform to ``DatabaseValue`` (and thus can be stored as their raw value in the CoreData store).
 
-For instance with the enum `Color` and a `color: Color?` property and a static `StringKeyPath.color` value.
+For instance with the `Colors` enum:
 
 ```swift
-enum Color: String {
-    case red, blue, green
+struct Colors: String {
+    case red
+    case blue
+    case green
 }
+```
+
+Here are some possible predicates.
+
+```swift
+{ members in members.color == .red }
+{ members in members.color == color.isIn(.red, .blue) }
 ```
 
 ### Comparison predicates
@@ -163,28 +169,37 @@ enum Color: String {
 The same comparison predicates are available:
 
 ```swift
-predicate = .color == .red
+$0.color == .red
 ```
 
 ```swift
-predicate = .color != .red
+$0.color != .red
 ```
 
 ### Advanced predicates
-The `isIn` operator is also available
+The `isIn` operator is also available to check that a collection contains an attribute.
 
 ```swift
-predicate = .color * .isIn(.red, .blue)
+$0.color.isIn(.red, .blue)
 ```
 
 ```swift
-predicate = .color * .isNotIn([.red, .blue])
+$0.color.isNotIn([.red, .blue])
 ```
+
+It's also possible to use the `contains` function on the collection.
+
+```swift
+[.red, .blue].contains($0.color)
+```
+
+> Note: To use functions declared in Swift protocols, such as `Collection.contains(_:)`, or `OptionSet.intersects(_:)`, import SafeFetching with `@_spi(SafeFetching)`. This is to avoid cluttering
+other modules.
 
 ### OptionSet
 
 With an option set, it's advised to rather use the `intersects` predicates.
-With the colors now as an option set:
+For instance with the `Colors` option set:
 
 ```swift
 struct Colors: OptionSet {
@@ -199,23 +214,23 @@ struct Colors: OptionSet {
 The predicate is specified as follow:
 
 ```swift
-predicate = .color * .intersects([.red, .blue])
+$0.color.intersects([.red, .blue])
 ```
 
 ```swift
-predicate = .color * .doesNoIntersect([.red, .blue])
+[.red, .blue].intersects($0.color)
 ```
 
-### Comparing option set values
+### Comparing Option Set Values
 
-Note that
+Do note that
 ```swift
-predicate = .color * .intersects(.blue)
+$0.color.intersects(.blue)
 ```
 
 is only the same as
 
 ```swift
-predicate = .color == .blue
+$0.color == .blue
 ```
 *when the stored `color` is a single option*. 

@@ -9,7 +9,7 @@ import CoreData
 
 extension Builders {
 
-    /// `RequestBuilder` with no target
+    /// `RequestBuilder` with no target.
     public struct PreRequest<Entity: Fetchable, Step: RequestBuilderStep, Fetched: Fetchable> {
 
         // MARK: Properties

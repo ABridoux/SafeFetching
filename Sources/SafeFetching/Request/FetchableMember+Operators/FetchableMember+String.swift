@@ -9,6 +9,7 @@ import CoreData
 
 extension FetchableMember {
 
+    /// Returns a predicate to check whether the the attribute targeted by `self` begins with the specified prefix.
     public func hasPrefix(_ prefix: String, options: Builders.StringComparisonOptions? = nil) -> Builders.Predicate<Entity> {
         Builders.Predicate(
             identifier: identifier,
@@ -17,6 +18,7 @@ extension FetchableMember {
         )
     }
 
+    /// Returns a predicate to check whether the the attribute targeted by `self` ends with the specified suffix.
     public func hasSuffix(_ prefix: String, options: Builders.StringComparisonOptions? = nil) -> Builders.Predicate<Entity> {
         Builders.Predicate(
             identifier: identifier,
@@ -25,19 +27,21 @@ extension FetchableMember {
         )
     }
 
-    public func contains(_ prefix: String, options: Builders.StringComparisonOptions? = nil) -> Builders.Predicate<Entity> {
+    /// Returns a predicate to check whether the the attribute targeted by `self` contains the specified `other` string.
+    public func contains(_ other: String, options: Builders.StringComparisonOptions? = nil) -> Builders.Predicate<Entity> {
         Builders.Predicate(
             identifier: identifier,
             operatorString: options.transformOperator("CONTAINS"),
-            value: prefix
+            value: other
         )
     }
 
-    public func matches(_ prefix: String, options: Builders.StringComparisonOptions? = nil) -> Builders.Predicate<Entity> {
+    /// Returns a predicate to check whether the the attribute targeted by `self` is a match for the specified regular expression pattern.
+    public func matches(_ pattern: Builders.RegularExpressionPattern, options: Builders.StringComparisonOptions? = nil) -> Builders.Predicate<Entity> {
         Builders.Predicate(
             identifier: identifier,
             operatorString: options.transformOperator("MATCHES"),
-            value: prefix
+            value: pattern.stringValue
         )
     }
 }

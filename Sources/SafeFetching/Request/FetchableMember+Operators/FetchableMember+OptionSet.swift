@@ -9,6 +9,7 @@ import CoreData
 
 extension FetchableMember {
 
+    /// Returns a predicate to check whether the provided `value` intersects with the attribute targeted by `self`.
     public func intersects(_ value: Value) -> Builders.Predicate<Entity> {
         Builders.Predicate(
             identifier: identifier,
@@ -22,6 +23,7 @@ extension FetchableMember {
 
 extension OptionSet where Self: DatabaseValue {
 
+    /// Returns a predicate to check whether the `fetchableMember` intersects `self`.
     @_spi(SafeFetching)
     public func intersects<Entity: Fetchable>(_ fetchableMember: FetchableMember<Entity, Self>) -> Builders.Predicate<Entity> {
         fetchableMember.intersects(self)

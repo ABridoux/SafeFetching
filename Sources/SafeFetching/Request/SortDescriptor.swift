@@ -7,7 +7,7 @@ import CoreData
 
 // MARK: - SortDescriptor
 
-/// Wrapper around `NSSortDescriptor`
+/// Wrapper around `NSSortDescriptor`.
 public struct SortDescriptor<Entity: Fetchable> {
     public let descriptor: NSSortDescriptor
 }

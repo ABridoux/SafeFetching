@@ -8,16 +8,16 @@ import CoreData
 
 // MARK: - DatabaseValueIdentification
 
-/// Stub type with internal init to ensure no conformance to ``DatabaseValue`` can be added outside of the package
+/// Stub type with internal init to ensure no conformance to ``DatabaseValue`` can be added outside of the package.
 public struct DatabaseValueIdentification {
     init() {}
 }
 
 // MARK: - DatabaseValue
 
-/// A type that can be used for an attribute in a predicate when fetching a CoreData store
+/// A type that can be used for an attribute in a predicate when fetching a CoreData store.
 ///
-/// Used to constraint some fetch functions to use only a valid storable type
+/// Used to constraint some fetch functions to use only a valid storable type.
 public protocol DatabaseValue {
 
     static var identification: DatabaseValueIdentification { get }

@@ -8,7 +8,8 @@ import CoreData
 // MARK: - CompoundPredicate
 
 extension Builders {
-
+    
+    /// Predicate with `&&` (AND) or `||` (OR) operator to evaluate two predicates.
     public final class CompoundPredicate<Entity: Fetchable>: Predicate<Entity> where Entity: NSManagedObject {
 
         init(joinOperator: JoinOperator, leftPredicate: Predicate<Entity>, rightPredicate: Predicate<Entity>) {

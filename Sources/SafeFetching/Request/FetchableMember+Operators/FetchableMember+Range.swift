@@ -9,6 +9,7 @@ import CoreData
 
 extension FetchableMember where Value: Numeric & Comparable {
 
+    /// Returns a predicate to check whether the provided `range` contains the attribute targeted by `self`.
     public func isIn(_ range: ClosedRange<Value>) -> Builders.Predicate<Entity> {
         Builders.Predicate(
             identifier: identifier,
@@ -17,6 +18,7 @@ extension FetchableMember where Value: Numeric & Comparable {
         )
     }
 
+    /// Returns a predicate to check whether the provided `range` contains the attribute targeted by `self`.
     public func isIn(_ range: Range<Value>) -> Builders.Predicate<Entity> {
         let format = "\(range.lowerBound) <= \(identifier) AND \(identifier) < \(range.upperBound)"
         return Builders.Predicate<Entity>(nsValue: NSPredicate(format: format))
@@ -27,6 +29,7 @@ extension FetchableMember where Value: Numeric & Comparable {
 
 extension ClosedRange where Bound: DatabaseValue & DatabaseTestValue & Numeric {
 
+    /// Returns a predicate to check whether the provided `fetchableMember` is contained in `self`.
     @_spi(SafeFetching)
     public func contains<Entity: Fetchable>(_ fetchableMember: FetchableMember<Entity, Bound>) -> Builders.Predicate<Entity> {
         fetchableMember.isIn(self)
@@ -37,6 +40,7 @@ extension ClosedRange where Bound: DatabaseValue & DatabaseTestValue & Numeric {
 
 extension Range where Bound: DatabaseValue & DatabaseTestValue & Numeric {
 
+    /// Returns a predicate to check whether the provided `fetchableMember` is contained in `self`.
     @_spi(SafeFetching)
     public func contains<Entity: Fetchable>(_ fetchableMember: FetchableMember<Entity, Bound>) -> Builders.Predicate<Entity> {
         fetchableMember.isIn(self)

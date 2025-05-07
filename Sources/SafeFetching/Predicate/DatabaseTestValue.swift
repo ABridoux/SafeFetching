@@ -5,13 +5,13 @@
 
 import CoreData
 
-/// A type that can be used in a predicate as a test value
+/// A type that can be used in a predicate as a test value.
 ///
 /// - Default implementations are provided to ensure formatting.
-/// - Implementation for `NSManagedObject`  is provided (for the relationships) and will use the [`objectID`](https://developer.apple.com/documentation/coredata/nsmanagedobject/1506848-objectid) property
+/// - Implementation for `NSManagedObject`  is provided (for the relationships) and will use the [`objectID`](https://developer.apple.com/documentation/coredata/nsmanagedobject/1506848-objectid) property.
 public protocol DatabaseTestValue {
 
-    /// Formatted string value that can be used in the format of a `NSPredicate`
+    /// Formatted string value that can be used in the format of a `NSPredicate`.
     var testValue: String { get }
 }
 
