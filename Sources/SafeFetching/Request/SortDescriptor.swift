@@ -5,47 +5,71 @@
 
 import CoreData
 
+// MARK: - SortDescriptor
+
 /// Wrapper around `NSSortDescriptor`
-public struct SortDescriptor<Entity: NSManagedObject> {
+public struct SortDescriptor<Entity: Fetchable> {
     public let descriptor: NSSortDescriptor
 }
 
-public extension SortDescriptor {
+// MARK: - Ascending
 
-    // MARK: Ascending
+extension SortDescriptor {
 
-    static func ascending<Value: Comparable>(_ keyPath: KeyPath<Entity, Value>) -> SortDescriptor {
-        SortDescriptor(descriptor: .init(key: String(keyPath.label), ascending: true))
+    public static func ascending<Value: Comparable>(
+        _ keyPath: KeyPath<Entity.FetchableMembers, FetchableMember<Entity, Value>>,
+        comparator: Comparator? = nil
+    ) -> SortDescriptor {
+        let identifier = Entity.fetchableMembers[keyPath: keyPath].identifier
+        let descriptor = if let comparator {
+            NSSortDescriptor(key: identifier, ascending: true, comparator: comparator)
+        } else {
+            NSSortDescriptor(key: identifier, ascending: true)
+        }
+        return SortDescriptor(descriptor: descriptor)
     }
 
-    static func ascending<Value: Comparable>(_ keyPath: KeyPath<Entity, Value?>) -> SortDescriptor {
-        SortDescriptor(descriptor: .init(key: String(keyPath.label), ascending: true))
-    }
-
-    static func ascending<Value>(_ keyPath: KeyPath<Entity, Value>, using comparator: @escaping Comparator) -> SortDescriptor {
-        SortDescriptor(descriptor: .init(key: String(keyPath.label), ascending: true, comparator: comparator))
-    }
-
-    static func ascending<Value>(_ keyPath: KeyPath<Entity, Value>, using selector: Selector) -> SortDescriptor {
-        SortDescriptor(descriptor: .init(key: String(keyPath.label), ascending: true, selector: selector))
-    }
-
-    // MARK: Descending
-
-    static func descending<Value: Comparable>(_ keyPath: KeyPath<Entity, Value>) -> SortDescriptor {
-        SortDescriptor(descriptor: .init(key: String(keyPath.label), ascending: false))
-    }
-
-    static func descending<Value: Comparable>(_ keyPath: KeyPath<Entity, Value?>) -> SortDescriptor {
-        SortDescriptor(descriptor: .init(key: String(keyPath.label), ascending: false))
-    }
-
-    static func descending<Value>(_ keyPath: KeyPath<Entity, Value>, using comparator: @escaping Comparator) -> SortDescriptor {
-        SortDescriptor(descriptor: .init(key: String(keyPath.label), ascending: false, comparator: comparator))
-    }
-
-    static func descending<Value>(_ keyPath: KeyPath<Entity, Value>, using selector: Selector) -> SortDescriptor {
-        SortDescriptor(descriptor: .init(key: String(keyPath.label), ascending: false, selector: selector))
+    public static func ascending<Value: Comparable>(
+        _ keyPath: KeyPath<Entity.FetchableMembers, FetchableMember<Entity, Value?>>,
+        comparator: Comparator? = nil
+    ) -> SortDescriptor {
+        let identifier = Entity.fetchableMembers[keyPath: keyPath].identifier
+        let descriptor = if let comparator {
+            NSSortDescriptor(key: identifier, ascending: true, comparator: comparator)
+        } else {
+            NSSortDescriptor(key: identifier, ascending: true)
+        }
+        return SortDescriptor(descriptor: descriptor)
     }
 }
 
+// MARK: - Descending
+
+extension SortDescriptor {
+
+    public static func descending<Value: Comparable>(
+        _ keyPath: KeyPath<Entity.FetchableMembers, FetchableMember<Entity, Value>>,
+        comparator: Comparator? = nil
+    ) -> SortDescriptor {
+        let identifier = Entity.fetchableMembers[keyPath: keyPath].identifier
+        let descriptor = if let comparator {
+            NSSortDescriptor(key: identifier, ascending: false, comparator: comparator)
+        } else {
+            NSSortDescriptor(key: identifier, ascending: false)
+        }
+        return SortDescriptor(descriptor: descriptor)
+    }
+
+    public static func descending<Value: Comparable>(
+        _ keyPath: KeyPath<Entity.FetchableMembers, FetchableMember<Entity, Value?>>,
+        comparator: Comparator? = nil
+    ) -> SortDescriptor {
+        let identifier = Entity.fetchableMembers[keyPath: keyPath].identifier
+        let descriptor = if let comparator {
+            NSSortDescriptor(key: identifier, ascending: false, comparator: comparator)
+        } else {
+            NSSortDescriptor(key: identifier, ascending: false)
+        }
+        return SortDescriptor(descriptor: descriptor)
+    }
+}

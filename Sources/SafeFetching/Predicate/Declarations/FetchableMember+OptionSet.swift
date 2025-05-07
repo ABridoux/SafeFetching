@@ -22,6 +22,7 @@ extension FetchableMember {
 
 extension OptionSet where Self: DatabaseValue {
 
+    @_spi(SafeFetching)
     public func intersects<Entity: Fetchable>(_ fetchableMember: FetchableMember<Entity, Self>) -> Builders.Predicate<Entity> {
         fetchableMember.intersects(self)
     }

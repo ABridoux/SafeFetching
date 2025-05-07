@@ -38,6 +38,7 @@ extension FetchableMember {
 
 extension Collection where Element: DatabaseValue & DatabaseTestValue {
 
+    @_spi(SafeFetching)
     public func contains<Entity: Fetchable>(
         _ fetchableMember: FetchableMember<Entity, Element>
     ) -> Builders.Predicate<Entity> {
