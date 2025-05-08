@@ -17,8 +17,9 @@ extension NSPredicate {
     /// Safely builds a predicate for a provided entity type.
     public static func safe<SourceEntity: Fetchable, TargetEntity: Fetchable>(
         on _: SourceEntity.Type,
-        _ predicate: (SourceEntity.FetchableMembers
-    ) -> Builders.Predicate<TargetEntity>) -> NSPredicate {
-        predicate(SourceEntity.fetchableMembers).nsValue
+        _ predicate: (SourceEntity.FetchableMembers) -> Builders.Predicate<TargetEntity>
+    ) -> NSPredicate {
+        let predicate = predicate(SourceEntity.fetchableMembers)
+        return predicate.nsValue
     }
 }

@@ -86,6 +86,8 @@ extension Optional: DatabaseTestValue where Wrapped: DatabaseTestValue {
     }
 }
 
+// MARK: - NSManagedObject
+
 extension NSManagedObject: DatabaseTestValue {
 
     public var testValue: String { String(describing: objectID) }
@@ -119,5 +121,14 @@ extension ClosedRange: DatabaseTestValue where Bound: Numeric {
 
     public var testValue: String {
         "{\(lowerBound), \(upperBound)}"
+    }
+}
+
+// MARK: - ObjectID
+
+extension NSManagedObjectID: DatabaseTestValue {
+
+    public var testValue: String {
+        String(describing: self)
     }
 }
