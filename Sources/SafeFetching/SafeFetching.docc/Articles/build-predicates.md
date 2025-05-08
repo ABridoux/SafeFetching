@@ -271,6 +271,23 @@ $0.pet.name == "Minouche"
 ```
 > Note: Even if `pet` is an optional `Pet` relationship, SafeFetching has no concerns about it when specifying comparison. Optionals are not relevant when writing a `NSPredicate` string format to fetch a CoreData store (unless of course when checking nullity).
 
+### NSManagedObject 
+Testing a relationship against another entity is supported (it then uses the `objectID`).
+
+```swift
+// otherPet: Pet
+$0.pet == otherPet
+```
+
+
+## NSManagedObject Comparisons
+Comparison of self is supported (it then uses the `objectID`).
+
+```swift
+// someUser: User
+$0 == someUser
+```
+
 ## Standalone predicate
 Using a `where(_:)` function is not the only way to make predicate.
 

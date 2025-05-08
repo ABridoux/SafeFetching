@@ -53,6 +53,36 @@ public prefix func ! <E: NSManagedObject>(rhs: FetchableMember<E, Bool>) -> Buil
     Builders.Predicate<E>(identifier: rhs.identifier, isInverted: true)
 }
 
+// MARK: - NSManagedObject
+
+public func == <E: Fetchable, V: NSManagedObject>(
+    lhs: FetchableMember<E, V>,
+    rhs: V
+) -> Builders.Predicate<E> {
+    Builders.Predicate<E>(identifier: lhs.identifier, operatorString: "==", value: rhs)
+}
+
+public func == <E: Fetchable, V: NSManagedObject>(
+    lhs: FetchableMember<E, V?>,
+    rhs: V
+) -> Builders.Predicate<E> {
+    Builders.Predicate<E>(identifier: lhs.identifier, operatorString: "==", value: rhs)
+}
+
+public func != <E: Fetchable, V: NSManagedObject>(
+    lhs: FetchableMember<E, V>,
+    rhs: V
+) -> Builders.Predicate<E> {
+    Builders.Predicate<E>(identifier: lhs.identifier, operatorString: "!=", value: rhs)
+}
+
+public func != <E: Fetchable, V: NSManagedObject>(
+    lhs: FetchableMember<E, V?>,
+    rhs: V
+) -> Builders.Predicate<E> {
+    Builders.Predicate<E>(identifier: lhs.identifier, operatorString: "!=", value: rhs)
+}
+
 // MARK: - Predicate
 
 public prefix func ! <E: NSManagedObject>(rhs: Builders.Predicate<E>) -> Builders.Predicate<E> {
@@ -68,4 +98,22 @@ public func == <E: NSManagedObject>(
     } else {
         return lhs
     }
+}
+
+// MARK: - Fetchable Members
+
+public func == <E: Fetchable>(lhs: E.FetchableMembers, rhs: E) -> Builders.Predicate<E> {
+    Builders.Predicate(
+        identifier: "self",
+        operatorString: "==",
+        value: rhs
+    )
+}
+
+public func != <E: Fetchable>(lhs: E.FetchableMembers, rhs: E) -> Builders.Predicate<E> {
+    Builders.Predicate(
+        identifier: "self",
+        operatorString: "!=",
+        value: rhs
+    )
 }

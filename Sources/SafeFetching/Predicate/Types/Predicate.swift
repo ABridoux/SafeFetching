@@ -45,6 +45,15 @@ extension Builders.Predicate {
         self.init(nsValue: NSPredicate(format: format))
     }
 
+    public convenience init<TestValue: NSManagedObject>(
+        identifier: String,
+        operatorString: String,
+        value: TestValue,
+        isInverted: Bool = false
+    ) {
+        self.init(nsValue: NSPredicate(format: "\(identifier) \(operatorString) %@", value.objectID))
+    }
+
     public static func predicate(_ predicate: (Entity.FetchableMembers) -> Builders.Predicate<Entity>) -> Builders.Predicate<Entity> {
         predicate(Entity.fetchableMembers)
     }
