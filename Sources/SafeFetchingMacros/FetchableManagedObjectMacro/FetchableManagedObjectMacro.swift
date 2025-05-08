@@ -46,7 +46,7 @@ extension FetchableManagedObjectMacro {
         accessModifier: DeclModifierSyntax,
         context: some MacroExpansionContext
     ) throws -> StructDeclSyntax {
-        try StructDeclSyntax("\(accessModifier) struct FetchableMembers") {
+        try StructDeclSyntax("\(accessModifier) struct FetchableMembers: Sendable") {
             for member in groupDeclaration.memberBlock.members {
                 if
                     let variableDecl = member.decl.as(VariableDeclSyntax.self),

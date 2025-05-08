@@ -39,7 +39,7 @@ extension FetchableManagedObjectMacroTests {
                     FetchableMembers()
                 }
 
-                internal struct FetchableMembers {
+                internal struct FetchableMembers: Sendable {
                     internal let title = FetchableMember<Song, String>(identifier: "title")
                 }
             }
@@ -73,7 +73,7 @@ extension FetchableManagedObjectMacroTests {
                     FetchableMembers()
                 }
 
-                public struct FetchableMembers {
+                public struct FetchableMembers: Sendable {
                     public let title = FetchableMember<Song, String>(identifier: "title")
                 }
             }
@@ -113,7 +113,7 @@ extension FetchableManagedObjectMacroTests {
                     FetchableMembers()
                 }
 
-                internal struct FetchableMembers {
+                internal struct FetchableMembers: Sendable {
                     internal let title = FetchableMember<Song, String>(identifier: "title")
                 }
             }
@@ -151,7 +151,7 @@ extension FetchableManagedObjectMacroTests {
                     FetchableMembers()
                 }
 
-                internal struct FetchableMembers {
+                internal struct FetchableMembers: Sendable {
                     internal let title = FetchableMember<Song, String>(identifier: "title")
                 }
             }
@@ -214,7 +214,7 @@ extension FetchableManagedObjectMacroTests {
                     FetchableMembers()
                 }
 
-                internal struct FetchableMembers {
+                internal struct FetchableMembers: Sendable {
                 }
             }
 

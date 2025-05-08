@@ -5,14 +5,14 @@ Learn how to specify safe predicates safely when building a request.
 Examples in the article refer to this entity.
 
 ```swift
+@FetchableManagedObject
 final class StubEntity: NSManagedObject {
-
     @NSManaged var score = 0.0
-    @NSManaged  var name: String? = ""
+    @NSManaged var name: String? = ""
 }
 ```
 
-When building a request, the ``Builders/Request/where(_:)-((Entity.FetchableMembers)->Builders.Predicate<Entity>)`` operation allows to specify a predicate. For a demonstration purpose in this article, predicates are specified after their implicit declaration.
+When building a request, the ``Builders/Request/where(_:)-5uzqj`` operation allows to specify a predicate. For a demonstration purpose in this article, predicates are specified after their implicit declaration.
 
 ```swift
 let predicate: Builders.Predicate<StubEntity>
@@ -56,16 +56,18 @@ $0.score <= 20
 ##### Boolean
 
 ```swift
+$0.isAdmin
+```
+
+```swift
 $0.isAdmin == true
 ```
+
+Inversion is supported.
 
 ```swift
 !$0.isAdmin
 ```
-
-> Tip: The `where(_:)` function has convenient variations to take a single boolean like ``Builders/Request/where(_:)-3pukm``: 
-> 
-> `.where(\.isAdmin)`.
 
 
 ## Advanced Operations
@@ -234,3 +236,42 @@ is only the same as
 $0.color == .blue
 ```
 *when the stored `color` is a single option*. 
+
+## Relationships
+Predicates in SafeFetching support relationships. Given the two entities:
+
+```swift
+@FetchableManagedObject
+final class StubEntity: NSManagedObject {
+    @NSManaged var score = 0.0
+    @NSManaged var pet: Pet?
+}
+
+@FetchableManagedObject
+final class Pet: NSManagedObject {
+    @NSManaged var name: String 
+}
+```
+The following predicate can be expressed for the `User` entity.
+
+```swift
+$0.pet.name == "Minouche"
+```
+> Note: Even if `pet` is an optional `Pet` relationship, SafeFetching has no concerns about it when specifying comparison. Optionals are not relevant when writing a `NSPredicate` string format to fetch a CoreData store (unless of course when checking nullity).
+
+## Standalone predicate
+Using a `where(_:)` function is not the only way to make predicate.
+
+### NSPredicate convenience
+If needed, a predicate can be specified to make a `NSPredicate`.
+
+```swift
+let predicate: NSPredicate = .safe(on: User.self) { $0.score > 10 }
+```
+
+### Static
+Also, a predicate can be provided with ``Builders/Predicate/predicate(_:)``.
+
+```swift
+let predicate: Builders.Predicate<User> = .predicate { $0.score > 10 }
+```

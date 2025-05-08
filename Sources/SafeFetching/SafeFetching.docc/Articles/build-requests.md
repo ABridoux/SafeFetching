@@ -2,25 +2,20 @@
 
 Learn how to build requests with the SafeFetching DSL.
 
-Examples in the article refer to this entity.
+Examples in the article refer to this `User`class.
 
 ```swift
-final class StubEntity: NSManagedObject {
-
+@FetchableManagedObject
+final class User: NSManagedObject {
     @NSManaged var score = 0.0
-    @NSManaged  var name: String? = ""
+    @NSManaged var name: String? = ""
+    @NSManaged var isAdmin: Bool
 }
 ```
 
 ## Setup
 
-To be able to use the DSL for an entity, the only required step is to make it conform to `Fetchable`.
-
-```swift
-extension StubEntity: Fetchable {}
-```
-
-Then the request creation starts with `StubEntity.request()`.
+To be able to use the DSL for an entity it is needed to make it conform to `Fetchable` which is done here using the ``FetchableManagedObject()`` macro. Then the request creation starts with `User.request()`.
 
 ## Steps
 There are four steps (some are optional) to build a request:
@@ -29,7 +24,7 @@ There are four steps (some are optional) to build a request:
 - specify sorts (optional)
 - get either the build request `NSFetchRequest` with ``Builders/Request/nsValue`` or execute it directly with ``Builders/Request/fetch(in:)``
 
-Additionally, the "setting" can be performed.
+Additionally, the "setting" step can be performed to set a property of `NSFetchRequest` before using it for fetching the store.
 
 ### Target
 
@@ -37,92 +32,115 @@ Additionally, the "setting" can be performed.
 To target all entities (which is the default behavior of CoreData's fetch requests), use the ``Builders/PreRequest/all(after:)`` function.
 
 ```swift
-StubEntity.request()
+User.request()
     .all()
 ```
 
-To ignore the first nth results:
+To ignore the first nth results.
 
 ```swift
-StubEntity.request()
+User.request()
     .all(after: 10)
 ```
 
 ##### First
-To target the first entity meeting the criteria, use ``Builders/PreRequest/first()`` and ``Builders/PreRequest/first(nth:after:)``
+To target the first User meeting the criteria, use ``Builders/PreRequest/first()`` and ``Builders/PreRequest/first(nth:after:)``
 
 ```swift
-StubEntity.request()
+User.request()
     .first()
 ```
 
-Ignore the first nth results
+Ignore the first nth results.
 
 ```swift
-StubEntity.request()
+User.request()
     .first(after: 10)
 ```
 
-Limit the results
+Limit the results.
 
 ```swift
-StubEntity.request()
+User.request()
     .first(20)
 ```
 
-Limit the results and ignore the nth first
+Limit the results and ignore the nth first.
 
 ```swift
-StubEntity.request()
+User.request()
     .first(20, after: 10)
 ```
 
 ### Predicate
 
-Specify a predicate with the ``Builders/Request/where(_:)-5ar9o`` function after the target.
+Specify a predicate with one of the `where(_:)` functions after the target.
 
 ```swift
-StubEntity.request()
+User.request()
     .all()
-    .where(\.score > 20)
+    .where { $0.score > 20 }
 ```
 
+Compound predicates are also supported.
+
 ```swift
-StubEntity.request()
+User.request()
     .all()
-    .where(\.score > 20
-        && \.name * .contains("dore")
-    )
+    .where { $0.score > 20 && $0.name.contains("dore") }
+```
+
+Single boolean values can be used.
+
+```swift
+User.request()
+    .all()
+    .where { $0.isAdmin }
+```
+
+> Tip: The `where(_:)` function has convenient variations to take a single boolean like ``Builders/Request/where(_:)-3pukm``: 
+> 
+> `.where(\.isAdmin)`.
+
+Naming the parameter can sometimes be preferable for longer predicates.
+
+```swift
+User.request()
+    .all()
+    .where { members in 
+        members.score > 20 && members.name.contains("dore")
+        || !members.isAdmin
+    }
 ```
 
 To learn more about building predicates, you can read <doc:build-predicates>.
 
 ### Sort
-After the target has been specified, one sort or more can be set to the request with ``Builders/Request/sorted(by:_:)``
+After the target has been specified, one sort or more can be set to the request with ``Builders/Request/sorted(by:_:)``.
 
 ```swift
-StubEntity.request()
+User.request()
     .all()
     .sorted(by: .ascending(\.name))
 ```
 
 ```swift
-StubEntity.request()
+User.request()
     .all()
     .sorted(by: .ascending(\.name), .descending(\.score))
 ```
 
 ### Additional settings
-If needed, it's possible to assign a value to the request being built with ``Builders/Request/setting(_:to:)`` which allows to keep the functional appearance.
+If needed, it's possible to assign a value to a property of the request being built with ``Builders/Request/setting(_:to:)``.
 
 ```swift
-StubEntity.request()
+User.request()
     .all()
     .setting(\.returnsDistinctResults, to: true)
 ```
 
 ## Steps order
-Whereas some steps cannot be performed in a random order, others like the "setting" can be used any time after the target is specified. That said, it's advised to keep the order used to expose the steps:
+Whereas some steps cannot be performed in a random order, others like the "setting" can be used any time after the target is specified. That said, it's advised to keep the following order:
 
 - target
 - predicate
@@ -132,9 +150,9 @@ Whereas some steps cannot be performed in a random order, others like the "setti
 For instance, here is a request with all the possible/required steps.
 
 ```swift
-StubEntity.request()
+User.request()
     .all(after: 10)
-    .where(\.score >= 15 || \.name != "Winner")
+    .where { $0.score >= 15 || $0.name != "Winner" }
     .sorted(by: .ascending(\.score), .descending(\.name))
     .setting(\.returnsDistinctResults, to: true)
     .nsValue
