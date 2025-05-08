@@ -61,7 +61,7 @@ try User.request()
     .fetch(in: context) // [User]
 ```
 
-The `where(_:)` takes expects a predicate built on the provided `User.FetchableMembers` that is then converted to a `NSPredicate` with the appropriate format. The predicate is built using operators overloads or extensions on `FetchableMember`. Write more complex predicates still feels natural.
+The `where(_:)` expects a predicate built on the provided `User.FetchableMembers` that is then converted to a `NSPredicate` with the appropriate format. The predicate is built using operators overloads or extensions on `FetchableMember`. Write more complex predicates still feels natural.
 
 ```swift
 try User.request()

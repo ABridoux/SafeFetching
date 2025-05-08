@@ -79,6 +79,12 @@ It's possible to use the advanced operators offered by `NSPredicate` safely by s
 $0.name.hasPrefix("Do")
 ```
 
+``Builders/StringComparisonOptions`` can be provided to the call.
+
+```swift
+$0.name.hasPrefix("Do", options: .caseInsensitive)
+```
+
 ###### Contains (String property)
 
 ```swift
@@ -91,6 +97,12 @@ Other examples on a numeric property
 
 ```swift
 $0.score.isIn(10...20)
+```
+
+> Tip: By importing `SafeFetching` with `@_spi(SafeFetching)`, more convenience functions are available such as extensions on collections to make the predicates even closer to Swift syntax, while still generating the proper format for `NSPredicate`.
+
+```swift
+(10...20).contains($0.score)
 ```
 
 ###### Matches a Regular Expression (string property)
