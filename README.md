@@ -47,7 +47,7 @@ User.request()
     .nsValue
 ```
 
-More about that in the [documentation]((https://abridoux.github.io/SafeFetching/documentation/safefetching/).
+More about that in the [documentation](https://abridoux.github.io/SafeFetching/documentation/safefetching/).
 
 ## `NSPredicate`, `Predicate`
 Why not using `Predicate` directly? Two reasons:
