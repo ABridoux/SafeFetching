@@ -74,6 +74,12 @@ extension CompoundPredicates {
     func orSingleBooleanLeft() {
         testNSFormat({ $0.name == "Toto" || $0.isDownloaded }, expecting: #"name == "Toto" OR isDownloaded == 1"#)
     }
+
+    @Test("Both Boolean FetchableMember")
+    func bothBooleanFetchableMember() {
+        testNSFormat({ $0.isDownloaded && $0.isDownloaded }, expecting: #"isDownloaded == 1 AND isDownloaded == 1"#)
+        testNSFormat({ $0.isDownloaded || $0.isDownloaded }, expecting: #"isDownloaded == 1 OR isDownloaded == 1"#)
+    }
 }
 
 // MARK: - Helpers

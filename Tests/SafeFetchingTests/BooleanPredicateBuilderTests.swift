@@ -130,6 +130,20 @@ extension BooleanPredicates {
     }
 }
 
+// MARK: - NSPredicate
+
+extension BooleanPredicates {
+
+    @Test("NSPredicate.safe")
+    func nsPredicateSafe() {
+        var predicate = NSPredicate.safe(on: StubEntity.self) { $0.isAdmin }
+        #expect(predicate.predicateFormat == "isAdmin == 1")
+
+        predicate = NSPredicate.safe(on: StubEntity.self) { $0.stubRelationship.isDownloaded }
+        #expect(predicate.predicateFormat == "stubRelationship.isDownloaded == 1")
+    }
+}
+
 // MARK: - Helpers
 
 extension BooleanPredicates {
@@ -184,11 +198,13 @@ extension BooleanPredicates {
     final class StubEntityBis: NSManagedObject, Fetchable {
 
         @objc var property: String? = ""
+        @objc var isDownloaded: Bool = false
 
         static let fetchableMembers = FetchableMembers()
 
         struct FetchableMembers {
             let property = FetchableMember<StubEntityBis, String?>(identifier: "property")
+            let isDownloaded = FetchableMember<StubEntityBis, Bool>(identifier: "isDownloaded")
         }
     }
 }

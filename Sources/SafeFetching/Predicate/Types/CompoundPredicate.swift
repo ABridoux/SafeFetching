@@ -60,7 +60,7 @@ public func || <LE: NSManagedObject, RE: NSManagedObject>(
     )
 }
 
-// MARK: - KeyPath <-> Predicate
+// MARK: - KeyPath <-> FetchableMember
 
 public func && <LE: NSManagedObject, RE: NSManagedObject>(
     lhs: FetchableMember<LE, Bool>,
@@ -84,7 +84,7 @@ public func || <LE: NSManagedObject, RE: NSManagedObject>(
     )
 }
 
-// MARK: - Predicate <-> KeyPath
+// MARK: - Predicate <-> FetchableMember
 
 public func && <LE: NSManagedObject, RE: NSManagedObject>(
     lhs: Builders.Predicate<LE>,
@@ -93,7 +93,7 @@ public func && <LE: NSManagedObject, RE: NSManagedObject>(
     Builders.CompoundPredicate(
         joinOperator: .and,
         leftPredicate: lhs,
-        rightPredicate:  Builders.Predicate<RE>(identifier: rhs.identifier)
+        rightPredicate: Builders.Predicate<RE>(identifier: rhs.identifier)
     )
 }
 
@@ -104,6 +104,30 @@ public func || <LE: NSManagedObject, RE: NSManagedObject>(
     Builders.CompoundPredicate(
         joinOperator: .or,
         leftPredicate: lhs,
-        rightPredicate:  Builders.Predicate<RE>(identifier: rhs.identifier)
+        rightPredicate: Builders.Predicate<RE>(identifier: rhs.identifier)
+    )
+}
+
+// MARK: - FetchableMember <-> FetchableMember
+
+public func && <LE: NSManagedObject, RE: NSManagedObject>(
+    lhs: FetchableMember<LE, Bool>,
+    rhs: FetchableMember<RE, Bool>
+) -> Builders.CompoundPredicate<LE, RE> {
+    Builders.CompoundPredicate(
+        joinOperator: .and,
+        leftPredicate: Builders.Predicate<LE>(identifier: lhs.identifier),
+        rightPredicate: Builders.Predicate<RE>(identifier: rhs.identifier)
+    )
+}
+
+public func || <LE: NSManagedObject, RE: NSManagedObject>(
+    lhs: FetchableMember<LE, Bool>,
+    rhs: FetchableMember<RE, Bool>
+) -> Builders.CompoundPredicate<LE, RE> {
+    Builders.CompoundPredicate(
+        joinOperator: .or,
+        leftPredicate: Builders.Predicate<LE>(identifier: lhs.identifier),
+        rightPredicate: Builders.Predicate<RE>(identifier: rhs.identifier)
     )
 }
