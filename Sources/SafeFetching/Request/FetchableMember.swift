@@ -11,6 +11,7 @@ public struct FetchableMember<Entity: Fetchable, Value>: Sendable {
 
     // MARK: Properties
 
+    /// Attribute or relationship identifier used to generate `NSPredicate`.
     public let identifier: String
 
     // MARK: Init

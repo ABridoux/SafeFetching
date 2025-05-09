@@ -9,6 +9,7 @@ import CoreData
 
 extension Builders {
 
+    /// Generated from ``FetchableMember`` operations to wrap a `NSPredicate`.
     public class Predicate<Entity: Fetchable> {
 
         // MARK: Type alias

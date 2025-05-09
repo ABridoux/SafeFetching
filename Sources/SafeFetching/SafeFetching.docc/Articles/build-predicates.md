@@ -6,17 +6,16 @@ Examples in the article refer to this entity.
 
 ```swift
 @FetchableManagedObject
-final class StubEntity: NSManagedObject {
+final class User: NSManagedObject {
     @NSManaged var score = 0.0
     @NSManaged var name: String? = ""
 }
 ```
 
-When building a request, the ``Builders/Request/where(_:)-5uzqj`` operation allows to specify a predicate. For a demonstration purpose in this article, predicates are specified after their implicit declaration.
+When building a request, the ``Builders/Request/where(_:)-5uzqj`` operation allows to specify a predicate. For a demonstration purpose in this article, predicates are specified after their implicit declaration, as shown below.
 
 ```swift
-let predicate: Builders.Predicate<StubEntity>
-$0.name == "Toto"
+let predicate: Builders.Predicate<User> = .predicate { $0.name == "Toto" }
 ```
 
 ## Comparison
@@ -71,7 +70,7 @@ Inversion is supported.
 
 
 ## Advanced Operations
-It's possible to use the advanced operators offered by `NSPredicate` safely by specifying calling the dedicated function from the ``FetchableMember``.
+It's possible to use the advanced operators offered by `NSPredicate` safely by calling the dedicated function from ``FetchableMember``.
 
 ###### Has Prefix (String property)
 
@@ -105,7 +104,7 @@ $0.score.isIn(10...20)
 (10...20).contains($0.score)
 ```
 
-###### Matches a Regular Expression (string property)
+###### Matches a Regular Expression (String property)
 
 ```swift
 $0.name.matches("[A-Za-z]{3}")
@@ -159,12 +158,12 @@ $0.score.isIn(20..<40)
 ```
 
 ## RawRepresentable
-`RawRepresentable` types can be used in the predicate when they conform to ``DatabaseValue`` (and thus can be stored as their raw value in the CoreData store).
+`RawRepresentable` types can be used in the predicate when they conform to ``DatabaseValue`` and ``DatabaseTestValue`` (and thus can be stored as their raw value in the CoreData store).
 
 For instance with the `Colors` enum:
 
 ```swift
-struct Colors: String {
+struct Colors: String, DatabaseValue, DatabaseTestValue {
     case red
     case blue
     case green
@@ -212,11 +211,11 @@ other modules.
 
 ### OptionSet
 
-With an option set, it's advised to rather use the `intersects` predicates.
+With an `OptionSet`, it's advised to rather use the `intersects` predicates.
 For instance with the `Colors` option set:
 
 ```swift
-struct Colors: OptionSet {
+struct Colors: OptionSet, DatabaseValue, DatabaseTestValue {
     let rawValue: Int
 
     static let red = StubOptionSet(rawValue: 1 << 0)
@@ -235,26 +234,14 @@ $0.color.intersects([.red, .blue])
 [.red, .blue].intersects($0.color)
 ```
 
-### Comparing Option Set Values
-
-Do note that
-```swift
-$0.color.intersects(.blue)
-```
-
-is only the same as
-
-```swift
-$0.color == .blue
-```
-*when the stored `color` is a single option*. 
+> Note: `$0.color.intersects(.blue)` is only the same as `$0.color == .blue` when the stored `color` is a single option. 
 
 ## Relationships
 Predicates in SafeFetching support relationships. Given the two entities:
 
 ```swift
 @FetchableManagedObject
-final class StubEntity: NSManagedObject {
+final class User: NSManagedObject {
     @NSManaged var score = 0.0
     @NSManaged var pet: Pet?
 }

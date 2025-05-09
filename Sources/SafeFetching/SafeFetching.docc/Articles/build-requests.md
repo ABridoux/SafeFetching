@@ -2,7 +2,7 @@
 
 Learn how to build requests with the SafeFetching DSL.
 
-Examples in the article refer to this `User`class.
+Examples in the article refer to this `User` class.
 
 ```swift
 @FetchableManagedObject
@@ -107,13 +107,13 @@ Naming the parameter can sometimes be preferable for longer predicates.
 ```swift
 User.request()
     .all()
-    .where { members in 
-        members.score > 20 && members.name.contains("dore")
-        || !members.isAdmin
+    .where { user in 
+        user.score > 20 && user.name.contains("dore")
+        || !user.isAdmin
     }
 ```
 
-To learn more about building predicates, you can read <doc:build-predicates>.
+To learn more about predicates, you can read <doc:build-predicates>.
 
 ### Sort
 After the target has been specified, one sort or more can be set to the request with ``Builders/Request/sorted(by:_:)``.
