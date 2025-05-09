@@ -42,7 +42,6 @@ extension FetchableMember where Value: DatabaseTestValue {
 extension Collection where Element: DatabaseValue & DatabaseTestValue {
 
     /// Returns a predicate to check whether the attribute targeted by `fetchableMember` is contained in the collection.
-    @_spi(SafeFetching)
     public func contains<Entity: Fetchable>(
         _ fetchableMember: FetchableMember<Entity, Element>
     ) -> Builders.Predicate<Entity> {

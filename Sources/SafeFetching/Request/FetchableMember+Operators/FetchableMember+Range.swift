@@ -30,7 +30,6 @@ extension FetchableMember where Value: Numeric & Comparable {
 extension ClosedRange where Bound: DatabaseValue & DatabaseTestValue & Numeric {
 
     /// Returns a predicate to check whether the provided `fetchableMember` is contained in `self`.
-    @_spi(SafeFetching)
     public func contains<Entity: Fetchable>(_ fetchableMember: FetchableMember<Entity, Bound>) -> Builders.Predicate<Entity> {
         fetchableMember.isIn(self)
     }
@@ -41,7 +40,6 @@ extension ClosedRange where Bound: DatabaseValue & DatabaseTestValue & Numeric {
 extension Range where Bound: DatabaseValue & DatabaseTestValue & Numeric {
 
     /// Returns a predicate to check whether the provided `fetchableMember` is contained in `self`.
-    @_spi(SafeFetching)
     public func contains<Entity: Fetchable>(_ fetchableMember: FetchableMember<Entity, Bound>) -> Builders.Predicate<Entity> {
         fetchableMember.isIn(self)
     }

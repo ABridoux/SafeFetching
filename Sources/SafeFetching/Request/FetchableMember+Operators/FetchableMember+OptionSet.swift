@@ -24,7 +24,6 @@ extension FetchableMember where Value: DatabaseTestValue {
 extension OptionSet where Self: DatabaseTestValue {
 
     /// Returns a predicate to check whether the `fetchableMember` intersects `self`.
-    @_spi(SafeFetching)
     public func intersects<Entity: Fetchable>(_ fetchableMember: FetchableMember<Entity, Self>) -> Builders.Predicate<Entity> {
         fetchableMember.intersects(self)
     }
