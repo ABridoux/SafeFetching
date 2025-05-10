@@ -7,10 +7,29 @@ import CoreData
 
 // MARK: - From FetchableMember
 
-extension FetchableMember where Value: DatabaseTestValue {
+extension FetchableMember where Value: OptionSet & DatabaseTestValue {
 
     /// Returns a predicate to check whether the provided `value` intersects with the attribute targeted by `self`.
+    ///
+    /// - Tip: Import SafeFetching with `@_spi(SafeFetching)` to use `OptionSet.contains(_:)`.
     public func intersects(_ value: Value) -> Builders.Predicate<Entity> {
+        Builders.Predicate(
+            identifier: identifier,
+            operatorString: "& \(value.testValue) ==",
+            value: value
+        )
+    }
+}
+
+// MARK: - From FetchableMember (Optional)
+
+extension FetchableMember {
+
+    /// Returns a predicate to check whether the provided `value` intersects with the attribute targeted by `self`.
+    ///
+    /// - Tip: Import SafeFetching with `@_spi(SafeFetching)` to use `OptionSet.contains(_:)`.
+    public func intersects<T>(_ value: T) -> Builders.Predicate<Entity>
+    where Value == T?, T: OptionSet & DatabaseTestValue {
         Builders.Predicate(
             identifier: identifier,
             operatorString: "& \(value.testValue) ==",

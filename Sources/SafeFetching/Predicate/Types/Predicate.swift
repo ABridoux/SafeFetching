@@ -59,6 +59,13 @@ extension Builders.Predicate {
         predicate(Entity.fetchableMembers)
     }
 
+    public static func predicate<TargetEntity: Fetchable>(
+        _ predicate: (Entity.FetchableMembers) -> FetchableMember<TargetEntity, Bool>
+    ) -> Builders.Predicate<TargetEntity> {
+        let fetchableMember = predicate(Entity.fetchableMembers)
+        return Builders.Predicate<TargetEntity>(identifier: fetchableMember.identifier, operatorString: "==", value: true)
+    }
+
     public convenience init(
         identifier: String,
         isInverted: Bool = false,

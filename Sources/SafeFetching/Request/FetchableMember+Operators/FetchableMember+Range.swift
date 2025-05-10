@@ -10,6 +10,8 @@ import CoreData
 extension FetchableMember where Value: Numeric & Comparable {
 
     /// Returns a predicate to check whether the provided `range` contains the attribute targeted by `self`.
+    ///
+    /// - Tip: Import SafeFetching with `@_spi(SafeFetching)` to use `ClosedRange.contains(_:)`.
     public func isIn(_ range: ClosedRange<Value>) -> Builders.Predicate<Entity> {
         Builders.Predicate(
             identifier: identifier,
@@ -19,6 +21,8 @@ extension FetchableMember where Value: Numeric & Comparable {
     }
 
     /// Returns a predicate to check whether the provided `range` contains the attribute targeted by `self`.
+    ///
+    /// - Tip: Import SafeFetching with `@_spi(SafeFetching)` to use `Range.contains(_:)`.
     public func isIn(_ range: Range<Value>) -> Builders.Predicate<Entity> {
         let format = "\(range.lowerBound) <= \(identifier) AND \(identifier) < \(range.upperBound)"
         return Builders.Predicate<Entity>(nsValue: NSPredicate(format: format))

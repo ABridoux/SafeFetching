@@ -10,6 +10,8 @@ import CoreData
 extension FetchableMember where Value: DatabaseTestValue {
 
     /// Returns a predicate to check whether the attribute targeted by `self` is contained in the array.
+    ///
+    /// - Tip: Import SafeFetching with `@_spi(SafeFetching)` to use `Collection.contains(_:)`.
     public func isIn(_ values: [Value]) -> Builders.Predicate<Entity> {
         Builders.Predicate(
             identifier: identifier,
@@ -19,6 +21,8 @@ extension FetchableMember where Value: DatabaseTestValue {
     }
 
     /// Returns a predicate to check whether the attribute targeted by `self` is contained in the collection.
+    ///
+    /// - Tip: Import SafeFetching with `@_spi(SafeFetching)` to use `Collection.contains(_:)`.
     public func isIn(_ values: Value...) -> Builders.Predicate<Entity> {
         Builders.Predicate(
             identifier: identifier,
@@ -28,6 +32,8 @@ extension FetchableMember where Value: DatabaseTestValue {
     }
 
     /// Returns a predicate to check whether the attribute targeted by `self` is contained in the collection.
+    ///
+    /// - Tip: Import SafeFetching with `@_spi(SafeFetching)` to use `Collection.contains(_:)`.
     public func isIn(_ values: some Collection<Value>) -> Builders.Predicate<Entity> {
         Builders.Predicate(
             identifier: identifier,
