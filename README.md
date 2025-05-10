@@ -49,6 +49,13 @@ User.request()
 
 More about that in the [documentation](https://abridoux.github.io/SafeFetching/documentation/safefetching/).
 
+### Convenience for NS types
+The library also offers convenience functions to set a predicate of a `NSFetchRequest`.
+
+```swift
+request.predicate = .safe(on: User.self) { (10...20).contains($0.score) }
+```
+
 ## `NSPredicate`, `Predicate`
 Why not using `Predicate` directly? Two reasons:
 - It works only with SwiftData as of today (so iOS 17+, macOS 14+ ...). It doesn't work with CoreData.
