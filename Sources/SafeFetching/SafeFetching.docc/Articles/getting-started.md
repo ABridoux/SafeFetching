@@ -52,7 +52,7 @@ try User.request().all().fetch(in: context) // [User]
 ```
 Where `context` is a `NSManagedObjectContext`.
 
-To filter the `User` with a predicate, add a `where(_:)` call after `all()`.
+To filter `User` with a predicate, add a `where(_:)` call after `all()`.
 
 ```swift
 try User.request()
@@ -61,7 +61,7 @@ try User.request()
     .fetch(in: context) // [User]
 ```
 
-The `where(_:)` expects a predicate built on the provided `User.FetchableMembers` that is then converted to a `NSPredicate` with the appropriate format. The predicate is built using operators overloads or extensions on `FetchableMember`. Writing more complex predicates still feels natural.
+The `where(_:)` expects a predicate built on the provided `User.FetchableMembers` that is then converted to a `NSPredicate` with the appropriate format. The predicate is built using operators overloads or extensions on ``FetchableMember``. Writing more complex predicates still feels natural.
 
 ```swift
 try User.request()

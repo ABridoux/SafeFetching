@@ -10,7 +10,7 @@
 
 - ``init(identifier:)``
 
-### String
+### String Operations
 
 - ``contains(_:options:)``
 - ``hasPrefix(_:options:)``
@@ -18,20 +18,21 @@
 
 ### OptionSet
 
-- ``intersects(_:)``
+- ``intersects(_:)-49g32``
+- ``intersects(_:)-3xhlx``
 
-### Collection
+### Collection Operations
 
 - ``isIn(_:)-6ue9b``
 - ``isIn(_:)-1652j``
 - ``isIn(_:)-5vms8``
 
-### Range
+### Range Operations
 
 - ``isIn(_:)-7lmi8``
 - ``isIn(_:)-1om8b``
 
-### Regular Expression
+### Regular Expression Operations
 
 - ``matches(_:options:)``
 
