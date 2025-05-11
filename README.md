@@ -26,7 +26,7 @@ User.request()
     .where { $0.score >= 15 || $0.name != "Joe" }
     .sorted(by: .ascending(\.score), .descending(\.name))
     .setting(\.returnsDistinctResults, to: true)
-    .nsValue
+    .nsValue // returns NSFetchRequest<User>
 ```
 
 ```swift
@@ -47,12 +47,14 @@ User.request()
     .nsValue
 ```
 
-More about that in the [documentation](https://abridoux.github.io/SafeFetching/documentation/safefetching/).
+More about predicates in the [documentation](https://abridoux.github.io/SafeFetching/documentation/safefetching/build-predicates).
 
 ### Convenience for NS types
 The library also offers convenience functions to set a predicate of a `NSFetchRequest`.
 
 ```swift
+request.predicate = .safe(on: User.self) { $0.score.isIn(10...20 }
+// or
 request.predicate = .safe(on: User.self) { (10...20).contains($0.score) }
 ```
 

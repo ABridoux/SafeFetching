@@ -1,6 +1,6 @@
 # Build Predicates
 
-Learn how to specify safe predicates safely when building a request.
+Learn how to safely specify predicates when building a request.
 
 Examples in the article refer to this entity.
 
