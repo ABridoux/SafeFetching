@@ -286,7 +286,7 @@ let predicate: NSPredicate = .safe(on: User.self) { $0.score > 10 }
 ```
 
 ### Static
-Also, a predicate can be provided with ``Builders/Predicate/predicate(_:)``.
+Also, a predicate can be provided with ``Builders/Predicate/predicate(_:)-2fnp0``.
 
 ```swift
 let predicate: Builders.Predicate<User> = .predicate { $0.score > 10 }
