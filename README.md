@@ -59,13 +59,13 @@ request.predicate = .safe(on: User.self) { (10...20).contains($0.score) }
 ```
 
 ## `NSPredicate`, `Predicate`
-Why not using `Predicate` directly? Two reasons:
+Why not using the `Predicate` macro? Two reasons.
 - It works only with SwiftData as of today (so iOS 17+, macOS 14+ ...). It doesn't work with CoreData.
 - It doesn't support everything that `NSPredicate` does when fetching a CoreData store.
 
 Meanwhile, `NSPredicate` requires to write everything in a `String`, which is very error-prone. 
 
-Whereas this library tries to reach three objectives:
+Whereas this library tries to cover three objectives:
 1. Use compiler-checking to evaluate predicates and avoid runtime errors.
 2. Writing a request and especially a predicate should feel as natural as possible in Swift.
 3. No feature of NSPredicate to fetch a CoreData store should be left behind.

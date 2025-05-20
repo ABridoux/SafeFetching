@@ -83,6 +83,6 @@ try User.request()
     .fetch(in: context) // [User]
 ```
 
-### What's Next
+### Where to Go Next
 - Learn more about predicates by reading <doc:build-predicates>.
 - Learn more about request building by reading <doc:build-requests>.
