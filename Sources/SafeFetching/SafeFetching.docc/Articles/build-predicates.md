@@ -158,12 +158,12 @@ $0.score.isIn(20..<40)
 ```
 
 ## RawRepresentable
-`RawRepresentable` types can be used in the predicate when they conform to ``DatabaseValue`` and ``DatabaseTestValue`` (and thus can be stored as their raw value in the CoreData store).
+`RawRepresentable` types can be used in the predicate when they conform to ``FetchableValue`` and ``FetchableValue`` (and thus can be stored as their raw value in the CoreData store).
 
 For instance with the `Colors` enum:
 
 ```swift
-struct Colors: String, DatabaseValue, DatabaseTestValue {
+struct Colors: String, FetchableValue, FetchableValue {
     case red
     case blue
     case green
@@ -215,7 +215,7 @@ With an `OptionSet`, it's advised to rather use the `intersects` predicates.
 For instance with the `Colors` option set:
 
 ```swift
-struct Colors: OptionSet, DatabaseValue, DatabaseTestValue {
+struct Colors: OptionSet, FetchableValue, FetchableValue {
     let rawValue: Int
 
     static let red = StubOptionSet(rawValue: 1 << 0)

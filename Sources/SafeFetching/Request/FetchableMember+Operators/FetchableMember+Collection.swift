@@ -7,7 +7,7 @@ import CoreData
 
 // MARK: - IsIN
 
-extension FetchableMember where Value: DatabaseTestValue {
+extension FetchableMember where Value: FetchableValue {
 
     /// Returns a predicate to check whether the attribute targeted by `self` is contained in the array.
     ///
@@ -45,7 +45,7 @@ extension FetchableMember where Value: DatabaseTestValue {
 
 // MARK: - Contains
 
-extension Collection where Element: DatabaseValue & DatabaseTestValue {
+extension Collection where Element: FetchableValue & FetchableValue {
 
     /// Returns a predicate to check whether the attribute targeted by `fetchableMember` is contained in the collection.
     @_spi(SafeFetching)

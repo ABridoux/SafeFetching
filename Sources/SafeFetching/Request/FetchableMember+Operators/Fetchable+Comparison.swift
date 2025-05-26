@@ -7,42 +7,42 @@ import CoreData
 
 // MARK: - FetchableMember
 
-public func == <E: Fetchable, V: Equatable & DatabaseValue & DatabaseTestValue>(
+public func == <E: Fetchable, V: Equatable & FetchableValue>(
     lhs: FetchableMember<E, V>,
     rhs: V
 ) -> Builders.Predicate<E> {
     Builders.Predicate<E>(identifier: lhs.identifier, operatorString: "==", value: rhs)
 }
 
-public func != <E: NSManagedObject, V: Equatable & DatabaseValue & DatabaseTestValue>(
+public func != <E: NSManagedObject, V: Equatable & FetchableValue>(
     lhs: FetchableMember<E, V>,
     rhs: V
 ) -> Builders.Predicate<E> {
     Builders.Predicate<E>(identifier: lhs.identifier, operatorString: "!=", value: rhs)
 }
 
-public func > <E: NSManagedObject, V: Comparable & DatabaseValue & DatabaseTestValue>(
+public func > <E: NSManagedObject, V: Comparable & FetchableValue>(
     lhs: FetchableMember<E, V>,
     rhs: V
 ) -> Builders.Predicate<E> {
     Builders.Predicate<E>(identifier: lhs.identifier, operatorString: ">", value: rhs)
 }
 
-public func >= <E: NSManagedObject, V: Comparable & DatabaseValue & DatabaseTestValue>(
+public func >= <E: NSManagedObject, V: Comparable & FetchableValue>(
     lhs: FetchableMember<E, V>,
     rhs: V
 ) -> Builders.Predicate<E> {
     Builders.Predicate<E>(identifier: lhs.identifier, operatorString: ">=", value: rhs)
 }
 
-public func < <E: NSManagedObject, V: Comparable & DatabaseValue & DatabaseTestValue>(
+public func < <E: NSManagedObject, V: Comparable & FetchableValue>(
     lhs: FetchableMember<E, V>,
     rhs: V
 ) -> Builders.Predicate<E> {
     Builders.Predicate<E>(identifier: lhs.identifier, operatorString: "<", value: rhs)
 }
 
-public func <= <E: NSManagedObject, V: Comparable & DatabaseValue & DatabaseTestValue>(
+public func <= <E: NSManagedObject, V: Comparable & FetchableValue>(
     lhs: FetchableMember<E, V>,
     rhs: V
 ) -> Builders.Predicate<E> {

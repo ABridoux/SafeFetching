@@ -7,7 +7,7 @@ import CoreData
 
 // MARK: - From FetchableMember
 
-extension FetchableMember where Value: OptionSet & DatabaseTestValue {
+extension FetchableMember where Value: OptionSet & FetchableValue {
 
     /// Returns a predicate to check whether the provided `value` intersects with the attribute targeted by `self`.
     ///
@@ -15,7 +15,7 @@ extension FetchableMember where Value: OptionSet & DatabaseTestValue {
     public func intersects(_ value: Value) -> Builders.Predicate<Entity> {
         Builders.Predicate(
             identifier: identifier,
-            operatorString: "& \(value.testValue) ==",
+            operatorString: "& \(value.predicateRepresentation) ==",
             value: value
         )
     }
@@ -29,10 +29,10 @@ extension FetchableMember {
     ///
     /// - Tip: Import SafeFetching with `@_spi(SafeFetching)` to use `OptionSet.contains(_:)`.
     public func intersects<T>(_ value: T) -> Builders.Predicate<Entity>
-    where Value == T?, T: OptionSet & DatabaseTestValue {
+    where Value == T?, T: OptionSet & FetchableValue {
         Builders.Predicate(
             identifier: identifier,
-            operatorString: "& \(value.testValue) ==",
+            operatorString: "& \(value.predicateRepresentation) ==",
             value: value
         )
     }
@@ -40,7 +40,7 @@ extension FetchableMember {
 
 // MARK: - From OptionSet
 
-extension OptionSet where Self: DatabaseTestValue {
+extension OptionSet where Self: FetchableValue {
 
     /// Returns a predicate to check whether the `fetchableMember` intersects `self`.
     @_spi(SafeFetching)

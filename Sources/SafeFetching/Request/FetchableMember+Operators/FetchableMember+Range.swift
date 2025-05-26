@@ -31,7 +31,7 @@ extension FetchableMember where Value: Numeric & Comparable {
 
 // MARK: - From ClosedRange
 
-extension ClosedRange where Bound: DatabaseValue & DatabaseTestValue & Numeric {
+extension ClosedRange where Bound: FetchableValue & FetchableValue & Numeric {
 
     /// Returns a predicate to check whether the provided `fetchableMember` is contained in `self`.
     @_spi(SafeFetching)
@@ -42,7 +42,7 @@ extension ClosedRange where Bound: DatabaseValue & DatabaseTestValue & Numeric {
 
 // MARK: - From Range
 
-extension Range where Bound: DatabaseValue & DatabaseTestValue & Numeric {
+extension Range where Bound: FetchableValue & FetchableValue & Numeric {
 
     /// Returns a predicate to check whether the provided `fetchableMember` is contained in `self`.
     @_spi(SafeFetching)

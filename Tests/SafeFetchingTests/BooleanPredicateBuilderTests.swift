@@ -165,9 +165,9 @@ extension BooleanPredicates {
         @objc var isAdmin = false
         @objc var score = 0.0
         @objc var property: String? = ""
-        @objc var stubRawValue: Int = 0
+        @objc var stubRawValue: Int16 = 0
         @objc var stubStringRawValue = ""
-        @objc var stubRawOption: Int = 0
+        @objc var stubRawOption: Int16 = 0
         @objc var stubDate = Date()
 
         @objc var stubRelationship = StubEntityBis()
@@ -213,7 +213,7 @@ extension BooleanPredicates {
 
 extension BooleanPredicates {
 
-    enum StubEnum: Int, Comparable, DatabaseValue, DatabaseTestValue {
+    enum StubEnum: Int16, Comparable, FetchableValue {
         case foo = 1
         case bar = 2
 
@@ -222,7 +222,7 @@ extension BooleanPredicates {
         }
     }
 
-    enum StubStringEnum: String, DatabaseTestValue {
+    enum StubStringEnum: String, FetchableValue {
         case foo
         case bar
     }
@@ -232,8 +232,8 @@ extension BooleanPredicates {
 
 extension BooleanPredicates {
 
-    struct StubOptionSet: OptionSet, DatabaseValue, DatabaseTestValue {
-        let rawValue: Int
+    struct StubOptionSet: OptionSet, FetchableValue {
+        let rawValue: Int16
 
         static let foo = StubOptionSet(rawValue: 1 << 0)
         static let bar = StubOptionSet(rawValue: 1 << 1)
