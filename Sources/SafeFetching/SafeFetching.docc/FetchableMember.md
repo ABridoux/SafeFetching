@@ -18,14 +18,14 @@
 
 ### OptionSet
 
-- ``intersects(_:)-49g32``
-- ``intersects(_:)-3xhlx``
+- ``intersects(_:)-7kuqd``
+- ``intersects(_:)-97t9q``
 
 ### Collection Operations
 
-- ``isIn(_:)-6ue9b``
-- ``isIn(_:)-1652j``
-- ``isIn(_:)-5vms8``
+- ``isIn(_:)-6b1sz``
+- ``isIn(_:)-1uizd``
+- ``isIn(_:)-6l01q``
 
 ### Range Operations
 
@@ -35,6 +35,13 @@
 ### Regular Expression Operations
 
 - ``matches(_:options:)``
+
+### To-Many Relationship
+
+- ``contains(_:)-1z51k``
+- ``contains(_:)-6x3ob``
+- ``contains(_:)-327ey``
+- ``contains(_:)-1n1je``
 
 ### Relationship Member
 

@@ -158,12 +158,12 @@ $0.score.isIn(20..<40)
 ```
 
 ## RawRepresentable
-`RawRepresentable` types can be used in the predicate when they conform to ``FetchableValue`` and ``FetchableValue`` (and thus can be stored as their raw value in the CoreData store).
+`RawRepresentable` types can be used in the predicate when they conform to ``FetchableValue``. Since default implementation is provided, it's only required to add the protocol conformance.
 
 For instance with the `Colors` enum:
 
 ```swift
-struct Colors: String, FetchableValue, FetchableValue {
+struct Colors: String, FetchableValue {
     case red
     case blue
     case green
@@ -215,7 +215,7 @@ With an `OptionSet`, it's advised to rather use the `intersects` predicates.
 For instance with the `Colors` option set:
 
 ```swift
-struct Colors: OptionSet, FetchableValue, FetchableValue {
+struct Colors: OptionSet, FetchableValue {
     let rawValue: Int
 
     static let red = StubOptionSet(rawValue: 1 << 0)
@@ -237,18 +237,24 @@ $0.color.intersects([.red, .blue])
 > Note: `$0.color.intersects(.blue)` is only the same as `$0.color == .blue` when the stored `color` is a single option. 
 
 ## Relationships
-Predicates in SafeFetching support relationships. Given the two entities:
+Predicates in SafeFetching support relationships. Given the three entities:
 
 ```swift
 @FetchableManagedObject
 final class User: NSManagedObject {
     @NSManaged var score = 0.0
     @NSManaged var pet: Pet?
+    @NSManaged var coffeMugs: Set<Mug>
 }
 
 @FetchableManagedObject
 final class Pet: NSManagedObject {
     @NSManaged var name: String 
+}
+
+@FetchableManagedObject
+final class Mug: NSManagedObject {
+    @NSManaged var color: MugColor 
 }
 ```
 The following predicate can be expressed for the `User` entity.
@@ -264,8 +270,17 @@ Testing a relationship against another entity is supported (it then uses the `ob
 ```swift
 // otherPet: Pet
 $0.pet == otherPet
+
+// mug: Mug
+$0.coffeeMugs.contains(mug)
 ```
 
+Using `NSManagedObjectID` for direct comparison is also supported.
+
+```swift
+$0.pet == petObjectID
+$0.coffeeMugs.contains(mugObjectID)
+```
 
 ## NSManagedObject Comparisons
 Comparison of self is supported (it then uses the `objectID`).
@@ -275,7 +290,13 @@ Comparison of self is supported (it then uses the `objectID`).
 $0 == someUser
 ```
 
-## Standalone predicate
+The library also supports `NSManagedObject` and `NSManagedObjectID` comparisons.
+```swift
+// someUser: User
+$0 == userObjectID
+```
+
+## Standalone Predicate
 Using a `where(_:)` function is not the only way to make predicate.
 
 ### NSPredicate convenience

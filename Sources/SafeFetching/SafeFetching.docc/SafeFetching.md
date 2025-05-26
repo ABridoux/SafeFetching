@@ -43,8 +43,6 @@ Predicate are used within a `where()` function when building a request. Meanwhil
 - ``FetchableMember``
 - ``Builders/Predicate``
 - ``FetchableValue``
-- ``FetchableValueIdentification``
-- ``FetchableValue``
 - ``Builders/CompoundPredicate``
 
 ### Namespace

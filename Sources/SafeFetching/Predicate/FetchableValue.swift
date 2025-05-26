@@ -8,7 +8,10 @@ import CoreData
 
 // MARK: - FetchableValue
 
-/// A type that can be used for an attribute or relationship in a predicate when fetching a CoreData store.
+/// A type implementing this protocol can be used in a SafeFetching predicate when fetching a CoreData store.
+///
+/// Default implementations are provided for scalar types as well as for more complex types such as enums that are `RawRepresentable`.
+///
 public protocol FetchableValue {
 
     var predicateRepresentation: String { get }
@@ -31,6 +34,13 @@ extension String: FetchableValue {
         }
         return #""\#(escapedCopy)""#
     }
+}
+
+// MARK: - Int
+
+extension Int: FetchableValue {
+
+    public var predicateRepresentation: String { String(describing: self) }
 }
 
 // MARK: - Int16

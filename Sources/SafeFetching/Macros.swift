@@ -5,7 +5,7 @@
 
 // MARK: - FetchableManagedObject
 
-/// Add `FetchableMembers` and `fetchableMembers` to a `NSManagedObject` to make it conform to `Fetchable`.
+/// Add `FetchableMembers` and `fetchableMembers` to a `NSManagedObject` to make it conform to `Fetchable` and add `FetchableMembers`.
 @attached(member, names: arbitrary)
 @attached(extension, conformances: Fetchable)
 public macro FetchableManagedObject() = #externalMacro(module: "SafeFetchingMacros", type: "FetchableManagedObjectMacro")

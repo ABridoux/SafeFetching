@@ -171,6 +171,7 @@ extension BooleanPredicates {
         @objc var stubDate = Date()
 
         @objc var stubRelationship = StubEntityBis()
+        @objc var stubRelationships: Set<StubEntityBis> = []
         @objc var stubOptionalRelationship: StubEntityBis?
 
         var stubRaw: StubEnum? { StubEnum(rawValue: stubRawValue) }
@@ -192,6 +193,7 @@ extension BooleanPredicates {
             let stubForcedOption = FetchableMember<StubEntity, StubOptionSet>(identifier: "stubForcedOption")
             let stubRelationship = FetchableMember<StubEntity, StubEntityBis>(identifier: "stubRelationship")
             let stubOptionalRelationship = FetchableMember<StubEntity, StubEntityBis?>(identifier: "stubOptionalRelationship")
+            let stubRelationships = FetchableMember<StubEntity, Set<StubEntityBis>>(identifier: "stubRelationships")
         }
     }
 
