@@ -36,23 +36,32 @@ extension Builders {
 
 extension Builders.Predicate {
 
-    public convenience init<TestValue: DatabaseTestValue>(
+    public convenience init<Value: FetchableValue>(
         identifier: String,
         operatorString: String,
-        value: TestValue,
+        value: Value,
         isInverted: Bool = false
     ) {
-        let format = "\(isInverted ? Self.inversionKeyword : "") \(identifier) \(operatorString) \(value.testValue)"
+        let format = "\(isInverted ? Self.inversionKeyword : "") \(identifier) \(operatorString) \(value.predicateRepresentation)"
         self.init(nsValue: NSPredicate(format: format))
     }
 
-    public convenience init<TestValue: NSManagedObject>(
+    public convenience init<ManagedObject: NSManagedObject>(
         identifier: String,
         operatorString: String,
-        value: TestValue,
+        managedObject: ManagedObject,
         isInverted: Bool = false
     ) {
-        self.init(nsValue: NSPredicate(format: "\(identifier) \(operatorString) %@", value.objectID))
+        self.init(nsValue: NSPredicate(format: "\(identifier) \(operatorString) %@", managedObject.objectID))
+    }
+
+    public convenience init(
+        identifier: String,
+        operatorString: String,
+        managedObjectID: NSManagedObjectID,
+        isInverted: Bool = false
+    ) {
+        self.init(nsValue: NSPredicate(format: "\(identifier) \(operatorString) %@", managedObjectID))
     }
 
     public static func predicate(_ predicate: (Entity.FetchableMembers) -> Builders.Predicate<Entity>) -> Builders.Predicate<Entity> {

@@ -42,9 +42,7 @@ Predicate are used within a `where()` function when building a request. Meanwhil
 - <doc:build-predicates>
 - ``FetchableMember``
 - ``Builders/Predicate``
-- ``DatabaseValue``
-- ``DatabaseValueIdentification``
-- ``DatabaseTestValue``
+- ``FetchableValue``
 - ``Builders/CompoundPredicate``
 
 ### Namespace

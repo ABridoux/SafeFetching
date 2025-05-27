@@ -16,6 +16,10 @@ public struct SortDescriptor<Entity: Fetchable> {
 
 extension SortDescriptor {
 
+    /// Specifies an ascending sort.
+    /// - Parameters:
+    ///   - keyPath: KeyPath of the attribute that should be used for sorting.
+    ///   - comparator: Used to compare values with `NSSortDescriptor`.
     public static func ascending<Value: Comparable>(
         _ keyPath: KeyPath<Entity.FetchableMembers, FetchableMember<Entity, Value>>,
         comparator: Comparator? = nil
@@ -29,6 +33,10 @@ extension SortDescriptor {
         return SortDescriptor(descriptor: descriptor)
     }
 
+    /// Specifies an ascending sort.
+    /// - Parameters:
+    ///   - keyPath: KeyPath of the attribute that should be used for sorting.
+    ///   - comparator: Used to compare values with `NSSortDescriptor`.
     public static func ascending<Value: Comparable>(
         _ keyPath: KeyPath<Entity.FetchableMembers, FetchableMember<Entity, Value?>>,
         comparator: Comparator? = nil
@@ -47,6 +55,10 @@ extension SortDescriptor {
 
 extension SortDescriptor {
 
+    /// Specifies a descending sort.
+    /// - Parameters:
+    ///   - keyPath: KeyPath of the attribute that should be used for sorting.
+    ///   - comparator: Used to compare values with `NSSortDescriptor`.
     public static func descending<Value: Comparable>(
         _ keyPath: KeyPath<Entity.FetchableMembers, FetchableMember<Entity, Value>>,
         comparator: Comparator? = nil
@@ -60,6 +72,10 @@ extension SortDescriptor {
         return SortDescriptor(descriptor: descriptor)
     }
 
+    /// Specifies a descending sort.
+    /// - Parameters:
+    ///   - keyPath: KeyPath of the attribute that should be used for sorting.
+    ///   - comparator: Used to compare values with `NSSortDescriptor`.
     public static func descending<Value: Comparable>(
         _ keyPath: KeyPath<Entity.FetchableMembers, FetchableMember<Entity, Value?>>,
         comparator: Comparator? = nil

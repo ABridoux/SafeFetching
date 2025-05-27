@@ -7,42 +7,42 @@ import CoreData
 
 // MARK: - FetchableMember
 
-public func == <E: Fetchable, V: Equatable & DatabaseValue & DatabaseTestValue>(
+public func == <E: Fetchable, V: Equatable & FetchableValue>(
     lhs: FetchableMember<E, V>,
     rhs: V
 ) -> Builders.Predicate<E> {
     Builders.Predicate<E>(identifier: lhs.identifier, operatorString: "==", value: rhs)
 }
 
-public func != <E: NSManagedObject, V: Equatable & DatabaseValue & DatabaseTestValue>(
+public func != <E: NSManagedObject, V: Equatable & FetchableValue>(
     lhs: FetchableMember<E, V>,
     rhs: V
 ) -> Builders.Predicate<E> {
     Builders.Predicate<E>(identifier: lhs.identifier, operatorString: "!=", value: rhs)
 }
 
-public func > <E: NSManagedObject, V: Comparable & DatabaseValue & DatabaseTestValue>(
+public func > <E: NSManagedObject, V: Comparable & FetchableValue>(
     lhs: FetchableMember<E, V>,
     rhs: V
 ) -> Builders.Predicate<E> {
     Builders.Predicate<E>(identifier: lhs.identifier, operatorString: ">", value: rhs)
 }
 
-public func >= <E: NSManagedObject, V: Comparable & DatabaseValue & DatabaseTestValue>(
+public func >= <E: NSManagedObject, V: Comparable & FetchableValue>(
     lhs: FetchableMember<E, V>,
     rhs: V
 ) -> Builders.Predicate<E> {
     Builders.Predicate<E>(identifier: lhs.identifier, operatorString: ">=", value: rhs)
 }
 
-public func < <E: NSManagedObject, V: Comparable & DatabaseValue & DatabaseTestValue>(
+public func < <E: NSManagedObject, V: Comparable & FetchableValue>(
     lhs: FetchableMember<E, V>,
     rhs: V
 ) -> Builders.Predicate<E> {
     Builders.Predicate<E>(identifier: lhs.identifier, operatorString: "<", value: rhs)
 }
 
-public func <= <E: NSManagedObject, V: Comparable & DatabaseValue & DatabaseTestValue>(
+public func <= <E: NSManagedObject, V: Comparable & FetchableValue>(
     lhs: FetchableMember<E, V>,
     rhs: V
 ) -> Builders.Predicate<E> {
@@ -59,28 +59,42 @@ public func == <E: Fetchable, V: NSManagedObject>(
     lhs: FetchableMember<E, V>,
     rhs: V
 ) -> Builders.Predicate<E> {
-    Builders.Predicate<E>(identifier: lhs.identifier, operatorString: "==", value: rhs)
+    Builders.Predicate<E>(identifier: lhs.identifier, operatorString: "==", managedObject: rhs)
 }
 
 public func == <E: Fetchable, V: NSManagedObject>(
     lhs: FetchableMember<E, V?>,
     rhs: V
 ) -> Builders.Predicate<E> {
-    Builders.Predicate<E>(identifier: lhs.identifier, operatorString: "==", value: rhs)
+    Builders.Predicate<E>(identifier: lhs.identifier, operatorString: "==", managedObject: rhs)
+}
+
+public func == <E: Fetchable, V: NSManagedObject>(
+    lhs: FetchableMember<E, V>,
+    rhs: NSManagedObjectID
+) -> Builders.Predicate<E> {
+    Builders.Predicate<E>(identifier: lhs.identifier, operatorString: "==", managedObjectID: rhs)
 }
 
 public func != <E: Fetchable, V: NSManagedObject>(
     lhs: FetchableMember<E, V>,
     rhs: V
 ) -> Builders.Predicate<E> {
-    Builders.Predicate<E>(identifier: lhs.identifier, operatorString: "!=", value: rhs)
+    Builders.Predicate<E>(identifier: lhs.identifier, operatorString: "!=", managedObject: rhs)
+}
+
+public func != <E: Fetchable, V: NSManagedObject>(
+    lhs: FetchableMember<E, V>,
+    rhs: NSManagedObjectID
+) -> Builders.Predicate<E> {
+    Builders.Predicate<E>(identifier: lhs.identifier, operatorString: "!=", managedObjectID: rhs)
 }
 
 public func != <E: Fetchable, V: NSManagedObject>(
     lhs: FetchableMember<E, V?>,
     rhs: V
 ) -> Builders.Predicate<E> {
-    Builders.Predicate<E>(identifier: lhs.identifier, operatorString: "!=", value: rhs)
+    Builders.Predicate<E>(identifier: lhs.identifier, operatorString: "!=", managedObject: rhs)
 }
 
 // MARK: - Predicate
@@ -106,7 +120,15 @@ public func == <E: Fetchable>(lhs: E.FetchableMembers, rhs: E) -> Builders.Predi
     Builders.Predicate(
         identifier: "self",
         operatorString: "==",
-        value: rhs
+        managedObject: rhs
+    )
+}
+
+public func == <E: Fetchable>(lhs: E.FetchableMembers, rhs: NSManagedObjectID) -> Builders.Predicate<E> {
+    Builders.Predicate(
+        identifier: "self",
+        operatorString: "==",
+        managedObjectID: rhs
     )
 }
 
@@ -114,6 +136,14 @@ public func != <E: Fetchable>(lhs: E.FetchableMembers, rhs: E) -> Builders.Predi
     Builders.Predicate(
         identifier: "self",
         operatorString: "!=",
-        value: rhs
+        managedObject: rhs
+    )
+}
+
+public func != <E: Fetchable>(lhs: E.FetchableMembers, rhs: NSManagedObjectID) -> Builders.Predicate<E> {
+    Builders.Predicate(
+        identifier: "self",
+        operatorString: "!=",
+        managedObjectID: rhs
     )
 }

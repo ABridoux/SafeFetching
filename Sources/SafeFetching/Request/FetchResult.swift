@@ -7,7 +7,12 @@
 
 /// Type that can be used as the result of a fetch request.
 public protocol FetchResult {
+
+    // MARK: Associated Types
+
     associatedtype Fetched: Fetchable
+
+    // MARK: Init
 
     init(results: [Fetched])
 }
