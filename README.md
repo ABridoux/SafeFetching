@@ -53,7 +53,7 @@ More about predicates in the [documentation](https://abridoux.github.io/SafeFetc
 The library also offers convenience functions to set a predicate of a `NSFetchRequest`.
 
 ```swift
-request.predicate = .safe(on: User.self) { $0.score.isIn(10...20 }
+request.predicate = .safe(on: User.self) { $0.score.isIn(10...20) }
 // or
 request.predicate = .safe(on: User.self) { (10...20).contains($0.score) }
 ```
