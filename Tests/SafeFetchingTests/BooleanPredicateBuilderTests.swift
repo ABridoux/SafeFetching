@@ -128,6 +128,7 @@ extension BooleanPredicates {
     func relationshipAndCompound() {
         testNSFormat({ $0.score == 1 && $0.stubRelationship.property == "Toto" }, expecting: #"score == 1 AND stubRelationship.property == "Toto""#)
         testNSFormat({ $0.score == $0.stubRelationship.score }, expecting: #"score == stubRelationship.score"#)
+        testNSFormat({ $0.score != $0.stubRelationship.score }, expecting: #"score != stubRelationship.score"#)
         testNSFormat({ $0.score > $0.stubRelationship.score }, expecting: #"score > stubRelationship.score"#)
         testNSFormat({ $0.score >= $0.stubRelationship.score }, expecting: #"score >= stubRelationship.score"#)
         testNSFormat({ $0.score < $0.stubRelationship.score }, expecting: #"score < stubRelationship.score"#)
@@ -135,6 +136,7 @@ extension BooleanPredicates {
 
         testNSFormat({ $0.score == 1 && $0.stubOptionalRelationship.property == "Toto" }, expecting: #"score == 1 AND stubOptionalRelationship.property == "Toto""#)
         testNSFormat({ $0.score == $0.stubOptionalRelationship.score }, expecting: #"score == stubOptionalRelationship.score"#)
+        testNSFormat({ $0.score != $0.stubOptionalRelationship.score }, expecting: #"score != stubOptionalRelationship.score"#)
         testNSFormat({ $0.score > $0.stubOptionalRelationship.score }, expecting: #"score > stubOptionalRelationship.score"#)
         testNSFormat({ $0.score >= $0.stubOptionalRelationship.score }, expecting: #"score >= stubOptionalRelationship.score"#)
         testNSFormat({ $0.score < $0.stubOptionalRelationship.score }, expecting: #"score < stubOptionalRelationship.score"#)

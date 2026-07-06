@@ -62,6 +62,13 @@ public func == <E: Fetchable, V: Equatable & FetchableValue, R: Fetchable>(
     Builders.Predicate<E>(identifier: lhs.identifier, operatorString: "==", value: rhs)
 }
 
+public func != <E: Fetchable, V: Equatable & FetchableValue, R: Fetchable>(
+    lhs: FetchableMember<E, V>,
+    rhs: FetchableMember<R, V>
+) -> Builders.Predicate<E> {
+    Builders.Predicate<E>(identifier: lhs.identifier, operatorString: "!=", value: rhs)
+}
+
 public func > <E: NSManagedObject, V: Comparable & FetchableValue, R: Fetchable>(
     lhs: FetchableMember<E, V>,
     rhs: FetchableMember<R, V>
