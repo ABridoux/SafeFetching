@@ -5,7 +5,7 @@
 
 import CoreData
 
-// MARK: - FetchableMember
+// MARK: - FetchableMember -> Value
 
 public func == <E: Fetchable, V: Equatable & FetchableValue>(
     lhs: FetchableMember<E, V>,
@@ -53,7 +53,44 @@ public prefix func ! <E: NSManagedObject>(rhs: FetchableMember<E, Bool>) -> Buil
     Builders.Predicate<E>(identifier: rhs.identifier, isInverted: true)
 }
 
-// MARK: - NSManagedObject
+// MARK: - FetchableMember -> FetchableMember
+
+public func == <E: Fetchable, V: Equatable & FetchableValue, R: Fetchable>(
+    lhs: FetchableMember<E, V>,
+    rhs: FetchableMember<R, V>
+) -> Builders.Predicate<E> {
+    Builders.Predicate<E>(identifier: lhs.identifier, operatorString: "==", value: rhs)
+}
+
+public func > <E: NSManagedObject, V: Comparable & FetchableValue, R: Fetchable>(
+    lhs: FetchableMember<E, V>,
+    rhs: FetchableMember<R, V>
+) -> Builders.Predicate<E> {
+    Builders.Predicate<E>(identifier: lhs.identifier, operatorString: ">", value: rhs)
+}
+
+public func >= <E: NSManagedObject, V: Comparable & FetchableValue, R: Fetchable>(
+    lhs: FetchableMember<E, V>,
+    rhs: FetchableMember<R, V>
+) -> Builders.Predicate<E> {
+    Builders.Predicate<E>(identifier: lhs.identifier, operatorString: ">=", value: rhs)
+}
+
+public func < <E: NSManagedObject, V: Comparable & FetchableValue, R: Fetchable>(
+    lhs: FetchableMember<E, V>,
+    rhs: FetchableMember<R, V>
+) -> Builders.Predicate<E> {
+    Builders.Predicate<E>(identifier: lhs.identifier, operatorString: "<", value: rhs)
+}
+
+public func <= <E: NSManagedObject, V: Comparable & FetchableValue, R: Fetchable>(
+    lhs: FetchableMember<E, V>,
+    rhs: FetchableMember<R, V>
+) -> Builders.Predicate<E> {
+    Builders.Predicate<E>(identifier: lhs.identifier, operatorString: "<=", value: rhs)
+}
+
+// MARK: - FetchableMember -> NSManagedObject
 
 public func == <E: Fetchable, V: NSManagedObject>(
     lhs: FetchableMember<E, V>,
@@ -97,7 +134,7 @@ public func != <E: Fetchable, V: NSManagedObject>(
     Builders.Predicate<E>(identifier: lhs.identifier, operatorString: "!=", managedObject: rhs)
 }
 
-// MARK: - Predicate
+// MARK: - Boolean Predicate
 
 public prefix func ! <E: NSManagedObject>(rhs: Builders.Predicate<E>) -> Builders.Predicate<E> {
     rhs.inverted()
@@ -114,7 +151,7 @@ public func == <E: NSManagedObject>(
     }
 }
 
-// MARK: - Fetchable Members
+// MARK: - FetchableMember -> Fetchable Members
 
 public func == <E: Fetchable>(lhs: E.FetchableMembers, rhs: E) -> Builders.Predicate<E> {
     Builders.Predicate(

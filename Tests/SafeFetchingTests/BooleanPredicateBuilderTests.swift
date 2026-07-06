@@ -127,6 +127,18 @@ extension BooleanPredicates {
     @Test("Relationship and Compound")
     func relationshipAndCompound() {
         testNSFormat({ $0.score == 1 && $0.stubRelationship.property == "Toto" }, expecting: #"score == 1 AND stubRelationship.property == "Toto""#)
+        testNSFormat({ $0.score == $0.stubRelationship.score }, expecting: #"score == stubRelationship.score"#)
+        testNSFormat({ $0.score > $0.stubRelationship.score }, expecting: #"score > stubRelationship.score"#)
+        testNSFormat({ $0.score >= $0.stubRelationship.score }, expecting: #"score >= stubRelationship.score"#)
+        testNSFormat({ $0.score < $0.stubRelationship.score }, expecting: #"score < stubRelationship.score"#)
+        testNSFormat({ $0.score <= $0.stubRelationship.score }, expecting: #"score <= stubRelationship.score"#)
+
+        testNSFormat({ $0.score == 1 && $0.stubOptionalRelationship.property == "Toto" }, expecting: #"score == 1 AND stubOptionalRelationship.property == "Toto""#)
+        testNSFormat({ $0.score == $0.stubOptionalRelationship.score }, expecting: #"score == stubOptionalRelationship.score"#)
+        testNSFormat({ $0.score > $0.stubOptionalRelationship.score }, expecting: #"score > stubOptionalRelationship.score"#)
+        testNSFormat({ $0.score >= $0.stubOptionalRelationship.score }, expecting: #"score >= stubOptionalRelationship.score"#)
+        testNSFormat({ $0.score < $0.stubOptionalRelationship.score }, expecting: #"score < stubOptionalRelationship.score"#)
+        testNSFormat({ $0.score <= $0.stubOptionalRelationship.score }, expecting: #"score <= stubOptionalRelationship.score"#)
     }
 }
 
@@ -201,12 +213,14 @@ extension BooleanPredicates {
 
         @objc var property: String? = ""
         @objc var isDownloaded: Bool = false
+        @objc var score = 0.0
 
         static let fetchableMembers = FetchableMembers()
 
         struct FetchableMembers {
             let property = FetchableMember<StubEntityBis, String?>(identifier: "property")
             let isDownloaded = FetchableMember<StubEntityBis, Bool>(identifier: "isDownloaded")
+            let score = FetchableMember<StubEntityBis, Double>(identifier: "score")
         }
     }
 }

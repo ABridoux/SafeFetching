@@ -212,3 +212,12 @@ extension Range: FetchableValue where Bound: Numeric {
         String(describing: self)
     }
 }
+
+// MARK: - FetchableMember
+
+extension FetchableMember: FetchableValue {
+
+    public var predicateRepresentation: String {
+        identifier
+    }
+}
