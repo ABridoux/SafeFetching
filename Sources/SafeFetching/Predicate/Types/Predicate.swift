@@ -55,6 +55,19 @@ extension Builders.Predicate {
         self.init(nsValue: NSPredicate(format: "\(identifier) \(operatorString) %@", managedObject.objectID))
     }
 
+    public convenience init<ManagedObject: NSManagedObject>(
+        identifier: String,
+        operatorString: String,
+        managedObject: ManagedObject?,
+        isInverted: Bool = false
+    ) {
+        if let managedObject {
+            self.init(nsValue: NSPredicate(format: "\(identifier) \(operatorString) %@", managedObject.objectID))
+        } else {
+            self.init(nsValue: NSPredicate(format: "\(identifier) \(operatorString) NULL"))
+        }
+    }
+
     public convenience init(
         identifier: String,
         operatorString: String,

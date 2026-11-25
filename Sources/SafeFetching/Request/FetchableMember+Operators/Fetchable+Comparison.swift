@@ -114,6 +114,13 @@ public func == <E: Fetchable, V: NSManagedObject>(
 }
 
 public func == <E: Fetchable, V: NSManagedObject>(
+    lhs: FetchableMember<E, V?>,
+    rhs: V?
+) -> Builders.Predicate<E> {
+    Builders.Predicate<E>(identifier: lhs.identifier, operatorString: "==", managedObject: rhs)
+}
+
+public func == <E: Fetchable, V: NSManagedObject>(
     lhs: FetchableMember<E, V>,
     rhs: NSManagedObjectID
 ) -> Builders.Predicate<E> {
